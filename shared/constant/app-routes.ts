@@ -2,10 +2,11 @@ export const APP_ROUTES = {
   ROOT: "/",
 
   USERS: {
-    ID: (id: string | number) => `/users/${id}`,
-    UPLOADED_PHOTOS: (id: string | number) => `/users/${id}/uploaded-photos`,
-    PAYMENTS: (id: string | number) => `/users/${id}/payments`,
-    FOLLOWERS: (id: string | number) => `/users/${id}/followers`,
-    FOLLOWING: (id: string | number) => `/users/${id}/following`,
+    ROOT: `/users`,
+    ID: (id: number) => `/users/${id}`,
+    UPLOADED_PHOTOS: (id: number) => `/users/${id}/uploaded-photos`,
+    PAYMENTS: (id: number) => `/users/${id}/payments`,
+    FOLLOWERS: (id: number) => `/users/${id}/followers`,
+    FOLLOWING: (id: number) => `/users/${id}/following`,
   },
 };

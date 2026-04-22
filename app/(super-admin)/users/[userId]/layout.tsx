@@ -1,48 +1,45 @@
 "use client";
 
 import Link from "next/link";
-import { useRouter, useSelectedLayoutSegment } from "next/navigation";
+import {
+  notFound,
+  useParams,
+  useRouter,
+  useSelectedLayoutSegment,
+} from "next/navigation";
+
 import type { ReactNode } from "react";
 
 import { APP_ROUTES } from "@/shared/constant";
+
+import {
+  DEFAULT_USER_TAB,
+  USER_TAB_TRIGGERS,
+  isUserTab,
+} from "@/features/admin/user-details/model";
 import { Tabs } from "@/shared/ui/tabs";
+import { parseUserIdParam } from "@/shared/lib/route-params";
 
-const USER_TABS = {
-  UPLOADED_PHOTOS: "uploaded-photos",
-  PAYMENTS: "payments",
-  FOLLOWERS: "followers",
-  FOLLOWING: "following",
-} as const;
-
-type UserTab = (typeof USER_TABS)[keyof typeof USER_TABS];
-
-const TAB_TRIGGERS = [
-  { value: USER_TABS.UPLOADED_PHOTOS, title: "Uploaded photos" },
-  { value: USER_TABS.PAYMENTS, title: "Payments" },
-  { value: USER_TABS.FOLLOWERS, title: "Followers" },
-  { value: USER_TABS.FOLLOWING, title: "Following" },
-];
-
-const isUserTab = (value: string | null): value is UserTab =>
-  value === USER_TABS.UPLOADED_PHOTOS ||
-  value === USER_TABS.PAYMENTS ||
-  value === USER_TABS.FOLLOWERS ||
-  value === USER_TABS.FOLLOWING;
-
-export default function UserDetailsLayout({
-  children,
-}: {
+type Props = {
   children: ReactNode;
-  params: { userId: string };
-}) {
+};
+
+export default function UserDetailsLayout({ children }: Props) {
   const router = useRouter();
   const segment = useSelectedLayoutSegment();
-  const activeTab = isUserTab(segment) ? segment : USER_TABS.UPLOADED_PHOTOS;
+  const activeTab = isUserTab(segment) ? segment : DEFAULT_USER_TAB;
+
+  const params = useParams<{ userId: string }>();
+  const userId = parseUserIdParam(params.userId);
+
+  if (userId === null) {
+    notFound();
+  }
 
   return (
     <section className="mx-auto max-w-[1200px] px-6 py-6">
       <Link
-        href="/users"
+        href={APP_ROUTES.USERS.ROOT}
         className="mb-6 inline-block text-sm text-zinc-300 hover:text-white"
       >
         {"<- Back to Users List"}
@@ -54,9 +51,9 @@ export default function UserDetailsLayout({
 
       <Tabs
         value={activeTab}
-        triggers={TAB_TRIGGERS}
+        triggers={USER_TAB_TRIGGERS}
         onValueChange={(next) =>
-          router.push(`${APP_ROUTES.USERS.ID(15)}/${next}`)
+          router.push(`${APP_ROUTES.USERS.ID(userId)}/${next}`)
         }
         fullWidth
       />

@@ -1,6 +1,7 @@
-import { redirect } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 
 import { APP_ROUTES } from "@/shared/constant";
+import { parseUserIdParam } from "@/shared/lib/route-params";
 
 type Props = {
   params: Promise<{ userId: string }>;
@@ -8,7 +9,11 @@ type Props = {
 
 export default async function Page({ params }: Props) {
   const { userId } = await params;
+  const parsedUserId = parseUserIdParam(userId);
 
-  redirect(APP_ROUTES.USERS.UPLOADED_PHOTOS(userId));
+  if (parsedUserId === null) {
+    notFound();
+  }
+
+  redirect(APP_ROUTES.USERS.UPLOADED_PHOTOS(parsedUserId));
 }
-

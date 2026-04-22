@@ -2,19 +2,15 @@ import { notFound } from "next/navigation";
 import type { ComponentType } from "react";
 
 import {
-  UploadedPhotos,
   Payments,
   Followers,
   Following,
+  UploadedPhotos,
 } from "@/features/admin/user-details/ui";
+import { isUserTab, type UserTab } from "@/features/admin/user-details/model";
+import { parseUserIdParam } from "@/shared/lib/route-params";
 
-type UserDetailsTab =
-  | "uploaded-photos"
-  | "payments"
-  | "followers"
-  | "following";
-
-const TAB_TO_COMPONENT_MAP: Record<UserDetailsTab, ComponentType> = {
+const TAB_TO_COMPONENT_MAP: Record<UserTab, ComponentType> = {
   "uploaded-photos": UploadedPhotos,
   payments: Payments,
   followers: Followers,
@@ -23,18 +19,22 @@ const TAB_TO_COMPONENT_MAP: Record<UserDetailsTab, ComponentType> = {
 
 type Props = {
   params: Promise<{
+    userId: string;
     tab: string;
   }>;
 };
 
 export default async function UserDetailsTabPage({ params }: Props) {
-  const { tab } = await params;
-  const currentTab = tab as UserDetailsTab;
-  const SelectedTabComponent = TAB_TO_COMPONENT_MAP[currentTab];
+  const { userId, tab } = await params;
 
-  if (!SelectedTabComponent) {
+  if (parseUserIdParam(userId) === null) {
     notFound();
   }
 
+  if (!isUserTab(tab)) {
+    notFound();
+  }
+
+  const SelectedTabComponent = TAB_TO_COMPONENT_MAP[tab];
   return <SelectedTabComponent />;
 }
