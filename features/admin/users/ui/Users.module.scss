@@ -1,0 +1,80 @@
+// features/admin/users/ui/Users.module.scss
+
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  width: 100%;
+}
+
+.controls {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+
+  @media (min-width: 640px) {
+    flex-direction: row;
+  }
+}
+
+.searchInput {
+  flex: 1;
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  border: 1px solid rgb(212 212 216); // zinc-300
+  background-color: white;
+  color: black;
+
+  :global(.dark) & {
+    border-color: rgb(63 63 70); // zinc-700
+    background-color: rgb(24 24 27); // zinc-900
+    color: rgb(244 244 245); // zinc-100
+  }
+
+  &::placeholder {
+    color: rgb(113 113 122); // zinc-500
+  }
+}
+
+.select {
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  border: 1px solid rgb(212 212 216);
+  background-color: white;
+  color: black;
+
+  :global(.dark) & {
+    border-color: rgb(63 63 70);
+    background-color: rgb(24 24 27);
+    color: rgb(244 244 245);
+  }
+}
+
+.state {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 2rem;
+  text-align: center;
+}
+
+.error {
+  padding: 1rem;
+  background-color: rgb(254 242 242); // red-50
+  border-radius: 0.5rem;
+  color: rgb(185 28 28); // red-700
+
+  :global(.dark) & {
+    background-color: rgb(127 29 29 / 0.2); // red-900/20
+    color: rgb(248 113 113); // red-300
+  }
+
+  button {
+    margin-left: 0.5rem;
+    text-decoration: underline;
+
+    &:hover {
+      text-decoration: none;
+    }
+  }
+}

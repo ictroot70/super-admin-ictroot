@@ -1,28 +1,26 @@
-// app/page.tsx
+// app/(super-admin)/page.tsx
 'use client'
-import { UsersTable } from "@/features/admin/users/ui/users-table"
 
-// 🔹 Обязательно: используем хуки и клиентские компоненты
+import { LoginForm } from "@/features/admin/auth/ui/login-form"
 
-
-export default function Home() {
+export default function SuperAdminHome() {
   return (
     <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-5xl flex-col items-center justify-between py-16 px-4 sm:items-start">
+      <main className="flex flex-1 w-full max-w-md flex-col items-center justify-center py-16 px-4">
 
-        {/* 🔹 Заголовок страницы */}
-        <div className="w-full mb-8">
+        {/* 🔹 Заголовок */}
+        <div className="w-full mb-8 text-center">
           <h1 className="text-3xl font-semibold text-black dark:text-zinc-50">
-            👥 Управление пользователями
+            🔐 Вход в админ-панель
           </h1>
           <p className="text-zinc-600 dark:text-zinc-400 mt-2">
-            Поиск, фильтрация и пагинация списка пользователей
+            Введите учетные данные для продолжения
           </p>
         </div>
 
-        {/* 🔹 Таблица пользователей (наш компонент) */}
+        {/* 🔹 Форма логина */}
         <div className="w-full">
-          <UsersTable />
+          <LoginForm />
         </div>
 
       </main>
