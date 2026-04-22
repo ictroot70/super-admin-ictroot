@@ -1,4 +1,4 @@
 // # More information
 export default function Page() {
-  return null;
+  return "Users List";
 }
