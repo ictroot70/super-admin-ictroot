@@ -7,7 +7,6 @@ import type { SortValue, FilterValue } from '../model/graphql'
 export const UsersTable = () => {
     const { users, loading, error, pagination, filters, handlers } = useUsersList()
 
-    // 🔹 Обработка ошибки
     if (error) {
         return (
             <div className="p-4 bg-red-50 dark:bg-red-900/20 rounded-lg text-red-700">
@@ -21,7 +20,6 @@ export const UsersTable = () => {
 
     return (
         <div className="w-full space-y-4">
-
             {/* 🔍 Поиск и фильтры */}
             <div className="flex flex-col sm:flex-row gap-3">
                 <input
@@ -29,7 +27,7 @@ export const UsersTable = () => {
                     placeholder="Поиск по имени или email..."
                     value={filters.searchTerm}
                     onChange={(e) => handlers.setSearchTerm(e.target.value)}
-                    className="flex-1 px-4 py-2 rounded-lg border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-900 text-black dark:text-zinc-100"
+                    className="flex-1 px-4 py-2 rounded-lg border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-900"
                 />
 
                 <select
@@ -49,8 +47,8 @@ export const UsersTable = () => {
                 >
                     <option value="createdAt_desc">Новые сначала</option>
                     <option value="createdAt_asc">Старые сначала</option>
-                    <option value="name_asc">По имени (А-Я)</option>
-                    <option value="name_desc">По имени (Я-А)</option>
+                    <option value="userName_asc">По имени (А-Я)</option>
+                    <option value="userName_desc">По имени (Я-А)</option>
                 </select>
             </div>
 
@@ -68,29 +66,25 @@ export const UsersTable = () => {
                     </thead>
                     <tbody className="divide-y divide-zinc-200 dark:divide-zinc-800">
                         {loading && users.length === 0 ? (
-                            <tr>
-                                <td colSpan={5} className="px-4 py-8 text-center text-zinc-500">
-                                    Загрузка...
-                                </td>
-                            </tr>
+                            <tr><td colSpan={5} className="px-4 py-8 text-center text-zinc-500">Загрузка...</td></tr>
                         ) : users.length === 0 ? (
-                            <tr>
-                                <td colSpan={5} className="px-4 py-8 text-center text-zinc-500">
-                                    Пользователи не найдены
-                                </td>
-                            </tr>
+                            <tr><td colSpan={5} className="px-4 py-8 text-center text-zinc-500">Пользователи не найдены</td></tr>
                         ) : (
                             users.map((user) => (
                                 <tr key={user.id} className="hover:bg-zinc-50 dark:hover:bg-zinc-900/50">
                                     <td className="px-4 py-3 font-mono text-zinc-500">{user.id}</td>
-                                    <td className="px-4 py-3 font-medium">{user.name}</td>
+                                    <td className="px-4 py-3 font-medium">
+                                        {user.firstName || user.lastName
+                                            ? `${user.firstName || ''} ${user.lastName || ''}`.trim()
+                                            : user.userName}
+                                    </td>
                                     <td className="px-4 py-3 text-zinc-600 dark:text-zinc-400">{user.email}</td>
                                     <td className="px-4 py-3">
-                                        <span className={`px-2 py-1 rounded-full text-xs ${user.status === 'BLOCKED'
-                                                ? 'bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-300'
-                                                : 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-300'
+                                        <span className={`px-2 py-1 rounded-full text-xs ${user.isBlocked
+                                            ? 'bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-300'
+                                            : 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-300'
                                             }`}>
-                                            {user.status === 'BLOCKED' ? 'Заблокирован' : 'Активен'}
+                                            {user.isBlocked ? 'Заблокирован' : 'Активен'}
                                         </span>
                                     </td>
                                     <td className="px-4 py-3 text-zinc-500">
@@ -113,14 +107,14 @@ export const UsersTable = () => {
                         <button
                             onClick={() => handlers.setPage(pagination.page - 1)}
                             disabled={pagination.page === 1}
-                            className="px-4 py-2 rounded-lg border border-zinc-300 dark:border-zinc-700 disabled:opacity-50 disabled:cursor-not-allowed hover:bg-zinc-100 dark:hover:bg-zinc-900"
+                            className="px-4 py-2 rounded-lg border border-zinc-300 dark:border-zinc-700 disabled:opacity-50 hover:bg-zinc-100 dark:hover:bg-zinc-900"
                         >
                             ← Назад
                         </button>
                         <button
                             onClick={() => handlers.setPage(pagination.page + 1)}
                             disabled={pagination.page === pagination.totalPages}
-                            className="px-4 py-2 rounded-lg border border-zinc-300 dark:border-zinc-700 disabled:opacity-50 disabled:cursor-not-allowed hover:bg-zinc-100 dark:hover:bg-zinc-900"
+                            className="px-4 py-2 rounded-lg border border-zinc-300 dark:border-zinc-700 disabled:opacity-50 hover:bg-zinc-100 dark:hover:bg-zinc-900"
                         >
                             Далее →
                         </button>

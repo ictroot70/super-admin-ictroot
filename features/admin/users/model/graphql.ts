@@ -1,43 +1,73 @@
-// 🔹 v4: gql из core
+// shared/api/graphql/operations/queries/get-users.graphql.ts
 import { gql } from '@apollo/client/core'
 
 export const GET_USERS = gql`
   query GetUsers(
-    $page: Int!
-    $pageSize: Int!
-    $search: String
-    $sort: String
-    $filter: String
+    $pageNumber: Int
+    $pageSize: Int
+    $searchTerm: String
+    $sortBy: String
+    $sortDirection: SortDirection
   ) {
-    users(
-      page: $page
+    getUsers(
+      pageNumber: $pageNumber
       pageSize: $pageSize
-      search: $search
-      sort: $sort
-      filter: $filter
+      searchTerm: $searchTerm
+      sortBy: $sortBy
+      sortDirection: $sortDirection
     ) {
-      items {
+      users {
         id
-        name
+        userName
         email
-        status
         createdAt
+        profile {
+          firstName
+          lastName
+          __typename
+        }
+        userBan {
+          reason
+          createdAt
+          __typename
+        }
+        __typename
       }
-      totalCount
-      page
-      pageSize
+      pagination {
+        page
+        pageSize
+        totalCount
+        pagesCount
+        __typename
+      }
+      __typename
     }
   }
 `
 
-export type UserStatus = 'ACTIVE' | 'BLOCKED'
+// 🔹 Типы на основе вашей схемы
+export type SortDirection = 'asc' | 'desc'
 export type FilterValue = 'ALL' | 'BLOCKED' | 'UNBLOCKED'
-export type SortValue = 'createdAt_asc' | 'createdAt_desc' | 'name_asc' | 'name_desc'
+export type SortValue = 'createdAt_desc' | 'createdAt_asc' | 'userName_desc' | 'userName_asc'
 
 export interface UserListItem {
-  id: number // 🔹 Исправлено: number вместо string
-  name: string
-  email: string
-  status: UserStatus
-  createdAt: string
+  id: number          // ✅ Int! → number
+  userName: string    // ✅ String! → string
+  email: string       // ✅ String! → string
+  createdAt: string   // ✅ DateTime! → string (ISO)
+  firstName: string | null  // ✅ Profile.firstName nullable
+  lastName: string | null   // ✅ Profile.lastName nullable
+  isBlocked: boolean  // ✅ Вычисляемое: userBan !== null
+}
+
+export interface GetUsersResponse {
+  getUsers: {
+    users: UserListItem[]
+    pagination: {
+      page: number
+      pageSize: number
+      totalCount: number
+      pagesCount: number
+    }
+  }
 }
