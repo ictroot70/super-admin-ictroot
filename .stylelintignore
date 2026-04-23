@@ -1,0 +1,9 @@
+**/node_modules/**
+**/.next/**
+**/.vercel/**
+**/.idea/**
+**/dist/**
+**/build/**
+**/coverage/**
+**/public/**
+shared/api/graphql/generated/**
