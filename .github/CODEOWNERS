@@ -1,0 +1,10 @@
+# Update owners to your final team handles if needed.
+
+* @Smbat1505 @DmitryMuzalev
+
+/.ai/*                      @Smbat1505 @DmitryMuzalev
+/AGENTS.md                  @Smbat1505 @DmitryMuzalev
+/.github/*                  @Smbat1505 @DmitryMuzalev
+/shared/api/graphql/**      @Smbat1505 @DmitryMuzalev
+/features/admin/**          @Smbat1505 @DmitryMuzalev
+/app/(super-admin)/**       @Smbat1505 @DmitryMuzalev
