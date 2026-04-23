@@ -14,10 +14,7 @@ export type AlertToastProps = Partial<ToastContentProps> & {
   closeable?: boolean
   typographyVariant?: variantType
   progressBar?: boolean
-<<<<<<< HEAD
-=======
   onRequestClose?: () => void
->>>>>>> a335f62af2bdb69c73f13cba647562248247d6ba
 }
 
 export const ToastAlert = ({
@@ -29,10 +26,7 @@ export const ToastAlert = ({
   closeable = true,
   typographyVariant = 'regular_16',
   progressBar = true,
-<<<<<<< HEAD
-=======
   onRequestClose,
->>>>>>> a335f62af2bdb69c73f13cba647562248247d6ba
 }: AlertToastProps) => {
   const progress = useProgressBar(duration, progressBar)
 
@@ -45,11 +39,7 @@ export const ToastAlert = ({
       typographyVariant={typographyVariant}
       duration={duration}
       closeable={closeable}
-<<<<<<< HEAD
-      onClose={closeToast}
-=======
       onClose={onRequestClose ?? closeToast}
->>>>>>> a335f62af2bdb69c73f13cba647562248247d6ba
       progressBar={progressBar}
       progress={progress}
     />

@@ -1,8 +1,5 @@
-<<<<<<< HEAD
 'use client'
 
-=======
->>>>>>> a335f62af2bdb69c73f13cba647562248247d6ba
 import { GitHub, Google } from '@/shared/ui'
 
 import styles from './OAuthIcons.module.scss'

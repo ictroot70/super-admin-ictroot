@@ -1,80 +1,74 @@
-// features/admin/users/ui/Users.module.scss
-
 .wrapper {
-  display: flex;
-  flex-direction: column;
+  position: relative;
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr) auto; // 🔹 3 ряда: controls, table, pagination
   gap: 1rem;
-  width: 100%;
+  height: calc(100vh - 220px);
+  min-height: 100%;
+  padding: 1.5rem 1.5rem; // 🔹 Одинаковые отступы со всех сторон
+  overflow: hidden;
+  background-color: #0d0d0d;
+}
+
+.state {
+  display: grid;
+  place-items: center;
+  min-height: 12rem;
+  color: #888;
 }
 
 .controls {
   display: flex;
-  flex-direction: column;
-  gap: 0.75rem;
-
-  @media (min-width: 640px) {
-    flex-direction: row;
-  }
-}
-
-.searchInput {
-  flex: 1;
-  padding: 0.5rem 1rem;
-  border-radius: 0.5rem;
-  border: 1px solid rgb(212 212 216); // zinc-300
-  background-color: white;
-  color: black;
-
-  :global(.dark) & {
-    border-color: rgb(63 63 70); // zinc-700
-    background-color: rgb(24 24 27); // zinc-900
-    color: rgb(244 244 245); // zinc-100
-  }
-
-  &::placeholder {
-    color: rgb(113 113 122); // zinc-500
-  }
-}
-
-.select {
-  padding: 0.5rem 1rem;
-  border-radius: 0.5rem;
-  border: 1px solid rgb(212 212 216);
-  background-color: white;
-  color: black;
-
-  :global(.dark) & {
-    border-color: rgb(63 63 70);
-    background-color: rgb(24 24 27);
-    color: rgb(244 244 245);
-  }
-}
-
-.state {
-  display: flex;
-  justify-content: center;
+  gap: 1rem;
   align-items: center;
-  padding: 2rem;
-  text-align: center;
-}
+  justify-content: space-between;
+   width: 100%;
 
-.error {
-  padding: 1rem;
-  background-color: rgb(254 242 242); // red-50
-  border-radius: 0.5rem;
-  color: rgb(185 28 28); // red-700
+  .searchInput {
+    width: 644px;
+    max-width: 100%;  
+    height: 36px;
+    padding: 6px 12px;
+    background-color: transparent;
+    border: 1px solid #333;
+    border-radius: 2px;
+    color: #fff;
+    font-size: 0.875rem;
+    transition: border-color 0.2s;
 
-  :global(.dark) & {
-    background-color: rgb(127 29 29 / 0.2); // red-900/20
-    color: rgb(248 113 113); // red-300
+    &::placeholder {
+      color: #666;
+    }
+
+    &:focus {
+      outline: none;
+      border-color: #555;
+    }
   }
 
-  button {
-    margin-left: 0.5rem;
-    text-decoration: underline;
+  .filterSelect {
+    height: 36px;
+    padding: 6px 2rem 6px 12px;
+    background-color: #1a1a1a;
+    border: 1px solid #333;
+    border-radius: 2px;
+    color: #fff;
+    font-size: 0.875rem;
+    cursor: pointer;
+    appearance: none;
+    // background-image: url("image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23fff' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+    // background-repeat: no-repeat;
+    // background-position: right 0.75rem center;
+    // transition: border-color 0.2s;
 
-    &:hover {
-      text-decoration: none;
+    &:focus {
+      outline: none;
+      border-color: #555;
+    }
+
+    option {
+      background-color: #1a1a1a;
+      color: #fff;
     }
   }
 }

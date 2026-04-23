@@ -1,6 +1,3 @@
-<<<<<<< HEAD
-export { GitHub, Google, BellOutline, RussiaFlag, Select, UkFlag, ArrowBack } from '@ictroot/ui-kit'
-=======
 import * as Icons from '@ictroot/ui-kit/icons'
 
 export const PaperPlane = Icons.PaperPlane
@@ -36,4 +33,3 @@ export const Close = Icons.Close
 export const PersonAddOutline = Icons.PersonAddOutline
 export const CopyOutline = Icons.CopyOutline
 export const Pin = Icons.Pin
->>>>>>> a335f62af2bdb69c73f13cba647562248247d6ba

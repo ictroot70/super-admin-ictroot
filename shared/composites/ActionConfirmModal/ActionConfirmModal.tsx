@@ -50,23 +50,19 @@ export const ActionConfirmModal = ({
   }
 
   return (
-<<<<<<< HEAD
-    <Modal open={open} onClose={onClose} modalTitle={title} width={width} height={height}>
-=======
     <Modal
       open={open}
       onClose={onClose}
       modalTitle={title}
       style={{ width: width, height: height }}
     >
->>>>>>> a335f62af2bdb69c73f13cba647562248247d6ba
       <div>
         <Typography variant={'regular_16'} className={styles.text}>
           {message}
           {content}
         </Typography>
         <div className={checkbox ? styles.checkbox : ''}>
-          {checkbox && <CheckboxRadix label={'I agree'} onChange={() => {}} />}
+          {checkbox && <CheckboxRadix label={'I agree'} onChange={() => { }} />}
           <div className={styles.wrapper}>
             {confirmButton && (
               <Button

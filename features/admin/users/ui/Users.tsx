@@ -1,66 +1,52 @@
-// // features/admin/users/ui/Users.tsx
 // 'use client'
 
 // import React from 'react'
 
 
-// import { useUsersList } from '../model/use-users-list'
-// import {
-//   FilterValue,
-//   SortValue,
-//   UsersSortBy,
-//   UsersSortState,
-//   USERS_PAGE_SIZE_OPTIONS,
-// } from '../model'
-
 // import s from './Users.module.scss'
-// import { Pagination, Typography } from '@ictroot/ui-kit'
-// import { Loading } from '@/shared/ui/Loading'
-// import { UsersTable } from './UsersTable'
+// import { Loading } from '@/shared/composites'
+// import { Pagination, Typography } from '@/shared/ui'
+// import { FilterValue, USERS_PAGE_SIZE_OPTIONS } from '../model'
+// import { useUsersList } from '../model/use-users-list'
+// import { UsersTable } from './UsersTable/UsersTable'
+
 
 // export function Users() {
-//   const { users, loading, error, pagination, filters, handlers } = useUsersList()
+//   const {
+//     users,
+//     sort,
+//     searchTerm,
+//     filterStatus,
+//     handleSort,
+//     handlePageChange,
+//     handleItemsPerPageChange,
+//     setSearchTerm,
+//     setFilterStatus,
+//   } = useUsersList()
 
-//   // 🔹 Обработка ошибки
-//   if (error) {
+//   // 🔹 Загрузка
+//   if (users.isLoading) {
+//     return <Loading />
+//   }
+
+//   // 🔹 Ошибка
+//   if (users.isError || !users.data) {
 //     return (
 //       <div className={s.state}>
-//         <div className={s.error}>
-//           ❌ Ошибка: {error.message}
-//           <button onClick={() => handlers.refetch()}>Повторить</button>
-//         </div>
+//         <Typography variant={'h1'}>{'Failed to load users'}</Typography>
 //       </div>
 //     )
 //   }
 
-//   // 🔹 Состояние загрузки
-//   if (loading && users.length === 0) {
-//     return (
-//       <div className={s.state}>
-//         <Loading />
-//       </div>
-//     )
-//   }
+//   const { items, page, totalCount, pageSize } = users.data
 
 //   // 🔹 Пустой список
-//   if (!users || users.length === 0) {
+//   if (items.length === 0) {
 //     return (
 //       <div className={s.state}>
-//         <Typography variant="h1">Пользователи не найдены</Typography>
+//         <Typography variant={'h1'}>{'No users yet'}</Typography>
 //       </div>
 //     )
-//   }
-
-//   // 🔹 Маппинг сортировки для таблицы
-//   const sortState: UsersSortState = {
-//     key: (filters.sort.split('_')[0] as UsersSortBy) || null,
-//     direction: (filters.sort.split('_')[1] as 'asc' | 'desc') || 'desc',
-//   }
-
-//   const handleSort = (key: UsersSortBy) => {
-//     const newDirection =
-//       sortState.key === key && sortState.direction === 'asc' ? 'desc' : 'asc'
-//     handlers.setSort(`${key}_${newDirection}` as SortValue)
 //   }
 
 //   return (
@@ -69,81 +55,156 @@
 //       <div className={s.controls}>
 //         <input
 //           type="search"
-//           placeholder="Поиск по имени или email..."
-//           value={filters.searchTerm}
-//           onChange={(e) => handlers.setSearchTerm(e.target.value)}
+//           placeholder="Search by name or email..."
+//           value={searchTerm}
+//           onChange={(e) => setSearchTerm(e.target.value)}
 //           className={s.searchInput}
+//           aria-label="Search users"
 //         />
 
-
+//         <select
+//           value={filterStatus}
+//           onChange={(e) => setFilterStatus(e.target.value as FilterValue)}
+//           className={s.filterSelect}
+//           aria-label="Filter by status"
+//         >
+//           <option value="ALL">All</option>
+//           <option value="BLOCKED">Blocked</option>
+//           <option value="UNBLOCKED">Not Blocked</option>
+//         </select>
 //       </div>
 
 //       {/* 📊 Таблица */}
-//       <UsersTable items={users} sort={sortState} onSort={handleSort} />
+//       <UsersTable items={items} sort={sort} onSort={handleSort} />
 
 //       {/* 📄 Пагинация */}
 //       <Pagination
-//         currentPage={pagination.page}
-//         totalItems={pagination.totalCount}
-//         itemsPerPage={pagination.pageSize}
-//         onPageChange={handlers.setPage}
-//         onItemsPerPageChange={handlers.setPageSize}
+//         currentPage={page}
+//         totalItems={totalCount}
+//         itemsPerPage={pageSize}
+//         onPageChange={handlePageChange}
+//         onItemsPerPageChange={handleItemsPerPageChange}
 //         pageSizeOptions={USERS_PAGE_SIZE_OPTIONS}
 //       />
 //     </div>
 //   )
 // }
 
-
 'use client'
 
 import React from 'react'
+import s from './Users.module.scss'
+import { Button, Pagination, Typography } from '@/shared/ui'
+import { UsersTable } from './UsersTable/UsersTable'
+import { Loading } from '@/shared/composites'
+import { FilterValue, USERS_PAGE_SIZE_OPTIONS } from '../model'
+import { useUsersList } from '../model/use-users-list'
 
+export function Users() {
+  const {
+    users,
+    sort,
+    searchTerm,
+    filterStatus,
+    handleSort,
+    handlePageChange,
+    handleItemsPerPageChange,
+    handleClearFilters,
+    setSearchTerm,
+    setFilterStatus,
+  } = useUsersList()
 
-import s from './Payments.module.scss'
-
-import { PaymentsTable } from './PaymentsTable'
-import { Loading } from '@/shared/ui/Loading'
-import { Typography, Pagination } from '@ictroot/ui-kit'
-
-export function Payments() {
-  const { payments, sort, handleSort, handlePageChange, handleItemsPerPageChange } =
-    usePaymentsTable()
-
-  if (payments.isLoading) {
+  if (users.isLoading) {
     return <Loading />
   }
 
-  if (payments.isError) {
+  if (users.isError || !users.data) {
     return (
       <div className={s.state}>
-        <Typography variant={'h1'}>{'Failed to load payments'}</Typography>
+        <Typography variant={'h1'}>Failed to load users</Typography>
+        <Button variant="secondary" onClick={() => window.location.reload()}>
+          Retry
+        </Button>
       </div>
     )
   }
 
-  const data = payments.data
+  const { items, page, totalCount, pageSize, hasActiveFilters } = users.data
 
-  if (!data || data.items.length === 0) {
+  if (items.length === 0 && hasActiveFilters) {
     return (
-      <div className={s.state}>
-        <Typography variant={'h1'}>{'No payments yet'}</Typography>
+      <div className={s.wrapper}>
+        <div className={s.controls}>
+          <input
+            type="search"
+            placeholder="Search by name or email..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            className={s.searchInput}
+            aria-label="Search users"
+          />
+          <select
+            value={filterStatus}
+            onChange={(e) => setFilterStatus(e.target.value as FilterValue)}
+            className={s.filterSelect}
+            aria-label="Filter by status"
+          >
+            <option value="ALL">All</option>
+            <option value="BLOCKED">Blocked</option>
+            <option value="UNBLOCKED">Not Blocked</option>
+          </select>
+        </div>
+        <div className={s.emptyState}>
+          <Typography variant="h2">No users found</Typography>
+          <Typography variant="body1" className={s.emptyStateSubtitle}>
+            Try adjusting your search or filter criteria
+          </Typography>
+          <Button variant="primary" onClick={handleClearFilters}>
+            Clear filters
+          </Button>
+        </div>
       </div>
     )
   }
 
-  const { items, page, totalCount, pageSize } = data
+  if (items.length === 0) {
+    return (
+      <div className={s.state}>
+        <Typography variant={'h1'}>No users yet</Typography>
+      </div>
+    )
+  }
 
   return (
     <div className={s.wrapper}>
-      <PaymentsTable items={items} sort={sort} onSort={handleSort} />
+      <div className={s.controls}>
+        <input
+          type="search"
+          placeholder="Search by name or email..."
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+          className={s.searchInput}
+          aria-label="Search users"
+        />
+        <select
+          value={filterStatus}
+          onChange={(e) => setFilterStatus(e.target.value as FilterValue)}
+          className={s.filterSelect}
+          aria-label="Filter by status"
+        >
+          <option value="ALL">All</option>
+          <option value="BLOCKED">Blocked</option>
+          <option value="UNBLOCKED">Not Blocked</option>
+        </select>
+      </div>
+      <UsersTable items={items} sort={sort} onSort={handleSort} />
       <Pagination
         currentPage={page}
         totalItems={totalCount}
         itemsPerPage={pageSize}
         onPageChange={handlePageChange}
         onItemsPerPageChange={handleItemsPerPageChange}
-        pageSizeOptions={PAYMENTS_PAGE_SIZE_OPTIONS}
+        pageSizeOptions={USERS_PAGE_SIZE_OPTIONS}
       />
     </div>
   )

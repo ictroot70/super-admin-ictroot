@@ -1,7 +1,9 @@
 // app/(super-admin)/users/page.tsx
 'use client'
 
-import { Users } from '@/features/admin/users/ui/Users'
+import { Users } from "@/features/admin/users/ui/Users"
+
+
 
 export default function UsersPage() {
   return (
