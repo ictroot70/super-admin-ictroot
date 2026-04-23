@@ -17,12 +17,15 @@ import { createClient } from "graphql-ws";
 import { useAdminSessionStore } from "@/features/admin/auth/model/admin-session.store";
 import { buildBasicHeader } from "@/shared/api/graphql/auth";
 
+const graphqlHttpUrl = process.env.NEXT_PUBLIC_GRAPHQL_HTTP_URL as string;
+const graphqlWsUrl = process.env.NEXT_PUBLIC_GRAPHQL_WS_URL as string;
+
 const httpLink = new HttpLink({
-  uri: "https://inctagram.work/api/v1/graphql",
+  uri: graphqlHttpUrl,
 });
 
 const authLink = new SetContextLink((prevContext, operation) => {
-  if (operation.operationName === "loginAdmin") {
+  if (operation.operationName === "LoginAdmin") {
     return prevContext;
   }
 
@@ -42,7 +45,18 @@ const authLink = new SetContextLink((prevContext, operation) => {
 
 const wsLink = new GraphQLWsLink(
   createClient({
-    url: "ws://inctagram.work/api/v1/graphql",
+    url: graphqlWsUrl,
+    connectionParams: () => {
+      const { email, password } = useAdminSessionStore.getState();
+
+      if (!email || !password) {
+        return {};
+      }
+
+      return {
+        Authorization: buildBasicHeader(email, password),
+      };
+    },
   }),
 );
 
