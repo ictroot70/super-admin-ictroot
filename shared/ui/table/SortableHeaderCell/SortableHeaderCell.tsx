@@ -1,7 +1,5 @@
-import React, { type AriaAttributes, type ReactNode } from 'react'
-
-import { clsx } from 'clsx'
 import Image from 'next/image'
+import { type AriaAttributes, type ReactNode } from 'react'
 
 import { TableHeaderCell } from '../Table'
 
@@ -40,10 +38,9 @@ export function SortableHeaderCell<T extends string>({
       <button
         type={'button'}
         onClick={() => onSort(columnKey)}
-        className={clsx(
-          'inline-flex cursor-pointer items-center gap-1.5 border-none bg-transparent p-0 font-inherit text-inherit',
-          'focus-visible:rounded-[2px] focus-visible:outline-2 focus-visible:outline-[var(--color-primary-500)] focus-visible:outline-offset-2'
-        )}
+        className={
+          'font-inherit inline-flex cursor-pointer items-center gap-1.5 border-none bg-transparent p-0 text-inherit focus-visible:rounded-[2px] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-primary-500)]'
+        }
       >
         {title}
         <SortIcon direction={iconDirection} />
