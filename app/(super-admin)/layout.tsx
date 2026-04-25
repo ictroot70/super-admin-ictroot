@@ -3,7 +3,7 @@ import { ReactNode } from 'react'
 
 export default function Layout({ children }: { children: ReactNode }) {
   return (
-    <section className={'mx-auto mt-16 flex min-h-screen w-[972px] flex-col gap-[5px]'}>
+    <section className={'mx-auto flex min-h-screen w-[972px] flex-col gap-[5px]'}>
       {children}
     </section>
   )

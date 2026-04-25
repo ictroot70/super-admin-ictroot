@@ -51,7 +51,7 @@ export function SortableHeaderCell<T extends string>({
 
 function SortIcon({ direction }: { direction: 'asc' | 'desc' | null }) {
   return (
-    <span className={'inline-flex items-center'}>
+    <span className={'ml-1.5 inline-flex items-center'}>
       {direction ? (
         <Image src={`/${direction}.svg`} alt={''} aria-hidden width={8} height={6} />
       ) : (
