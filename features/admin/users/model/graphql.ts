@@ -1,43 +1,73 @@
-// 🔹 v4: gql из core
-import { gql } from '@apollo/client/core'
+import { gql } from "@apollo/client/core";
 
 export const GET_USERS = gql`
   query GetUsers(
-    $page: Int!
-    $pageSize: Int!
-    $search: String
-    $sort: String
-    $filter: String
+    $pageNumber: Int
+    $pageSize: Int
+    $searchTerm: String
+    $sortBy: String
+    $sortDirection: SortDirection
   ) {
-    users(
-      page: $page
+    getUsers(
+      pageNumber: $pageNumber
       pageSize: $pageSize
-      search: $search
-      sort: $sort
-      filter: $filter
+      searchTerm: $searchTerm
+      sortBy: $sortBy
+      sortDirection: $sortDirection
     ) {
-      items {
+      users {
         id
-        name
+        userName
         email
-        status
         createdAt
+        profile {
+          firstName
+          lastName
+          __typename
+        }
+        userBan {
+          reason
+          createdAt
+          __typename
+        }
+        __typename
       }
-      totalCount
-      page
-      pageSize
+      pagination {
+        page
+        pageSize
+        totalCount
+        pagesCount
+        __typename
+      }
+      __typename
     }
   }
-`
-
-export type UserStatus = 'ACTIVE' | 'BLOCKED'
-export type FilterValue = 'ALL' | 'BLOCKED' | 'UNBLOCKED'
-export type SortValue = 'createdAt_asc' | 'createdAt_desc' | 'name_asc' | 'name_desc'
+`;
 
 export interface UserListItem {
-  id: number // 🔹 Исправлено: number вместо string
-  name: string
-  email: string
-  status: UserStatus
-  createdAt: string
+  id: number;
+  userName: string;
+  email: string;
+  createdAt: string;
+  profile: {
+    firstName: string | null;
+    lastName: string | null;
+    __typename?: string;
+  } | null;
+  userBan: { reason: string; createdAt: string; __typename?: string } | null;
+  __typename?: string;
+}
+
+export interface GetUsersResponse {
+  getUsers: {
+    users: UserListItem[];
+    pagination: {
+      page: number;
+      pageSize: number;
+      totalCount: number;
+      pagesCount: number;
+      __typename?: string;
+    };
+    __typename?: string;
+  };
 }

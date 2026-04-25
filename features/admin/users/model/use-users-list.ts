@@ -1,75 +1,194 @@
-'use client' // 🔹 Обязательно для Next.js App Router
+"use client";
 
-import { useState, useEffect, useMemo } from 'react'
-import { GET_USERS, UserListItem, FilterValue, SortValue } from './graphql'
-import { useDebounce } from '../utils/useDebounce'
-import { useQuery } from '@apollo/client/react'
+import { useState, useEffect, useMemo, useCallback, useRef } from "react";
+import { useQuery } from "@apollo/client/react";
+import { useDebounce } from "../utils/useDebounce";
+import { GET_USERS, UserListItem, GetUsersResponse } from "./graphql";
+import { SortDirection } from "@/entities/admin/user";
+import { FilterValue, SortValue, UsersSortBy, UsersSortState } from ".";
 
-interface UseUsersListReturn {
-  users: UserListItem[]
-  loading: boolean
-  error: Error | null
-  pagination: { page: number; pageSize: number; totalPages: number; totalCount: number }
-  filters: { searchTerm: string; sort: SortValue; filter: FilterValue }
-  handlers: {
-    setSearchTerm: (v: string) => void
-    setSort: (v: SortValue) => void
-    setFilter: (v: FilterValue) => void
-    setPage: (v: number) => void
-    refetch: () => void
-  }
+export interface UsersViewModel {
+  userId: number;
+  username: string;
+  email: string;
+  profileLink: string;
+  dateAdded: string;
+  isBlocked: boolean;
 }
 
-export const useUsersList = (): UseUsersListReturn => {
-  const [pageNumber, setPageNumber] = useState(1)
-  const [pageSize] = useState(8)
-  const [searchTerm, setSearchTerm] = useState('')
-  const [sort, setSort] = useState<SortValue>('createdAt_desc')
-  const [filter, setFilter] = useState<FilterValue>('ALL')
+export interface UsersDataResponse {
+  items: UsersViewModel[];
+  page: number;
+  pageSize: number;
+  totalCount: number;
+  totalPages: number;
+  hasActiveFilters: boolean;
+}
 
-  // 🔹 Debounce поиска
-  const debouncedSearch = useDebounce(searchTerm, 500)
+export function useUsersList() {
+  const [page, setPage] = useState(1);
+  const [pageSize, setPageSize] = useState(8);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [sortValue, setSortValue] = useState<SortValue>("createdAt_desc");
+  const [filterStatus, setFilterStatus] = useState<FilterValue>("ALL");
+  const prevDepsRef = useRef<string>("");
 
-  // 🔹 Сброс страницы при изменении фильтров
+  const debouncedSearch = useDebounce(searchTerm, 500);
+
   useEffect(() => {
-    setPageNumber(1)
-  }, [debouncedSearch, sort, filter])
+    const depsKey = `${debouncedSearch}-${sortValue}-${filterStatus}-${pageSize}`;
 
-  // 🔹 Переменные для GraphQL
+    if (prevDepsRef.current && prevDepsRef.current !== depsKey) {
+      setPage(1);
+    }
+
+    prevDepsRef.current = depsKey;
+  }, [debouncedSearch, sortValue, filterStatus, pageSize]);
+
+  const [sortField, sortDirection] = useMemo(() => {
+    const [field, direction] = sortValue.split("_") as [
+      UsersSortBy,
+      SortDirection,
+    ];
+    const mappedField = field === UsersSortBy.USER_NAME ? "userName" : field;
+    return [mappedField, direction];
+  }, [sortValue]);
+
+  const isEmailSearch = debouncedSearch.trim().includes("@");
+
   const variables = useMemo(
     () => ({
-      page: pageNumber,
-      pageSize,
-      search: debouncedSearch.trim() || undefined,
-      sort,
-      filter: filter === 'ALL' ? undefined : filter,
+      pageNumber: page,
+      pageSize: isEmailSearch ? 100 : pageSize,
+      searchTerm: isEmailSearch
+        ? undefined
+        : debouncedSearch.trim() || undefined,
+      sortBy: sortField,
+      sortDirection,
     }),
-    [pageNumber, pageSize, debouncedSearch, sort, filter]
-  )
+    [page, pageSize, debouncedSearch, sortField, sortDirection, isEmailSearch],
+  );
 
-  const { data, loading, error, refetch } = useQuery(GET_USERS, {
-    variables,
-    fetchPolicy: 'cache-and-network',
-    nextFetchPolicy: 'cache-first',
-  })
+  const { data, loading, error, refetch } = useQuery<GetUsersResponse>(
+    GET_USERS,
+    {
+      variables,
+      fetchPolicy: "cache-and-network",
+    },
+  );
 
-  const users = data?.users?.items || []
-  const totalCount = data?.users?.totalCount || 0
-  // 🔹 Исправление: totalPages не может быть 0
-  const totalPages = totalCount > 0 ? Math.ceil(totalCount / pageSize) : 1
+  const { items, hasActiveFilters } = useMemo(() => {
+    const rawUsers = data?.getUsers?.users || [];
+    const searchTrimmed = debouncedSearch.trim().toLowerCase();
+
+    let filtered = rawUsers.filter((user: UserListItem) => {
+      const isBlocked = user.userBan !== null && user.userBan !== undefined;
+      if (filterStatus === "ALL") return true;
+      return filterStatus === "BLOCKED" ? isBlocked : !isBlocked;
+    });
+
+    if (searchTrimmed) {
+      if (isEmailSearch) {
+        filtered = filtered.filter((user: UserListItem) =>
+          user.email?.toLowerCase().includes(searchTrimmed),
+        );
+      } else {
+        filtered = filtered.filter((user: UserListItem) => {
+          const emailMatch = user.email?.toLowerCase().includes(searchTrimmed);
+          const usernameMatch = user.userName
+            ?.toLowerCase()
+            .includes(searchTrimmed);
+          return emailMatch || usernameMatch;
+        });
+      }
+    }
+
+    const viewModelItems = filtered.map(
+      (user: UserListItem): UsersViewModel => ({
+        userId: user.id,
+        username: user.userName,
+        email: user.email,
+        profileLink: `/profile/${user.userName}`,
+        dateAdded: user.createdAt,
+        isBlocked: user.userBan !== null,
+      }),
+    );
+
+    const hasActiveFilters =
+      debouncedSearch.trim().length > 0 || filterStatus !== "ALL";
+
+    return { items: viewModelItems, hasActiveFilters };
+  }, [data, filterStatus, debouncedSearch, isEmailSearch]);
+
+  const pagination = data?.getUsers?.pagination || {
+    page: 1,
+    pageSize: 8,
+    totalCount: 0,
+    pagesCount: 1,
+  };
+  const totalPages = pagination.pagesCount > 0 ? pagination.pagesCount : 1;
+
+  const sort: UsersSortState = useMemo(
+    () => ({
+      key: sortField as UsersSortBy,
+      direction: sortDirection,
+    }),
+    [sortField, sortDirection],
+  );
+
+  const handleSort = useCallback(
+    (key: UsersSortBy) => {
+      setSortValue((prev) => {
+        const [currentField] = prev.split("_");
+        const isSameField = currentField === key;
+        const newDirection: SortDirection =
+          isSameField && sortDirection === "asc" ? "desc" : "asc";
+        return `${key}_${newDirection}`;
+      });
+    },
+    [sortDirection],
+  );
+
+  const handlePageChange = useCallback((newPage: number) => {
+    setPage(newPage);
+  }, []);
+
+  const handleItemsPerPageChange = useCallback((newPageSize: number) => {
+    setPageSize(newPageSize);
+    setPage(1);
+  }, []);
+
+  const handleClearFilters = useCallback(() => {
+    setSearchTerm("");
+    setFilterStatus("ALL");
+    setPage(1);
+  }, []);
 
   return {
-    users,
-    loading,
-    error,
-    pagination: { page: pageNumber, pageSize, totalPages, totalCount },
-    filters: { searchTerm, sort, filter },
-    handlers: {
-      setSearchTerm,
-      setSort,
-      setFilter,
-      setPage: setPageNumber,
-      refetch,
+    users: {
+      data:
+        items.length > 0 || !loading
+          ? {
+              items,
+              page: pagination.page,
+              pageSize: pagination.pageSize,
+              totalCount: pagination.totalCount,
+              totalPages,
+              hasActiveFilters,
+            }
+          : null,
+      isLoading: loading,
+      isError: !!error,
     },
-  }
+    sort,
+    searchTerm,
+    filterStatus,
+    handleSort,
+    handlePageChange,
+    handleItemsPerPageChange,
+    handleClearFilters,
+    setSearchTerm,
+    setFilterStatus,
+    refetch,
+  };
 }

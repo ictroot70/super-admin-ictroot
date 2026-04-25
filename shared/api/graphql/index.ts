@@ -6,4 +6,5 @@
 // — путь к Apollo client
 // — путь к auth helper
 // — примеры импорта для A2/A3/A4/A5/A6
-export {};
+
+export { buildBasicHeader } from "./auth";

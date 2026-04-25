@@ -1,78 +1,64 @@
-// lib/apollo-client.ts
-// 🔹 v4: импорты из core и link-подпутей
+"use client";
 
-import { ApolloClient, InMemoryCache } from '@apollo/client/core'
-import { HttpLink } from '@apollo/client/link/http'
-import { setContext } from '@apollo/client/link/context'
-import { ApolloLink } from '@apollo/client/core'
+import {
+  ApolloClient,
+  ApolloLink,
+  HttpLink,
+  InMemoryCache,
+} from "@apollo/client";
+import { SetContextLink } from "@apollo/client/link/context";
+import { GraphQLWsLink } from "@apollo/client/link/subscriptions";
+import { getMainDefinition } from "@apollo/client/utilities";
+import { createClient } from "graphql-ws";
 
-// 🔹 Безопасная Base64-кодировка (универсальная)
-const toBase64 = (str: string): string => {
-  if (typeof window === 'undefined') {
-    // Node.js / SSR
-    return Buffer.from(str, 'utf-8').toString('base64')
-  }
-  // Браузер (с поддержкой юникода)
-  return btoa(unescape(encodeURIComponent(str)))
-}
+import { useAdminSessionStore } from "@/features/admin/auth/model/admin-session.store";
+import { buildBasicHeader } from "@/shared/api/graphql/auth";
 
-// 🔹 HTTP-ссылка
 const httpLink = new HttpLink({
-  uri: process.env.NEXT_PUBLIC_GRAPHQL_ENDPOINT || 'https://inctagram.work/api/v1/graphql',
-  credentials: 'include',
-})
+  uri: "https://inctagram.work/api/v1/graphql",
+});
 
-// 🔹 Middleware для авторизации
-const authLink = setContext((_, { headers }) => {
-  let authHeaders: Record<string, string> = {}
+const authLink = new SetContextLink((prevContext, operation) => {
+  if (operation.operationName === "loginAdmin") {
+    return prevContext;
+  }
 
-  // 🔹 Читаем токен (только на клиенте)
-  const token = typeof window !== 'undefined' ? localStorage.getItem('accessToken') : null
+  const { email, password } = useAdminSessionStore.getState();
 
-  // 🔹 Приоритет: Bearer > Basic Auth
-  if (token) {
-    authHeaders = { authorization: `Bearer ${token}` }
-  } else {
-    const username = process.env.NEXT_PUBLIC_GRAPHQL_USERNAME
-    const password = process.env.NEXT_PUBLIC_GRAPHQL_PASSWORD
-    if (username && password) {
-      const credentials = toBase64(`${username}:${password}`)
-      authHeaders = { authorization: `Basic ${credentials}` }
-    }
+  if (!email || !password) {
+    return prevContext;
   }
 
   return {
     headers: {
-      ...headers,
-      ...authHeaders,
+      ...prevContext.headers,
+      Authorization: buildBasicHeader(email, password),
     },
-  }
-})
+  };
+});
 
-// 🔹 Создание клиента
-export const apolloClient = new ApolloClient({
-  link: ApolloLink.from([authLink, httpLink]),
-  cache: new InMemoryCache({
-    typePolicies: {
-      Query: { fields: {} },
-      // 🔹 Нормализация объектов по ID (если бэкенд возвращает __typename + id)
-      User: { keyFields: ['id'] },
-      Post: { keyFields: ['id'] },
-    },
+const wsLink = new GraphQLWsLink(
+  createClient({
+    url: "ws://inctagram.work/api/v1/graphql",
   }),
-  ssrMode: typeof window === 'undefined',
-  ssrForceFetchDelay: 100,
-  defaultOptions: {
-    watchQuery: {
-      fetchPolicy: 'cache-and-network',
-      errorPolicy: 'ignore',
-    },
-    query: {
-      fetchPolicy: 'network-only',
-      errorPolicy: 'all',
-    },
-  },
-})
+);
 
-// 🔹 Экспорт типа для удобства
-export type ApolloClientType = typeof apolloClient
+const httpWithAuthLink = ApolloLink.from([authLink, httpLink]);
+
+const splitLink = ApolloLink.split(
+  ({ query }) => {
+    const definition = getMainDefinition(query);
+
+    return (
+      definition.kind === "OperationDefinition" &&
+      definition.operation === "subscription"
+    );
+  },
+  wsLink,
+  httpWithAuthLink,
+);
+
+export const apolloClient = new ApolloClient({
+  link: splitLink,
+  cache: new InMemoryCache(),
+});
