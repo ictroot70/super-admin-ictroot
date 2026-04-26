@@ -61,13 +61,8 @@ export function RelationshipTabBase({ items }: Props) {
   }
 
   return (
-    <div
-      className={
-        'relative grid h-[calc(100vh-220px)] min-h-full grid-rows-[minmax(0,1fr)_auto] gap-4 overflow-hidden py-6'
-      }
-    >
+    <>
       <RelationshipTableTab items={paginatedItems} sort={sort} onSort={handleSort} />
-
       <Pagination
         currentPage={page}
         totalItems={sortedItems.length}
@@ -76,6 +71,6 @@ export function RelationshipTabBase({ items }: Props) {
         onItemsPerPageChange={handleItemsPerPageChange}
         pageSizeOptions={PAGE_SIZE_OPTIONS}
       />
-    </div>
+    </>
   )
 }

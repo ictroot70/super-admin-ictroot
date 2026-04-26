@@ -27,8 +27,8 @@ const columns: Column[] = [
 ]
 
 type Props = {
-  sort: PaymentsSortState
   items: PaymentsViewModel[]
+  sort: PaymentsSortState
   onSort: (key: PaymentsSortBy) => void
 }
 

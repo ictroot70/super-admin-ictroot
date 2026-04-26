@@ -54,11 +54,7 @@ export function PaymentsTab() {
   }
 
   return (
-    <div
-      className={
-        'relative grid h-[calc(100vh-220px)] min-h-full grid-rows-[minmax(0,1fr)_auto] gap-4 overflow-hidden py-6'
-      }
-    >
+    <>
       <PaymentsTableTab items={paginatedPayments} sort={sort} onSort={handleSort} />
 
       <Pagination
@@ -69,6 +65,6 @@ export function PaymentsTab() {
         onItemsPerPageChange={handleItemsPerPageChange}
         pageSizeOptions={PAGE_SIZE_OPTIONS}
       />
-    </div>
+    </>
   )
 }
