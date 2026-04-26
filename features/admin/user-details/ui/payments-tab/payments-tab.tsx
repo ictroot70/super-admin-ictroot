@@ -4,109 +4,68 @@ import { useMemo, useState } from 'react'
 
 import { Pagination } from '@/shared/ui'
 
+import {
+  DEFAULT_PAGE_NUMBER,
+  handlePaginationItemsPerPageChange,
+  handlePaginationPageChange,
+  paginateItems,
+} from '../../lib/table-pagination'
+import { handleSortChange } from '../../lib/table-sorting'
 import { payments } from './payments-mock'
-import { PaymentsSortBy, PaymentsSortDirection, PaymentsSortState } from './payments-tab.type'
+import { sortPayments } from './payments-tab-helpers'
+import { PaymentsSortBy, PaymentsSortState } from './payments-tab.type'
 import { PaymentsTableTab } from './payments-table-tab'
 
-export const DEFAULT_PAYMENTS_PAGE_NUMBER = 1
-export const PAYMENTS_PAGE_SIZE_OPTIONS = [8, 12, 16, 20]
-export const DEFAULT_PAYMENTS_PAGE_SIZE = PAYMENTS_PAGE_SIZE_OPTIONS[1]
+export const PAYMENTS_PAGE_SIZE_OPTIONS = [10, 20, 50]
+export const DEFAULT_PAYMENTS_PAGE_SIZE = PAYMENTS_PAGE_SIZE_OPTIONS[0]
 
 export function PaymentsTab() {
   const [sort, setSort] = useState<PaymentsSortState>({
     key: null,
     direction: null,
   })
-  const [page, setPage] = useState(DEFAULT_PAYMENTS_PAGE_NUMBER)
+  const [page, setPage] = useState(DEFAULT_PAGE_NUMBER)
   const [pageSize, setPageSize] = useState(DEFAULT_PAYMENTS_PAGE_SIZE)
 
-  const sortedPayments = useMemo(() => {
-    if (!sort.key || !sort.direction) {
-      return payments
-    }
-
-    const sorted = [...payments].sort((a, b) => {
-      const directionMultiplier = sort.direction === PaymentsSortDirection.ASC ? 1 : -1
-
-      switch (sort.key) {
-        case PaymentsSortBy.DATE_OF_PAYMENT: {
-          return (
-            (new Date(a.dateOfPayment).getTime() - new Date(b.dateOfPayment).getTime()) *
-            directionMultiplier
-          )
-        }
-
-        case PaymentsSortBy.END_DATE: {
-          return (
-            (new Date(a.endDateOfSubscription).getTime() -
-              new Date(b.endDateOfSubscription).getTime()) *
-            directionMultiplier
-          )
-        }
-
-        case PaymentsSortBy.PRICE: {
-          return (a.price - b.price) * directionMultiplier
-        }
-
-        case PaymentsSortBy.PAYMENT_TYPE: {
-          return a.paymentType.localeCompare(b.paymentType) * directionMultiplier
-        }
-
-        default:
-          return 0
-      }
-    })
-
-    return sorted
-  }, [sort])
-
-  const totalCount = payments.length
+  const sortedPayments = useMemo(() => sortPayments(payments, sort), [sort])
 
   const paginatedPayments = useMemo(() => {
-    const startIndex = (page - 1) * pageSize
-    const endIndex = startIndex + pageSize
-
-    return sortedPayments.slice(startIndex, endIndex)
+    return paginateItems(sortedPayments, page, pageSize)
   }, [page, pageSize, sortedPayments])
 
   const handleSort = (key: PaymentsSortBy) => {
-    if (sort.key !== key) {
-      setSort({ key, direction: PaymentsSortDirection.ASC })
-      setPage(DEFAULT_PAYMENTS_PAGE_NUMBER)
-
-      return
-    }
-
-    if (sort.direction === PaymentsSortDirection.ASC) {
-      setSort({ key, direction: PaymentsSortDirection.DESC })
-      setPage(DEFAULT_PAYMENTS_PAGE_NUMBER)
-
-      return
-    }
-
-    setSort({ key: null, direction: null })
-    setPage(DEFAULT_PAYMENTS_PAGE_NUMBER)
+    handleSortChange({
+      key,
+      sort,
+      setSort,
+      resetPage: () => setPage(DEFAULT_PAGE_NUMBER),
+    })
   }
 
   const handlePageChange = (nextPage: number) => {
-    setPage(nextPage)
+    handlePaginationPageChange(nextPage, setPage)
   }
 
   const handleItemsPerPageChange = (nextPageSize: number) => {
-    setPageSize(nextPageSize)
-    setPage(DEFAULT_PAYMENTS_PAGE_NUMBER)
+    handlePaginationItemsPerPageChange({
+      nextPageSize,
+      setPageSize,
+      setPage,
+      defaultPage: DEFAULT_PAGE_NUMBER,
+    })
   }
 
   return (
     <div
       className={
-        'relative grid h-[calc(100vh-220px)] min-h-full grid-rows-[minmax(0,1fr)_auto] gap-9 overflow-hidden py-6'
+        'relative grid h-[calc(100vh-220px)] min-h-full grid-rows-[minmax(0,1fr)_auto] gap-4 overflow-hidden py-6'
       }
     >
       <PaymentsTableTab items={paginatedPayments} sort={sort} onSort={handleSort} />
+
       <Pagination
         currentPage={page}
-        totalItems={totalCount}
+        totalItems={sortedPayments.length}
         itemsPerPage={pageSize}
         onPageChange={handlePageChange}
         onItemsPerPageChange={handleItemsPerPageChange}

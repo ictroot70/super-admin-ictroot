@@ -1,3 +1,5 @@
+import { SortState } from '../../lib/table-sorting'
+
 export interface PaymentsViewModel {
   userId: number
   subscriptionId: string
@@ -28,12 +30,4 @@ export enum PaymentsSortBy {
   PRICE = 'price',
 }
 
-export type PaymentsSortState = {
-  key: PaymentsSortBy | null
-  direction: PaymentsSortDirection | null
-}
-
-export enum PaymentsSortDirection {
-  ASC = 'asc',
-  DESC = 'desc',
-}
+export type PaymentsSortState = SortState<PaymentsSortBy>
