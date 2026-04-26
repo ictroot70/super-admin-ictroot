@@ -11,6 +11,7 @@ import {
   paginateItems,
 } from '../../lib/table-pagination'
 import { handleSortChange } from '../../lib/table-sorting'
+import { PAGE_SIZE_OPTIONS, DEFAULT_PAGE_SIZE } from '../../model'
 import { sortRelationshipUsers } from './relationship-tab-helpers'
 import {
   RelationshipSortBy,
@@ -18,9 +19,6 @@ import {
   RelationshipUserViewModel,
 } from './relationship-tab.type'
 import { RelationshipTableTab } from './relationship-table-tab'
-
-const PAGE_SIZE_OPTIONS = [10, 20, 50]
-const DEFAULT_PAGE_SIZE = PAGE_SIZE_OPTIONS[0]
 
 type Props = {
   items: RelationshipUserViewModel[]

@@ -11,13 +11,11 @@ import {
   paginateItems,
 } from '../../lib/table-pagination'
 import { handleSortChange } from '../../lib/table-sorting'
+import { PAGE_SIZE_OPTIONS, DEFAULT_PAGE_SIZE } from '../../model'
 import { payments } from './payments-mock'
 import { sortPayments } from './payments-tab-helpers'
 import { PaymentsSortBy, PaymentsSortState } from './payments-tab.type'
 import { PaymentsTableTab } from './payments-table-tab'
-
-export const PAYMENTS_PAGE_SIZE_OPTIONS = [10, 20, 50]
-export const DEFAULT_PAYMENTS_PAGE_SIZE = PAYMENTS_PAGE_SIZE_OPTIONS[0]
 
 export function PaymentsTab() {
   const [sort, setSort] = useState<PaymentsSortState>({
@@ -25,7 +23,7 @@ export function PaymentsTab() {
     direction: null,
   })
   const [page, setPage] = useState(DEFAULT_PAGE_NUMBER)
-  const [pageSize, setPageSize] = useState(DEFAULT_PAYMENTS_PAGE_SIZE)
+  const [pageSize, setPageSize] = useState(DEFAULT_PAGE_SIZE)
 
   const sortedPayments = useMemo(() => sortPayments(payments, sort), [sort])
 
@@ -69,7 +67,7 @@ export function PaymentsTab() {
         itemsPerPage={pageSize}
         onPageChange={handlePageChange}
         onItemsPerPageChange={handleItemsPerPageChange}
-        pageSizeOptions={PAYMENTS_PAGE_SIZE_OPTIONS}
+        pageSizeOptions={PAGE_SIZE_OPTIONS}
       />
     </div>
   )
