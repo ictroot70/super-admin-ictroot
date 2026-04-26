@@ -20,8 +20,8 @@ type Column = {
 
 const columns: Column[] = [
   { id: 'dateOfPayment', title: 'Date of payment', sortKey: PaymentsSortBy.DATE_OF_PAYMENT },
-  { id: 'endDate', title: 'End date', sortKey: PaymentsSortBy.END_DATE },
-  { id: 'price', title: 'Price', sortKey: PaymentsSortBy.PRICE },
+  { id: 'endDate', title: 'End date of subscription', sortKey: PaymentsSortBy.END_DATE },
+  { id: 'price', title: 'Amount, $', sortKey: PaymentsSortBy.PRICE },
   { id: 'subscriptionType', title: 'Subscription Type' },
   { id: 'paymentType', title: 'Payment Type', sortKey: PaymentsSortBy.PAYMENT_TYPE },
 ]
