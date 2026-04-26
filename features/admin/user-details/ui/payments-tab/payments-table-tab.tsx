@@ -1,24 +1,11 @@
 import { formatDate, formatPrice } from '@/shared/lib/format'
-import {
-  SortableHeaderCell,
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeaderCell,
-  TableRow,
-} from '@/shared/ui'
+import { TableBody, TableCell, TableRow } from '@/shared/ui'
 
+import { UserDetailsTableColumn, UserDetailsTableShell } from '../user-details-table-shell'
 import { mapPaymentTypeToLabel, mapSubscriptionTypeToLabel } from './payments-tab-helpers'
 import { PaymentsSortBy, PaymentsSortState, PaymentsViewModel } from './payments-tab.type'
 
-type Column = {
-  id: string
-  title: string
-  sortKey?: PaymentsSortBy
-}
-
-const columns: Column[] = [
+const columns: UserDetailsTableColumn<PaymentsSortBy>[] = [
   { id: 'dateOfPayment', title: 'Date of payment', sortKey: PaymentsSortBy.DATE_OF_PAYMENT },
   { id: 'endDate', title: 'End date of subscription', sortKey: PaymentsSortBy.END_DATE },
   { id: 'price', title: 'Amount, $', sortKey: PaymentsSortBy.PRICE },
@@ -34,40 +21,18 @@ type Props = {
 
 export function PaymentsTableTab({ items, sort, onSort }: Props) {
   return (
-    <div className={'min-h-0 overflow-auto'}>
-      <Table>
-        <TableHead className={'sticky top-0 z-2'}>
-          <TableRow>
-            {columns.map(column =>
-              column.sortKey ? (
-                <SortableHeaderCell
-                  key={column.id}
-                  columnKey={column.sortKey}
-                  title={column.title}
-                  activeKey={sort.key ?? undefined}
-                  direction={sort.direction}
-                  onSort={onSort}
-                />
-              ) : (
-                <TableHeaderCell key={column.id} scope={'col'}>
-                  {column.title}
-                </TableHeaderCell>
-              )
-            )}
+    <UserDetailsTableShell columns={columns} sort={sort} onSort={onSort}>
+      <TableBody>
+        {items.map(item => (
+          <TableRow key={item.subscriptionId}>
+            <TableCell>{formatDate(item.dateOfPayment)}</TableCell>
+            <TableCell>{formatDate(item.endDateOfSubscription)}</TableCell>
+            <TableCell>{formatPrice(item.price)}</TableCell>
+            <TableCell>{mapSubscriptionTypeToLabel(item.subscriptionType)}</TableCell>
+            <TableCell>{mapPaymentTypeToLabel(item.paymentType)}</TableCell>
           </TableRow>
-        </TableHead>
-        <TableBody>
-          {items.map(item => (
-            <TableRow key={item.subscriptionId}>
-              <TableCell>{formatDate(item.dateOfPayment)}</TableCell>
-              <TableCell>{formatDate(item.endDateOfSubscription)}</TableCell>
-              <TableCell>{formatPrice(item.price)}</TableCell>
-              <TableCell>{mapSubscriptionTypeToLabel(item.subscriptionType)}</TableCell>
-              <TableCell>{mapPaymentTypeToLabel(item.paymentType)}</TableCell>
-            </TableRow>
-          ))}
-        </TableBody>
-      </Table>
-    </div>
+        ))}
+      </TableBody>
+    </UserDetailsTableShell>
   )
 }
