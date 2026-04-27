@@ -1,8 +1,37 @@
-// # auth guard + sidebar + подключение ApolloProvider
-import { ReactNode } from "react";
+"use client";
 
-import { ApolloAppProvider } from "@/app/providers/apollo/apollo-provider";
+import { useEffect, type ReactNode } from "react";
+import { usePathname, useRouter } from "next/navigation";
 
-export default function Layout({ children }: { children: ReactNode }) {
+import { ApolloAppProvider } from "@/app/providers/apollo";
+import { useAdminSessionStore } from "@/features/admin/auth/model/admin-session.store";
+
+type Props = Readonly<{ children: ReactNode }>;
+
+export default function Layout({ children }: Props) {
+  const router = useRouter();
+  const pathname = usePathname();
+  const isLoggedIn = useAdminSessionStore((state) => state.isLoggedIn);
+  const hasHydrated = useAdminSessionStore((state) => state.hasHydrated);
+
+  useEffect(() => {
+    if (!hasHydrated) {
+      return;
+    }
+
+    if (pathname === "/login" && isLoggedIn) {
+      router.replace("/users");
+      return;
+    }
+
+    if (pathname !== "/login" && !isLoggedIn) {
+      router.replace("/login");
+    }
+  }, [hasHydrated, isLoggedIn, pathname, router]);
+
+  if (!hasHydrated) {
+    return null;
+  }
+
   return <ApolloAppProvider>{children}</ApolloAppProvider>;
 }
