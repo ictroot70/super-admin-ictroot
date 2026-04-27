@@ -1,27 +1,9 @@
-'use client'
+import type { ReactNode } from 'react'
 
-import { ReactNode } from 'react'
+import { SuperAdminLayoutShell } from '@/app/super-admin-layout-shell'
 
-import { useAdminAccessGate } from '@/features/admin/auth'
-import { Sidebar } from '@/widgets/Sidebar'
+type LayoutProps = Readonly<{ children: ReactNode }>
 
-type Props = Readonly<{ children: ReactNode }>
-
-export default function Layout({ children }: Props) {
-  const { mounted, isAuthorized } = useAdminAccessGate()
-
-  if (!mounted) {
-    return null
-  }
-
-  if (!isAuthorized) {
-    return <>{children}</>
-  }
-
-  return (
-    <div className={'pt-[60px]'}>
-      <Sidebar />
-      <main className={'w-full pl-[252px]'}>{children}</main>
-    </div>
-  )
+export default function Layout({ children }: LayoutProps) {
+  return <SuperAdminLayoutShell>{children}</SuperAdminLayoutShell>
 }
