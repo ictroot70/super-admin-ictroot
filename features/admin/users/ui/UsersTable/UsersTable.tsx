@@ -8,7 +8,6 @@ import {
   TableRow,
 } from "@/shared/composites/Table";
 import { formatDate } from "@/shared/lib/formatters";
-import s from "./UsersTable.module.scss";
 import { UsersSortBy, UsersSortState } from "../../model";
 
 export interface UsersViewModel {
@@ -42,7 +41,7 @@ type Props = {
 
 export function UsersTable({ items, sort, onSort }: Props) {
   return (
-    <div className={s.wrapper}>
+    <div className="overflow-x-auto">
       <Table>
         <TableHead>
           <TableRow>
@@ -69,9 +68,9 @@ export function UsersTable({ items, sort, onSort }: Props) {
             items.map((item) => (
               <TableRow key={item.userId}>
                 <TableCell>
-                  <div className={s.userIdCell}>
+                  <div className="flex items-center gap-2">
                     {item.isBlocked && (
-                      <span className={s.blockedIcon}>🚫</span>
+                      <span className="text-xs">🚫</span>
                     )}
                     <span>{item.userId}</span>
                   </div>
@@ -80,7 +79,7 @@ export function UsersTable({ items, sort, onSort }: Props) {
                 <TableCell>
                   <a
                     href={item.profileLink}
-                    className={s.usernameLink}
+                    className="text-[var(--color-primary)] no-underline hover:underline"
                     target="_blank"
                     rel="noopener noreferrer"
                   >
@@ -89,7 +88,10 @@ export function UsersTable({ items, sort, onSort }: Props) {
                 </TableCell>
                 <TableCell>{formatDate(item.dateAdded)}</TableCell>
                 <TableCell>
-                  <button className={s.actionsButton} aria-label="User actions">
+                  <button
+                    className="cursor-pointer border-none bg-transparent p-1 text-xl hover:opacity-80"
+                    aria-label="User actions"
+                  >
                     ⋮
                   </button>
                 </TableCell>
@@ -97,7 +99,7 @@ export function UsersTable({ items, sort, onSort }: Props) {
             ))
           ) : (
             <TableRow>
-              <TableCell colSpan={columns.length} className={s.emptyRow}>
+              <TableCell colSpan={columns.length} className="opacity-60 text-center p-8">
                 No users found
               </TableCell>
             </TableRow>

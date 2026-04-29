@@ -1,50 +1,45 @@
+/* globals.css */
+@import "tailwindcss";
 @import "@ictroot/ui-kit/style.css";
-/* @import './vendor-overrides.css'; */
 
-:root {
-  --font-family: Arial, sans-serif;
-  --background: var(--color-dark-700);
-  --color-dark-500-transparent: rgb(23 23 23 / 56%);
-}
+/* 
+  Tailwind v4 автоматически генерирует утилиты из CSS-переменных,
+  объявленных в :root или @theme. Токены из @ictroot/ui-kit уже доступны.
+*/
 
-html,
-body {
-  width: 100%;
-  font-family: var(--font-family), Arial, sans-serif;
-}
+@layer base {
 
-body {
-  overflow-y: auto;
-  overflow-x: hidden;
+  html,
+  body {
+    width: 100%;
+    font-family: var(--font-family), Arial, sans-serif;
+    background: var(--background);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
 
-  background: var(--background);
+  * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
 
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
+  a {
+    color: inherit;
+    text-decoration: none;
+  }
 
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
+  main {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    max-width: 1220px;
+    min-height: calc(100vh - 62px);
+    margin: 60px auto 0;
+    padding: 0 2rem;
+  }
 
-a {
-  color: inherit;
-  text-decoration: none;
-}
-
-main {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  max-width: 1220px;
-  min-height: calc(100vh - 62px);
-  margin: 60px auto 0;
-  padding: 0 2rem;
-}
-
-ul {
-  list-style: none;
+  ul {
+    list-style: none;
+  }
 }

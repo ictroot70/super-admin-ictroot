@@ -1,5 +1,5 @@
 export const mapUserStatusToLabel = (isBlocked: boolean): string =>
-  isBlocked ? "Заблокирован" : "Активен";
+  isBlocked ? "Blocked" : "Active";
 
 export const getUserStatusBadgeClass = (isBlocked: boolean): string =>
   isBlocked
