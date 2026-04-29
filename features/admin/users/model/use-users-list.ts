@@ -4,7 +4,14 @@ import { useState, useEffect, useMemo, useCallback, useRef } from "react";
 import { useQuery } from "@apollo/client/react";
 import { GET_USERS, UserListItem, GetUsersResponse } from "./graphql"; // Путь к вашему GraphQL файлу
 import { SortDirection } from "@/entities/admin/user"; // Проверьте этот импорт
-import { FilterValue, SortValue, UsersSortBy, UsersSortState, UsersViewModel, UsersDataResponse } from ".";
+import {
+  FilterValue,
+  SortValue,
+  UsersSortBy,
+  UsersSortState,
+  UsersViewModel,
+  UsersDataResponse,
+} from ".";
 import { useDebounce } from "../utils/useDebounce"; // Путь к утилите
 
 export function useUsersList() {
@@ -26,7 +33,10 @@ export function useUsersList() {
   }, [debouncedSearch, sortValue, filterStatus, pageSize]);
 
   const [sortField, sortDirection] = useMemo(() => {
-    const [field, direction] = sortValue.split("_") as [UsersSortBy, SortDirection];
+    const [field, direction] = sortValue.split("_") as [
+      UsersSortBy,
+      SortDirection,
+    ];
     const mappedField = field === UsersSortBy.USER_NAME ? "userName" : field;
     return [mappedField, direction];
   }, [sortValue]);
@@ -37,17 +47,22 @@ export function useUsersList() {
     () => ({
       pageNumber: page,
       pageSize: isEmailSearch ? 100 : pageSize,
-      searchTerm: isEmailSearch ? undefined : debouncedSearch.trim() || undefined,
+      searchTerm: isEmailSearch
+        ? undefined
+        : debouncedSearch.trim() || undefined,
       sortBy: sortField,
       sortDirection,
     }),
     [page, pageSize, debouncedSearch, sortField, sortDirection, isEmailSearch],
   );
 
-  const { data, loading, error, refetch } = useQuery<GetUsersResponse>(GET_USERS, {
-    variables,
-    fetchPolicy: "cache-and-network",
-  });
+  const { data, loading, error, refetch } = useQuery<GetUsersResponse>(
+    GET_USERS,
+    {
+      variables,
+      fetchPolicy: "cache-and-network",
+    },
+  );
 
   const { items, hasActiveFilters } = useMemo(() => {
     const rawUsers = data?.getUsers?.users || [];
@@ -62,27 +77,32 @@ export function useUsersList() {
     if (searchTrimmed) {
       if (isEmailSearch) {
         filtered = filtered.filter((user: UserListItem) =>
-          user.email?.toLowerCase().includes(searchTrimmed)
+          user.email?.toLowerCase().includes(searchTrimmed),
         );
       } else {
         filtered = filtered.filter((user: UserListItem) => {
           const emailMatch = user.email?.toLowerCase().includes(searchTrimmed);
-          const usernameMatch = user.userName?.toLowerCase().includes(searchTrimmed);
+          const usernameMatch = user.userName
+            ?.toLowerCase()
+            .includes(searchTrimmed);
           return emailMatch || usernameMatch;
         });
       }
     }
 
-    const viewModelItems: UsersViewModel[] = filtered.map((user: UserListItem) => ({
-      userId: user.id,
-      username: user.userName,
-      email: user.email,
-      profileLink: `/profile/${user.userName}`,
-      dateAdded: user.createdAt,
-      isBlocked: user.userBan !== null,
-    }));
+    const viewModelItems: UsersViewModel[] = filtered.map(
+      (user: UserListItem) => ({
+        userId: user.id,
+        username: user.userName,
+        email: user.email,
+        profileLink: `/profile/${user.userName}`,
+        dateAdded: user.createdAt,
+        isBlocked: user.userBan !== null,
+      }),
+    );
 
-    const hasActiveFilters = debouncedSearch.trim().length > 0 || filterStatus !== "ALL";
+    const hasActiveFilters =
+      debouncedSearch.trim().length > 0 || filterStatus !== "ALL";
 
     return { items: viewModelItems, hasActiveFilters };
   }, [data, filterStatus, debouncedSearch, isEmailSearch]);
@@ -101,7 +121,7 @@ export function useUsersList() {
       key: sortField as UsersSortBy,
       direction: sortDirection,
     }),
-    [sortField, sortDirection]
+    [sortField, sortDirection],
   );
 
   const handleSort = useCallback(
@@ -109,14 +129,18 @@ export function useUsersList() {
       setSortValue((prev) => {
         const [currentField] = prev.split("_");
         const isSameField = currentField === key;
-        const newDirection: SortDirection = isSameField && sortDirection === "asc" ? "desc" : "asc";
+        const newDirection: SortDirection =
+          isSameField && sortDirection === "asc" ? "desc" : "asc";
         return `${key}_${newDirection}`;
       });
     },
-    [sortDirection]
+    [sortDirection],
   );
 
-  const handlePageChange = useCallback((newPage: number) => setPage(newPage), []);
+  const handlePageChange = useCallback(
+    (newPage: number) => setPage(newPage),
+    [],
+  );
 
   const handleItemsPerPageChange = useCallback((newPageSize: number) => {
     setPageSize(newPageSize);
@@ -131,16 +155,17 @@ export function useUsersList() {
 
   return {
     users: {
-      data: items.length > 0 || !loading
-        ? {
-          items,
-          page: pagination.page,
-          pageSize: pagination.pageSize,
-          totalCount: pagination.totalCount,
-          totalPages,
-          hasActiveFilters,
-        }
-        : null,
+      data:
+        items.length > 0 || !loading
+          ? {
+              items,
+              page: pagination.page,
+              pageSize: pagination.pageSize,
+              totalCount: pagination.totalCount,
+              totalPages,
+              hasActiveFilters,
+            }
+          : null,
       isLoading: loading,
       isError: !!error,
     },

@@ -60,11 +60,7 @@ export function Users() {
         onFilterChange={setFilterStatus}
       />
 
-      <UsersTable
-        items={items}
-        sort={sort}
-        onSort={handleSort}
-      />
+      <UsersTable items={items} sort={sort} onSort={handleSort} />
 
       <Pagination
         currentPage={page}

@@ -69,9 +69,7 @@ export function UsersTable({ items, sort, onSort }: Props) {
               <TableRow key={item.userId}>
                 <TableCell>
                   <div className="flex items-center gap-2">
-                    {item.isBlocked && (
-                      <span className="text-xs">🚫</span>
-                    )}
+                    {item.isBlocked && <span className="text-xs">🚫</span>}
                     <span>{item.userId}</span>
                   </div>
                 </TableCell>
@@ -99,7 +97,10 @@ export function UsersTable({ items, sort, onSort }: Props) {
             ))
           ) : (
             <TableRow>
-              <TableCell colSpan={columns.length} className="opacity-60 text-center p-8">
+              <TableCell
+                colSpan={columns.length}
+                className="opacity-60 text-center p-8"
+              >
                 No users found
               </TableCell>
             </TableRow>
