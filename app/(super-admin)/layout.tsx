@@ -14,23 +14,24 @@ export default function Layout({ children }: Props) {
   const isLoggedIn = useAdminSessionStore((state) => state.isLoggedIn);
   const hasHydrated = useAdminSessionStore((state) => state.hasHydrated);
 
-  useEffect(() => {
-    if (!hasHydrated) {
-      return;
-    }
+  const shouldRedirectToUsers =
+    hasHydrated && pathname === "/login" && isLoggedIn;
+  const shouldRedirectToLogin =
+    hasHydrated && pathname !== "/login" && !isLoggedIn;
 
-    if (pathname === "/login" && isLoggedIn) {
+  useEffect(() => {
+    if (shouldRedirectToUsers) {
       router.replace("/users");
       return;
     }
 
-    if (pathname !== "/login" && !isLoggedIn) {
+    if (shouldRedirectToLogin) {
       router.replace("/login");
     }
-  }, [hasHydrated, isLoggedIn, pathname, router]);
+  }, [router, shouldRedirectToLogin, shouldRedirectToUsers]);
 
-  if (!hasHydrated) {
-    return null;
+  if (!hasHydrated || shouldRedirectToUsers || shouldRedirectToLogin) {
+    return <ApolloAppProvider>Loading...</ApolloAppProvider>;
   }
 
   return <ApolloAppProvider>{children}</ApolloAppProvider>;
