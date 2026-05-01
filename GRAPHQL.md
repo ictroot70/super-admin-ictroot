@@ -2,14 +2,14 @@
 
 ## Как это работает
 
-* Мы используем `@graphql-codegen/client-preset`.
-* Ты пишешь `.graphql` файл → запускаешь `pnpm codegen` → получаешь типизированные документы и типы автоматически.
-* Руками типы для GraphQL операций **не пишем**.
-* Операции не пишем inline в .ts/.tsx (gql\...`) — только в .graphql в shared/api/graphql/operations/**.`
+- Мы используем `@graphql-codegen/client-preset`.
+- Ты пишешь `.graphql` файл → запускаешь `pnpm codegen` → получаешь типизированные документы и типы автоматически.
+- Руками типы для GraphQL операций **не пишем**.
+- Операции не пишем inline в .ts/.tsx (gql\...`) — только в .graphql в shared/api/graphql/operations/**.`
 
 ## Структура файлов
 
-### Каждая операция — отдельный .graphql файл в shared/api/graphql/operations/**:
+### Каждая операция — отдельный .graphql файл в shared/api/graphql/operations/\*\*:
 
 ```floobits
 shared/
@@ -44,7 +44,7 @@ shared/
 
 ```graphql
 mutation BanUser($userId: Int!, $banReason: String!) {
-banUser(userId: $userId, banReason: $banReason)
+  banUser(userId: $userId, banReason: $banReason)
 }
 ```
 
@@ -53,13 +53,18 @@ banUser(userId: $userId, banReason: $banReason)
 ```graphql
 query GetUsers($pageSize: Int, $pageNumber: Int) {
   getUsers(pageSize: $pageSize, pageNumber: $pageNumber) {
-    users { id, userName, email}
-    pagination {totalCount, pagesCount}
+    users {
+      id
+      userName
+      email
+    }
+    pagination {
+      totalCount
+      pagesCount
+    }
   }
 }
 ```
-
-
 
 ## Команды
 
@@ -69,45 +74,45 @@ query GetUsers($pageSize: Int, $pageNumber: Int) {
 pnpm codegen
 ```
 
-
 # Режим watch — автоматически при изменении .graphql файлов
 
 ```bash
 pnpm codegen:watch
 ```
 
-
 ## Как использовать в компоненте
 
-
 ```ts
-import { useGqlMutation } from '@/shared/api'
+import { useGqlMutation } from "@/shared/api";
 import {
-BanUserDocument,
-type BanUserMutation,
-type BanUserMutationVariables,
-} from '@/shared/api/graphql/gql/graphql'
+  BanUserDocument,
+  type BanUserMutation,
+  type BanUserMutationVariables,
+} from "@/shared/api/graphql/gql/graphql";
 
-const [banUser] = useGqlMutation<BanUserMutation, BanUserMutationVariables>(BanUserDocument)
+const [banUser] = useGqlMutation<BanUserMutation, BanUserMutationVariables>(
+  BanUserDocument,
+);
 
-await banUser({ variables: { userId, banReason: reason } })
+await banUser({ variables: { userId, banReason: reason } });
 ```
-
 
 ### Для query:
 
 ```ts
-import { useGqlQuery } from '@/shared/api'
+import { useGqlQuery } from "@/shared/api";
 import {
-GetUsersDocument,
-type GetUsersQuery,
-type GetUsersQueryVariables,
-} from '@/shared/api/graphql/gql/graphql'
+  GetUsersDocument,
+  type GetUsersQuery,
+  type GetUsersQueryVariables,
+} from "@/shared/api/graphql/gql/graphql";
 
-const { data } = useGqlQuery<GetUsersQuery, GetUsersQueryVariables>(GetUsersDocument, {
-variables: { pageSize: 8, pageNumber: 1 },
-})
-
+const { data } = useGqlQuery<GetUsersQuery, GetUsersQueryVariables>(
+  GetUsersDocument,
+  {
+    variables: { pageSize: 8, pageNumber: 1 },
+  },
+);
 ```
 
 ## Правила
@@ -120,9 +125,9 @@ variables: { pageSize: 8, pageNumber: 1 },
 
 ## Соглашение по именованию .graphql файлов
 
-* Мутации:    banUser.mutation.graphql
-* Запросы:    getUsers.query.graphql
-* Подписки:   postAdded.subscription.graphql
+- Мутации: banUser.mutation.graphql
+- Запросы: getUsers.query.graphql
+- Подписки: postAdded.subscription.graphql
 
 ## Если что-то сломалось
 
