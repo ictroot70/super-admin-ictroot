@@ -1,27 +1,14 @@
-@import "tailwindcss";
-@import "@ictroot/ui-kit/style.css";
+@import 'tailwindcss';
+@import '@ictroot/ui-kit/style.css';
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  --background: var(--color-dark-700);
+  --color-dark-500-transparent: rgb(23 23 23 / 56%);
+  --font-sans: 'Inter Variable', 'Roboto Variable', arial, helvetica, sans-serif;
 }
 
 body {
   background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  color: var(--color-light-100);
+  font-family: var(--font-sans), serif;
 }

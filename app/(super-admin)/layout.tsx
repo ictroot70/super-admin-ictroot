@@ -1,38 +1,37 @@
-"use client";
+'use client'
 
-import { useEffect, type ReactNode } from "react";
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname, useRouter } from 'next/navigation'
+import { useEffect, type ReactNode } from 'react'
 
-import { ApolloAppProvider } from "@/app/providers/apollo";
-import { useAdminSessionStore } from "@/features/admin/auth/model/admin-session.store";
+import { ApolloAppProvider } from '@/app/providers/apollo'
+import { useAdminSessionStore } from '@/features/admin/auth/model/admin-session.store'
 
-type Props = Readonly<{ children: ReactNode }>;
+type Props = Readonly<{ children: ReactNode }>
 
 export default function Layout({ children }: Props) {
-  const router = useRouter();
-  const pathname = usePathname();
-  const isLoggedIn = useAdminSessionStore((state) => state.isLoggedIn);
-  const hasHydrated = useAdminSessionStore((state) => state.hasHydrated);
+  const router = useRouter()
+  const pathname = usePathname()
+  const isLoggedIn = useAdminSessionStore(state => state.isLoggedIn)
+  const hasHydrated = useAdminSessionStore(state => state.hasHydrated)
 
-  const shouldRedirectToUsers =
-    hasHydrated && pathname === "/login" && isLoggedIn;
-  const shouldRedirectToLogin =
-    hasHydrated && pathname !== "/login" && !isLoggedIn;
+  const shouldRedirectToUsers = hasHydrated && pathname === '/login' && isLoggedIn
+  const shouldRedirectToLogin = hasHydrated && pathname !== '/login' && !isLoggedIn
 
   useEffect(() => {
     if (shouldRedirectToUsers) {
-      router.replace("/users");
-      return;
+      router.replace('/users')
+
+      return
     }
 
     if (shouldRedirectToLogin) {
-      router.replace("/login");
+      router.replace('/login')
     }
-  }, [router, shouldRedirectToLogin, shouldRedirectToUsers]);
+  }, [router, shouldRedirectToLogin, shouldRedirectToUsers])
 
   if (!hasHydrated || shouldRedirectToUsers || shouldRedirectToLogin) {
-    return <ApolloAppProvider>Loading...</ApolloAppProvider>;
+    return <div>Loading...</div>
   }
 
-  return <ApolloAppProvider>{children}</ApolloAppProvider>;
+  return <ApolloAppProvider>{children}</ApolloAppProvider>
 }
