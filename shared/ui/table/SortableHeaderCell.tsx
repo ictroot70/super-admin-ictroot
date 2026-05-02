@@ -1,7 +1,7 @@
 import Image from 'next/image'
 import { type AriaAttributes, type ReactNode } from 'react'
 
-import { TableHeaderCell } from '../Table'
+import { TableHeaderCell } from './Table'
 
 type Props<T extends string> = {
   title: ReactNode
