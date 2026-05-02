@@ -5,8 +5,6 @@ export type CurrencyType = "USD" | "EUR";
 export type SubscriptionType = "MONTHLY" | "DAY" | "WEEKLY";
 export type StatusSubscriptionType = "ACTIVE" | "PENDING" | "FINISHED";
 
-// A5: getPayments -> PaymentsPaginationModel
-// items: SubscriptionPaymentsModel[]
 export type SubscriptionPaymentsModel = {
   id: number | null;
   userId: number | null;
