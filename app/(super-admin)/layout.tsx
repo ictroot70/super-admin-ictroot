@@ -1,38 +1,33 @@
 "use client";
 
-import { useEffect, type ReactNode } from "react";
-import { usePathname, useRouter } from "next/navigation";
+import { Suspense, type ReactNode } from "react";
 
 import { ApolloAppProvider } from "@/app/providers/apollo";
-import { useAdminSessionStore } from "@/features/admin/auth/model/admin-session.store";
+import { Loading } from "@/shared/composites";
+import { ADMIN_ROUTES } from "@/shared/constant/admin-routes";
+import { useAuthRedirect } from "./_hooks/use-auth-redirect";
 
 type Props = Readonly<{ children: ReactNode }>;
 
 export default function Layout({ children }: Props) {
-  const router = useRouter();
-  const pathname = usePathname();
-  const isLoggedIn = useAdminSessionStore((state) => state.isLoggedIn);
-  const hasHydrated = useAdminSessionStore((state) => state.hasHydrated);
+  const { shouldShowLoading } = useAuthRedirect();
 
-  const shouldRedirectToUsers =
-    hasHydrated && pathname === "/login" && isLoggedIn;
-  const shouldRedirectToLogin =
-    hasHydrated && pathname !== "/login" && !isLoggedIn;
-
-  useEffect(() => {
-    if (shouldRedirectToUsers) {
-      router.replace("/users");
-      return;
-    }
-
-    if (shouldRedirectToLogin) {
-      router.replace("/login");
-    }
-  }, [router, shouldRedirectToLogin, shouldRedirectToUsers]);
-
-  if (!hasHydrated || shouldRedirectToUsers || shouldRedirectToLogin) {
-    return <ApolloAppProvider>Loading...</ApolloAppProvider>;
+  if (shouldShowLoading) {
+    return (
+      <ApolloAppProvider>
+        <div className="flex items-center justify-center min-h-screen">
+          <Loading />
+        </div>
+      </ApolloAppProvider>
+    );
   }
 
-  return <ApolloAppProvider>{children}</ApolloAppProvider>;
+  return (
+    <ApolloAppProvider>
+      <Suspense fallback={<Loading />}>{children}</Suspense>
+    </ApolloAppProvider>
+  );
 }
+
+// Export route constants for external use
+export { ADMIN_ROUTES };

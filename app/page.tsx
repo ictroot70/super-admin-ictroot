@@ -4,6 +4,7 @@ import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 
 import { useAdminSessionStore } from "@/features/admin/auth/model/admin-session.store";
+import { ADMIN_ROUTES } from "@/shared/constant/admin-routes";
 
 export default function Home() {
   const router = useRouter();
@@ -16,11 +17,11 @@ export default function Home() {
     }
 
     if (isLoggedIn) {
-      router.replace("/users");
+      router.replace(ADMIN_ROUTES.USERS);
       return;
     }
 
-    router.replace("/login");
+    router.replace(ADMIN_ROUTES.LOGIN);
   }, [hasHydrated, isLoggedIn, router]);
 
   return null;

@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 
 import { useAdminSessionStore } from "@/features/admin/auth/model/admin-session.store";
 import { Users } from "@/features/admin/users/ui/Users";
+import { ADMIN_ROUTES } from "@/shared/constant/admin-routes";
 
 export default function Page() {
   const router = useRouter();
@@ -12,7 +13,7 @@ export default function Page() {
 
   const handleLogout = () => {
     clearSession();
-    router.replace("/login");
+    router.replace(ADMIN_ROUTES.LOGIN);
   };
 
   return (
