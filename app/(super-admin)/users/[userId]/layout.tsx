@@ -32,7 +32,7 @@ export default function UserDetailsLayout({ children }: Props) {
   }
 
   return (
-    <section className={'mx-auto flex min-h-screen w-[972px] flex-col gap-[5px]'}>
+    <section className={'mx-auto flex min-h-screen w-243 flex-col gap-1.25'}>
       <Link href={APP_ROUTES.USERS.ROOT} className={'mb-6 flex items-center gap-3'}>
         <ArrowBack /> <Typography variant={'regular_14'}>{'Back to Users List'}</Typography>
       </Link>
@@ -44,7 +44,7 @@ export default function UserDetailsLayout({ children }: Props) {
             src={MOCK_AVATAR || DEFAULT_AVATAR}
             width={60}
             height={60}
-            className={'h-[60px] w-[60px] shrink-0 rounded-full object-cover'}
+            className={'h-15 w-15 shrink-0 rounded-full object-cover'}
           />
           <div>
             <Typography variant={'h1'}>Ivan Yakimenko</Typography>
@@ -55,7 +55,7 @@ export default function UserDetailsLayout({ children }: Props) {
         </div>
         <div className={'mt-5 flex flex-wrap gap-18'}>
           <div>
-            <Typography variant={'regular_14'} className={'text-[var(--color-light-900)]'}>
+            <Typography variant={'regular_14'} className={'text-(--color-light-900)'}>
               {'UserID'}
             </Typography>
             <Typography variant={'regular_16'}>{'21331QErQe21'}</Typography>

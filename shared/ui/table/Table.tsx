@@ -1,13 +1,12 @@
-import React, { ComponentPropsWithoutRef, ComponentRef, forwardRef } from 'react'
-
 import { clsx } from 'clsx'
+import React, { ComponentPropsWithoutRef, ComponentRef, forwardRef } from 'react'
 
 export const Table = forwardRef<ComponentRef<'table'>, ComponentPropsWithoutRef<'table'>>(
   ({ className, ...rest }, ref) => {
     return (
       <table
         className={clsx(
-          'w-full border-collapse border border-t-0 border-[var(--color-dark-500)] text-[var(--font-size-s)]',
+          'w-full border-collapse border border-t-0 border-(--color-dark-500) text-(--font-size-s)',
           className
         )}
         {...rest}
@@ -39,10 +38,7 @@ export const TableHeaderCell = forwardRef<ComponentRef<'th'>, ComponentPropsWith
   ({ className, ...rest }, ref) => {
     return (
       <th
-        className={clsx(
-          'bg-[var(--color-dark-500)] px-6 py-3 text-left font-[var(--font-weight-semibold)]',
-          className
-        )}
+        className={clsx('bg-(--color-dark-500) px-6 py-3 text-left font-semibold', className)}
         {...rest}
         ref={ref}
       />
@@ -53,7 +49,11 @@ export const TableHeaderCell = forwardRef<ComponentRef<'th'>, ComponentPropsWith
 export const TableCell = forwardRef<ComponentRef<'td'>, ComponentPropsWithoutRef<'td'>>(
   ({ className, ...rest }, ref) => {
     return (
-      <td className={clsx('border-b border-[var(--color-dark-500)] px-6 py-3', className)} {...rest} ref={ref} />
+      <td
+        className={clsx('border-b border-(--color-dark-500) px-6 py-3', className)}
+        {...rest}
+        ref={ref}
+      />
     )
   }
 )
