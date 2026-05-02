@@ -1,1 +1,1 @@
-export * from "./user-tabs";
+export * from './user-tabs'

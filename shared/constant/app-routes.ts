@@ -1,5 +1,5 @@
 export const APP_ROUTES = {
-  ROOT: "/",
+  ROOT: '/',
 
   USERS: {
     ROOT: `/users`,
@@ -9,4 +9,4 @@ export const APP_ROUTES = {
     FOLLOWERS: (id: number) => `/users/${id}/followers`,
     FOLLOWING: (id: number) => `/users/${id}/following`,
   },
-};
+}

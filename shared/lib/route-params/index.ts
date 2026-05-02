@@ -1,13 +1,13 @@
 export const parseUserIdParam = (value: string): number | null => {
   if (!/^\d+$/.test(value)) {
-    return null;
+    return null
   }
 
-  const userId = Number(value);
+  const userId = Number(value)
 
   if (!Number.isSafeInteger(userId) || userId < 1) {
-    return null;
+    return null
   }
 
-  return userId;
-};
+  return userId
+}
