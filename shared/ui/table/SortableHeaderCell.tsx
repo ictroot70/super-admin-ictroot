@@ -39,7 +39,7 @@ export function SortableHeaderCell<T extends string>({
         type={'button'}
         onClick={() => onSort(columnKey)}
         className={
-          'font-inherit inline-flex cursor-pointer items-center gap-1.5 border-none bg-transparent p-0 text-inherit focus-visible:rounded-[2px] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-primary-500)]'
+          'font-inherit inline-flex cursor-pointer items-center gap-1.5 border-none bg-transparent p-0 text-inherit focus-visible:rounded-xs focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-(--color-primary-500)'
         }
       >
         {title}

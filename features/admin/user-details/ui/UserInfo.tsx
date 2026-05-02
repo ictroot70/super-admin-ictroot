@@ -3,17 +3,17 @@ import Image from 'next/image'
 import { formatDate } from '@/shared/lib/format'
 import { Typography } from '@/shared/ui'
 
+import { useUserInfo } from '../model'
+
 const DEFAULT_AVATAR = '/default-avatar.svg'
 
-const profile = {
-  id: '21331QErQe21',
-  avatar: '/user_photo.jpg',
-  name: 'Ivan Yakimenko',
-  profileLink: 'Ivan.sr.yakimenko',
-  createAt: '2022-02-03T12:00:00.000Z',
-}
-
 export function UserInfo() {
+  const { profile, loading } = useUserInfo()
+
+  if (loading) {
+    return <div>Loading...</div>
+  }
+
   const { id, avatar, name, profileLink, createAt } = profile
 
   return (
