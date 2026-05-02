@@ -32,7 +32,7 @@ export default function UserDetailsLayout({ children }: Props) {
   }
 
   return (
-    <section className={'w'}>
+    <section className={'mx-auto flex min-h-screen w-[972px] flex-col gap-[5px]'}>
       <Link href={APP_ROUTES.USERS.ROOT} className={'mb-6 flex items-center gap-3'}>
         <ArrowBack /> <Typography variant={'regular_14'}>{'Back to Users List'}</Typography>
       </Link>
