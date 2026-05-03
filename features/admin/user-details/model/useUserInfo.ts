@@ -7,10 +7,9 @@ import {
   GetUserQuery,
   GetUserQueryVariables,
 } from '@/shared/api/graphql/gql/graphql'
+import { DEFAULT_AVATAR } from '@/shared/constant'
 import { formatDate } from '@/shared/lib/format'
 import { parseUserIdParam } from '@/shared/lib/route-params'
-
-import { DEFAULT_AVATAR } from '../lib'
 
 export const useUserInfo = () => {
   const params = useParams<{ userId: string }>()

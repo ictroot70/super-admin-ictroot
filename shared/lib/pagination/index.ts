@@ -1,7 +1,7 @@
 'use client'
 import { useState, useCallback } from 'react'
 
-import { DEFAULT_PAGE_NUMBER, DEFAULT_PAGE_SIZE } from '../../lib'
+import { DEFAULT_PAGE_NUMBER, DEFAULT_PAGE_SIZE } from '@/shared/constant'
 
 type UsePaginationParams = {
   initialPage?: number

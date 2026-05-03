@@ -1,5 +1,6 @@
 import type { GetPaymentsByUserQuery } from '@/shared/api/graphql/gql/graphql'
 
+import { PaymentsSortBy, PaymentsSortState } from '@/features/admin/user-details/types'
 import { formatDate, formatPrice } from '@/shared/lib/format'
 import {
   SortableHeaderCell,
@@ -11,8 +12,7 @@ import {
   TableRow,
 } from '@/shared/ui'
 
-import { mapPaymentTypeToLabel, mapSubscriptionTypeToLabel } from '../../lib/paymentsTabHelpers'
-import { PaymentsSortBy, PaymentsSortState } from '../../lib/paymentsTabTypes.type'
+import { mapPaymentTypeToLabel, mapSubscriptionTypeToLabel } from '../../lib'
 
 type Column = {
   id: string

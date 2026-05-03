@@ -10,12 +10,12 @@ import {
   type GetPaymentsByUserQuery,
   type GetPaymentsByUserQueryVariables,
 } from '@/shared/api/graphql/gql/graphql'
+import { PAGE_SIZE_OPTIONS } from '@/shared/constant'
+import { usePagination } from '@/shared/lib/pagination'
 import { parseUserIdParam } from '@/shared/lib/route-params'
+import { useSort } from '@/shared/lib/sorting'
 
-import { PAGE_SIZE_OPTIONS } from '../lib'
-import { type PaymentsSortBy } from '../lib/paymentsTabTypes.type'
-import { usePagination } from './common/usePagination'
-import { useSort } from './common/useSort'
+import { type PaymentsSortBy } from '../types/paymentsTab.type'
 
 export const usePaymentsTab = () => {
   const { userId: userIdParam } = useParams<{ userId: string }>()

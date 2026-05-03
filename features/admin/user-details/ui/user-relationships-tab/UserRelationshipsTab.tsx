@@ -21,7 +21,7 @@ import {
   type UserRelationshipItem,
   type UserRelationshipsSortBy,
   type UserRelationshipsSortState,
-} from '../../lib/userRelationshipsTabTypes.type'
+} from '../../types'
 
 type Column = {
   id: string

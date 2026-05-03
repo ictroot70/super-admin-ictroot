@@ -7,15 +7,12 @@ import { useMemo } from 'react'
 
 import { useGqlQuery } from '@/shared/api/graphql'
 import { type SortDirection } from '@/shared/api/graphql/gql/graphql'
+import { PAGE_SIZE_OPTIONS } from '@/shared/constant'
+import { usePagination } from '@/shared/lib/pagination'
 import { parseUserIdParam } from '@/shared/lib/route-params'
+import { useSort } from '@/shared/lib/sorting'
 
-import { PAGE_SIZE_OPTIONS } from '../lib'
-import {
-  type UserRelationshipsConnection,
-  type UserRelationshipsSortBy,
-} from '../lib/userRelationshipsTabTypes.type'
-import { usePagination } from './common/usePagination'
-import { useSort } from './common/useSort'
+import { type UserRelationshipsConnection, type UserRelationshipsSortBy } from '../types'
 
 type UserRelationshipsQueryVariables = {
   userId: number
