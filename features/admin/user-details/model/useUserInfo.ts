@@ -10,7 +10,7 @@ import {
 import { formatDate } from '@/shared/lib/format'
 import { parseUserIdParam } from '@/shared/lib/route-params'
 
-import { DEFAULT_AVATAR } from '../lib/constants'
+import { DEFAULT_AVATAR } from '../lib'
 
 export const useUserInfo = () => {
   const params = useParams<{ userId: string }>()
@@ -37,7 +37,7 @@ export const useUserInfo = () => {
       ? {
           id: user.id,
           name: user.userName,
-          avatar: user.profile.avatars?.[0].url ?? DEFAULT_AVATAR,
+          avatar: user.profile.avatars?.[0]?.url ?? DEFAULT_AVATAR,
           profileLink: user.email,
           createAt: formatDate(user.profile.createdAt),
         }

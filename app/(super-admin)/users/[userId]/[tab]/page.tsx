@@ -4,15 +4,15 @@ import { notFound } from 'next/navigation'
 
 import { isUserTab, type UserTab } from '@/features/admin/user-details/model'
 import {
-  PaymentsTab,
   FollowersTab,
   FollowingTab,
-  UploadedPhotos,
+  PaymentsTab,
+  UploadedPhotosTab,
 } from '@/features/admin/user-details/ui'
 import { parseUserIdParam } from '@/shared/lib/route-params'
 
 const TAB_TO_COMPONENT_MAP: Record<UserTab, ComponentType> = {
-  'uploaded-photos': UploadedPhotos,
+  'uploaded-photos': UploadedPhotosTab,
   payments: PaymentsTab,
   followers: FollowersTab,
   following: FollowingTab,

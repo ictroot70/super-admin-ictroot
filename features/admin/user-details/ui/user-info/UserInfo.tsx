@@ -3,7 +3,7 @@ import Image from 'next/image'
 import { formatDate } from '@/shared/lib/format'
 import { Typography } from '@/shared/ui'
 
-import { useUserInfo } from '../model'
+import { useUserInfo } from '../../model'
 
 const DEFAULT_AVATAR = '/default-avatar.svg'
 

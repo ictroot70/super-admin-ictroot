@@ -6,7 +6,7 @@ import Link from 'next/link'
 import { notFound, useParams, useRouter, useSelectedLayoutSegment } from 'next/navigation'
 
 import { DEFAULT_USER_TAB, USER_TAB_TRIGGERS, isUserTab } from '@/features/admin/user-details/model'
-import { UserInfo } from '@/features/admin/user-details/ui/UserInfo'
+import { UserInfo } from '@/features/admin/user-details/ui/user-info/UserInfo'
 import { APP_ROUTES } from '@/shared/constant'
 import { parseUserIdParam } from '@/shared/lib/route-params'
 import { ArrowBack, Typography } from '@/shared/ui'

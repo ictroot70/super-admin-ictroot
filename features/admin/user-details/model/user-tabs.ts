@@ -20,6 +20,3 @@ export const USER_TAB_TRIGGERS: { value: UserTab; title: string }[] = [
   { value: USER_TABS.FOLLOWERS, title: 'Followers' },
   { value: USER_TABS.FOLLOWING, title: 'Following' },
 ]
-
-export const PAGE_SIZE_OPTIONS = [8, 12, 16, 24]
-export const DEFAULT_PAGE_SIZE = PAGE_SIZE_OPTIONS[1]
