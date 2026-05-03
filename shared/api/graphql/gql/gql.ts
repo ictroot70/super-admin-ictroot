@@ -15,11 +15,14 @@ import { TypedDocumentNode as DocumentNode } from '@graphql-typed-document-node/
  */
 type Documents = {
   'mutation LoginAdmin($email: String!, $password: String!) {\n  loginAdmin(email: $email, password: $password) {\n    logged\n  }\n}': typeof types.LoginAdminDocument
+  'query GetPaymentsByUser($userId: Int!, $pageSize: Int, $pageNumber: Int, $sortBy: String, $sortDirection: SortDirection) {\n  getPaymentsByUser(\n    userId: $userId\n    pageSize: $pageSize\n    pageNumber: $pageNumber\n    sortBy: $sortBy\n    sortDirection: $sortDirection\n  ) {\n    pagesCount\n    page\n    pageSize\n    totalCount\n    items {\n      id\n      dateOfPayment\n      endDate\n      price\n      type\n      paymentType\n    }\n  }\n}': typeof types.GetPaymentsByUserDocument
   'query GetUser($userId: Int!) {\n  getUser(userId: $userId) {\n    id\n    userName\n    email\n    profile {\n      avatars {\n        url\n      }\n      createdAt\n    }\n  }\n}': typeof types.GetUserDocument
 }
 const documents: Documents = {
   'mutation LoginAdmin($email: String!, $password: String!) {\n  loginAdmin(email: $email, password: $password) {\n    logged\n  }\n}':
     types.LoginAdminDocument,
+  'query GetPaymentsByUser($userId: Int!, $pageSize: Int, $pageNumber: Int, $sortBy: String, $sortDirection: SortDirection) {\n  getPaymentsByUser(\n    userId: $userId\n    pageSize: $pageSize\n    pageNumber: $pageNumber\n    sortBy: $sortBy\n    sortDirection: $sortDirection\n  ) {\n    pagesCount\n    page\n    pageSize\n    totalCount\n    items {\n      id\n      dateOfPayment\n      endDate\n      price\n      type\n      paymentType\n    }\n  }\n}':
+    types.GetPaymentsByUserDocument,
   'query GetUser($userId: Int!) {\n  getUser(userId: $userId) {\n    id\n    userName\n    email\n    profile {\n      avatars {\n        url\n      }\n      createdAt\n    }\n  }\n}':
     types.GetUserDocument,
 }
@@ -44,6 +47,12 @@ export function gql(source: string): unknown
 export function gql(
   source: 'mutation LoginAdmin($email: String!, $password: String!) {\n  loginAdmin(email: $email, password: $password) {\n    logged\n  }\n}'
 ): (typeof documents)['mutation LoginAdmin($email: String!, $password: String!) {\n  loginAdmin(email: $email, password: $password) {\n    logged\n  }\n}']
+/**
+ * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function gql(
+  source: 'query GetPaymentsByUser($userId: Int!, $pageSize: Int, $pageNumber: Int, $sortBy: String, $sortDirection: SortDirection) {\n  getPaymentsByUser(\n    userId: $userId\n    pageSize: $pageSize\n    pageNumber: $pageNumber\n    sortBy: $sortBy\n    sortDirection: $sortDirection\n  ) {\n    pagesCount\n    page\n    pageSize\n    totalCount\n    items {\n      id\n      dateOfPayment\n      endDate\n      price\n      type\n      paymentType\n    }\n  }\n}'
+): (typeof documents)['query GetPaymentsByUser($userId: Int!, $pageSize: Int, $pageNumber: Int, $sortBy: String, $sortDirection: SortDirection) {\n  getPaymentsByUser(\n    userId: $userId\n    pageSize: $pageSize\n    pageNumber: $pageNumber\n    sortBy: $sortBy\n    sortDirection: $sortDirection\n  ) {\n    pagesCount\n    page\n    pageSize\n    totalCount\n    items {\n      id\n      dateOfPayment\n      endDate\n      price\n      type\n      paymentType\n    }\n  }\n}']
 /**
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */

@@ -33,12 +33,14 @@ export const useUserInfo = () => {
   return {
     loading,
     error,
-    profile: {
-      id: user?.id ?? '—',
-      name: user?.userName ?? '—',
-      avatar: user?.profile?.avatars?.[0]?.url ?? DEFAULT_AVATAR,
-      profileLink: user?.email ?? '—',
-      createAt: formatDate(user?.profile?.createdAt ?? ''),
-    },
+    profile: user
+      ? {
+          id: user.id,
+          name: user.userName,
+          avatar: user.profile.avatars?.[0].url ?? DEFAULT_AVATAR,
+          profileLink: user.email,
+          createAt: formatDate(user.profile.createdAt),
+        }
+      : null,
   }
 }

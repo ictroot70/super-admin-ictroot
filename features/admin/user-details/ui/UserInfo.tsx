@@ -10,7 +10,7 @@ const DEFAULT_AVATAR = '/default-avatar.svg'
 export function UserInfo() {
   const { profile, loading } = useUserInfo()
 
-  if (loading) {
+  if (!profile || loading) {
     return <div>Loading...</div>
   }
 

@@ -5,12 +5,43 @@ export type Incremental<T> =
   | T
   | { [P in keyof T]?: P extends ' $fragmentName' | '__typename' ? T[P] : never }
 import { TypedDocumentNode as DocumentNode } from '@graphql-typed-document-node/core'
+export type PaymentMethod = 'CREDIT_CARD' | 'PAYPAL' | 'STRIPE'
+
+export type SortDirection = 'asc' | 'desc'
+
+export type SubscriptionType = 'DAY' | 'MONTHLY' | 'WEEKLY'
+
 export type LoginAdminMutationVariables = Exact<{
   email: string
   password: string
 }>
 
 export type LoginAdminMutation = { loginAdmin: { logged: boolean } }
+
+export type GetPaymentsByUserQueryVariables = Exact<{
+  userId: number
+  pageSize?: number | null | undefined
+  pageNumber?: number | null | undefined
+  sortBy?: string | null | undefined
+  sortDirection?: SortDirection | null | undefined
+}>
+
+export type GetPaymentsByUserQuery = {
+  getPaymentsByUser: {
+    pagesCount: number
+    page: number
+    pageSize: number
+    totalCount: number
+    items: Array<{
+      id: string
+      dateOfPayment: string | null
+      endDate: string | null
+      price: number
+      type: SubscriptionType
+      paymentType: PaymentMethod | null
+    }>
+  }
+}
 
 export type GetUserQueryVariables = Exact<{
   userId: number
@@ -78,6 +109,106 @@ export const LoginAdminDocument = {
     },
   ],
 } as unknown as DocumentNode<LoginAdminMutation, LoginAdminMutationVariables>
+export const GetPaymentsByUserDocument = {
+  kind: 'Document',
+  definitions: [
+    {
+      kind: 'OperationDefinition',
+      operation: 'query',
+      name: { kind: 'Name', value: 'GetPaymentsByUser' },
+      variableDefinitions: [
+        {
+          kind: 'VariableDefinition',
+          variable: { kind: 'Variable', name: { kind: 'Name', value: 'userId' } },
+          type: {
+            kind: 'NonNullType',
+            type: { kind: 'NamedType', name: { kind: 'Name', value: 'Int' } },
+          },
+        },
+        {
+          kind: 'VariableDefinition',
+          variable: { kind: 'Variable', name: { kind: 'Name', value: 'pageSize' } },
+          type: { kind: 'NamedType', name: { kind: 'Name', value: 'Int' } },
+        },
+        {
+          kind: 'VariableDefinition',
+          variable: { kind: 'Variable', name: { kind: 'Name', value: 'pageNumber' } },
+          type: { kind: 'NamedType', name: { kind: 'Name', value: 'Int' } },
+        },
+        {
+          kind: 'VariableDefinition',
+          variable: { kind: 'Variable', name: { kind: 'Name', value: 'sortBy' } },
+          type: { kind: 'NamedType', name: { kind: 'Name', value: 'String' } },
+        },
+        {
+          kind: 'VariableDefinition',
+          variable: { kind: 'Variable', name: { kind: 'Name', value: 'sortDirection' } },
+          type: { kind: 'NamedType', name: { kind: 'Name', value: 'SortDirection' } },
+        },
+      ],
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'getPaymentsByUser' },
+            arguments: [
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'userId' },
+                value: { kind: 'Variable', name: { kind: 'Name', value: 'userId' } },
+              },
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'pageSize' },
+                value: { kind: 'Variable', name: { kind: 'Name', value: 'pageSize' } },
+              },
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'pageNumber' },
+                value: { kind: 'Variable', name: { kind: 'Name', value: 'pageNumber' } },
+              },
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'sortBy' },
+                value: { kind: 'Variable', name: { kind: 'Name', value: 'sortBy' } },
+              },
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'sortDirection' },
+                value: { kind: 'Variable', name: { kind: 'Name', value: 'sortDirection' } },
+              },
+            ],
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                { kind: 'Field', name: { kind: 'Name', value: 'pagesCount' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'page' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'pageSize' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'totalCount' } },
+                {
+                  kind: 'Field',
+                  name: { kind: 'Name', value: 'items' },
+                  selectionSet: {
+                    kind: 'SelectionSet',
+                    selections: [
+                      { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+                      { kind: 'Field', name: { kind: 'Name', value: 'dateOfPayment' } },
+                      { kind: 'Field', name: { kind: 'Name', value: 'endDate' } },
+                      { kind: 'Field', name: { kind: 'Name', value: 'price' } },
+                      { kind: 'Field', name: { kind: 'Name', value: 'type' } },
+                      { kind: 'Field', name: { kind: 'Name', value: 'paymentType' } },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<GetPaymentsByUserQuery, GetPaymentsByUserQueryVariables>
 export const GetUserDocument = {
   kind: 'Document',
   definitions: [
