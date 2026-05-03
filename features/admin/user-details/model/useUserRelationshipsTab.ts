@@ -10,7 +10,7 @@ import { type SortDirection } from '@/shared/api/graphql/gql/graphql'
 import { PAGE_SIZE_OPTIONS } from '@/shared/constant'
 import { usePagination } from '@/shared/lib/pagination'
 import { parseUserIdParam } from '@/shared/lib/route-params'
-import { useSort } from '@/shared/lib/sorting'
+import { useSort } from '@/shared/lib/sorting/useSort'
 
 import { type UserRelationshipsConnection, type UserRelationshipsSortBy } from '../types'
 

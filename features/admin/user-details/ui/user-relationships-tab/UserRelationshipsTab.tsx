@@ -15,6 +15,7 @@ import {
   TableHead,
   TableHeaderCell,
   TableRow,
+  Typography,
 } from '@/shared/ui'
 
 import {
@@ -59,6 +60,14 @@ export function UserRelationshipsTab({
 }: Props) {
   if (isLoading) return <div>Loading...</div>
   if (error) return <div>{errorMessage}</div>
+
+  if (!items.length) {
+    return (
+      <Typography variant={'h2'} className={'text-muted-foreground'}>
+        No user relationships found.
+      </Typography>
+    )
+  }
 
   return (
     <div className={'flex h-full min-h-0 flex-col gap-6'}>

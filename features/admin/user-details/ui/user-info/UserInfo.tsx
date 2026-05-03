@@ -1,6 +1,5 @@
 import Image from 'next/image'
 
-import { formatDate } from '@/shared/lib/format'
 import { Typography } from '@/shared/ui'
 
 import { useUserInfo } from '../../model'
@@ -44,7 +43,7 @@ export function UserInfo() {
           <Typography variant={'regular_14'} className={'text-(--color-light-900)'}>
             {'Profile Creation Date'}
           </Typography>
-          <Typography variant={'regular_16'}>{formatDate(createAt)}</Typography>
+          <Typography variant={'regular_16'}>{createAt}</Typography>
         </div>
       </div>
     </div>

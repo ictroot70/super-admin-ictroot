@@ -29,7 +29,7 @@ type Props = {
 const columns: Column[] = [
   { id: 'dateOfPayment', title: 'Date of payment', sortKey: 'dateOfPayment' },
   { id: 'endDate', title: 'End date of subscription', sortKey: 'endDate' },
-  { id: 'price', title: 'Amount, $', sortKey: 'price' },
+  { id: 'price', title: 'Amount, $' },
   { id: 'type', title: 'Subscription Type' },
   { id: 'paymentType', title: 'Payment Type', sortKey: 'paymentType' },
 ]

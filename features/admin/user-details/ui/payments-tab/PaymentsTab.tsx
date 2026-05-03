@@ -1,6 +1,6 @@
 'use client'
 
-import { Pagination, LoadingBar } from '@/shared/ui'
+import { Pagination, LoadingBar, Typography } from '@/shared/ui'
 
 import { usePaymentsTab } from '../../model'
 import { PaymentsTableTab } from './PaymentsTableTab'
@@ -10,6 +10,8 @@ export function PaymentsTab() {
 
   if (isLoading) return <div>Loading...</div>
   if (error) return <div>Failed to load payments.</div>
+
+  if (!items.length) return <Typography variant={'h2'}>There are no payments yet.</Typography>
 
   return (
     <div className={'flex h-full min-h-0 flex-col gap-6'}>

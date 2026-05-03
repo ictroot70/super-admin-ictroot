@@ -13,7 +13,7 @@ import {
 import { PAGE_SIZE_OPTIONS } from '@/shared/constant'
 import { usePagination } from '@/shared/lib/pagination'
 import { parseUserIdParam } from '@/shared/lib/route-params'
-import { useSort } from '@/shared/lib/sorting'
+import { useSort } from '@/shared/lib/sorting/useSort'
 
 import { type PaymentsSortBy } from '../types/paymentsTab.type'
 
