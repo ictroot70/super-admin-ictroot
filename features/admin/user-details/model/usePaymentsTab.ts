@@ -14,8 +14,8 @@ import { parseUserIdParam } from '@/shared/lib/route-params'
 
 import { PAGE_SIZE_OPTIONS } from '../lib'
 import { type PaymentsSortBy } from '../lib/paymentsTabTypes.type'
-import { usePagination } from './usePagination'
-import { useSort } from './useSort'
+import { usePagination } from './common/usePagination'
+import { useSort } from './common/useSort'
 
 export const usePaymentsTab = () => {
   const { userId: userIdParam } = useParams<{ userId: string }>()
