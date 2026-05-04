@@ -1,5 +1,3 @@
-// # credentials + session flag
-
 'use client'
 
 import { create } from 'zustand'
@@ -9,6 +7,8 @@ type AdminSessionState = {
   email: string | null
   password: string | null
   isLoggedIn: boolean
+  hasHydrated: boolean
+  setHasHydrated: (value: boolean) => void
   setSession: (email: string, password: string) => void
   clearSession: () => void
 }
@@ -19,6 +19,12 @@ export const useAdminSessionStore = create<AdminSessionState>()(
       email: null,
       password: null,
       isLoggedIn: false,
+      hasHydrated: false,
+
+      setHasHydrated: value =>
+        set({
+          hasHydrated: value,
+        }),
 
       setSession: (email, password) =>
         set({
@@ -37,6 +43,9 @@ export const useAdminSessionStore = create<AdminSessionState>()(
     {
       name: 'admin-session',
       storage: createJSONStorage(() => sessionStorage),
+      onRehydrateStorage: () => state => {
+        state?.setHasHydrated(true)
+      },
     }
   )
 )
