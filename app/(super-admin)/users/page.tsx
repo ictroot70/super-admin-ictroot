@@ -6,22 +6,20 @@ import { useRouter } from 'next/navigation'
 import { useAdminSessionStore } from '@/features/admin/auth/model/admin-session.store'
 
 export default function Page() {
-  
   const router = useRouter()
   const clearSession = useAdminSessionStore(state => state.clearSession)
 
   const handleLogout = () => {
     clearSession()
     router.replace('/login')
+  }
 
   return (
-    <div>
-      <h1 className={'text-2xl font-semibold text-white'}>Users</h1>
-
-      <Button type={'button'} variant={'outlined'} onClick={handleLogout}>
+    <div className={'flex flex-col'}>
+      <h1 className={'mbe-5 text-2xl font-semibold text-white'}>Users</h1>
+      <Button className={'mbe-8! w-2xs!'} variant={'outlined'} onClick={handleLogout}>
         Logout
       </Button>
-      
       Lorem ipsum dolor sit amet, consectetur adipisicing elit. Amet atque commodi cum maxime
       pariatur quo voluptas voluptatibus? Alias aliquam, consequatur delectus eaque hic modi neque
       nobis pariatur. Ab, aperiam corporis dolore eos esse eveniet inventore iure mollitia neque
