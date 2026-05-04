@@ -1,30 +1,46 @@
 'use client'
 
-import { ReactNode } from 'react'
+import { usePathname, useRouter } from 'next/navigation'
+import { type ReactNode, useEffect } from 'react'
 
-import { ApolloAppProvider } from '@/app/providers/apollo/apollo-provider'
-import { useAdminAccessGate } from '@/features/admin/auth'
-import { Sidebar } from '@/widgets/Sidebar'
+import { SuperAdminLayoutShell } from '@/app/super-admin-layout-shell'
+import { useAdminSessionStore } from '@/features/admin/auth/model/admin-session.store'
+import { Loading } from '@/shared/composites'
 
 type Props = Readonly<{ children: ReactNode }>
 
 export default function Layout({ children }: Props) {
-  const { mounted, isAuthorized } = useAdminAccessGate()
+  const router = useRouter()
+  const pathname = usePathname()
+  const isLoggedIn = useAdminSessionStore(state => state.isLoggedIn)
+  const hasHydrated = useAdminSessionStore(state => state.hasHydrated)
 
-  if (!mounted) {
-    return null
+  const shouldRedirectToUsers = hasHydrated && pathname === '/login' && isLoggedIn
+  const shouldRedirectToLogin = hasHydrated && pathname !== '/login' && !isLoggedIn
+
+  useEffect(() => {
+    if (shouldRedirectToUsers) {
+      router.replace('/users')
+
+      return
+    }
+
+    if (shouldRedirectToLogin) {
+      router.replace('/login')
+    }
+  }, [router, shouldRedirectToLogin, shouldRedirectToUsers])
+
+  if (!hasHydrated || shouldRedirectToUsers || shouldRedirectToLogin) {
+    return (
+      <div>
+        <Loading />
+      </div>
+    )
   }
 
-  if (!isAuthorized) {
+  if (!isLoggedIn) {
     return <>{children}</>
   }
 
-  return (
-    <ApolloAppProvider>
-      <div className={'pt-[60px]'}>
-        <Sidebar />
-        <main className={'w-full pl-[252px]'}>{children}</main>
-      </div>
-    </ApolloAppProvider>
-  )
+  return <SuperAdminLayoutShell>{children}</SuperAdminLayoutShell>
 }
