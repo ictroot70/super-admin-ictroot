@@ -1,0 +1,3 @@
+mutation BanUser($userId: Int!, $banReason: String!) {
+  banUser(userId: $userId, banReason: $banReason)
+}
