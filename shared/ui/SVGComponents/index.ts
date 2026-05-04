@@ -35,3 +35,4 @@ export const CopyOutline = Icons.CopyOutline
 export const Pin = Icons.Pin
 export const CreditCardOutline = Icons.CreditCardOutline
 export const CreditCard = Icons.CreditCard
+export const ArrowDownSimple = Icons.ArrowDownSimple

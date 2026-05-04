@@ -1,0 +1,204 @@
+.wrapper {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  min-width: auto;
+}
+
+.label {
+  color: var(--color-light-900);
+}
+
+.value {
+  display: inline-flex;
+  align-items: center;
+  padding-right: var(--select-value-padding-right, 8px);
+}
+
+.icon {
+  flex-shrink: 0;
+  margin-right: var(--select-icon-margin-right, 4px);
+  margin-left: auto;
+  transition: transform 0.2s ease;
+}
+
+.trigger {
+  all: unset;
+
+  cursor: pointer;
+
+  display: flex;
+  gap: 2px;
+  align-items: center;
+  justify-content: space-between;
+
+  box-sizing: border-box;
+  width: 100%;
+  padding: var(--select-trigger-padding-top, 6px) var(--select-trigger-padding-right, 12px)
+    var(--select-trigger-padding-bottom, 6px) var(--select-trigger-padding-left, 12px);
+  border: 1px solid var(--color-dark-100);
+  border-radius: 2px;
+
+  background-color: transparent;
+  outline: 1px solid transparent;
+
+  &[data-state='open'] {
+    border: 1px solid var(--color-light-100);
+    color: var(--color-light-100);
+    background-color: var(--color-dark-500);
+    outline: none;
+
+    [data-slot='icon'] {
+      transform: rotate(180deg);
+    }
+  }
+
+  &[data-placeholder] {
+    background-color: var(--color-dark-500);
+  }
+
+  &:not([data-disabled]):hover {
+    cursor: pointer;
+    border-color: var(--color-light-900);
+    color: var(--color-light-100);
+  }
+
+  &:not([data-disabled]):focus-visible {
+    border-color: transparent;
+    outline: 2px solid var(--color-primary-500);
+  }
+
+  &[data-disabled] {
+    cursor: default;
+    border: 1px solid var(--color-dark-100);
+    color: var(--color-dark-100);
+
+    svg {
+      color: var(--color-light-100);
+    }
+  }
+
+  span[role='img'] {
+    flex-shrink: 0;
+  }
+}
+
+.triggerError {
+  border-color: var(--color-danger-500);
+  color: var(--color-danger-500);
+
+  &:not([data-disabled]):hover {
+    border-color: var(--color-danger-500);
+    color: var(--color-danger-500);
+  }
+
+  &:not([data-disabled]):focus-visible {
+    border-color: transparent;
+    outline: 2px solid var(--color-danger-500);
+  }
+
+  &[data-state='open'] {
+    border-color: var(--color-danger-500);
+    color: var(--color-danger-500);
+  }
+}
+
+.content {
+  cursor: pointer;
+
+  z-index: 101;
+
+  overflow-y: auto;
+
+  width: var(--radix-select-trigger-width);
+  max-height: var(--radix-select-content-available-height);
+  border: 1px solid var(--color-light-100);
+  border-radius: 2px;
+
+  color: var(--color-light-100);
+
+  background-color: var(--color-dark-500);
+}
+
+.item {
+  cursor: pointer;
+
+  display: flex;
+  align-items: center;
+  justify-content: start;
+
+  width: 100%;
+  height: var(--radix-select-trigger-height);
+  padding: var(--select-item-padding-top, 6px) var(--select-item-padding-right, 12px)
+    var(--select-item-padding-bottom, 6px) var(--select-item-padding-left, 12px);
+  border: none;
+
+  color: var(--color-light-100);
+
+  background-color: transparent;
+  outline: none;
+
+  transition: background-color 0.2s ease;
+
+  svg,
+  img {
+    flex-shrink: 0;
+    vertical-align: middle;
+  }
+
+  &[data-highlighted] {
+    color: var(--color-primary-500);
+    background-color: var(--color-dark-300);
+  }
+
+  &[data-disabled] {
+    color: var(--color-dark-100);
+    opacity: 0.5;
+  }
+}
+
+.list {
+  display: flex;
+  gap: var(--select-item-gap, 8px);
+  align-items: center;
+  justify-content: start;
+
+  font-size: var(--select-item-font-size, 16px);
+
+  span[role='img'] {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  svg {
+    width: 20px;
+    height: 20px;
+  }
+}
+
+.trigger--small,
+.item--small {
+  padding: 0 var(--select-trigger-small-padding-right, 2px) 0
+    var(--select-trigger-small-padding-left, 6px);
+}
+
+::-webkit-scrollbar {
+  width: 4px;
+  height: 4px;
+}
+
+::-webkit-scrollbar-track {
+  border-radius: 2px;
+  background: var(--color-dark-300);
+}
+
+::-webkit-scrollbar-thumb {
+  cursor: pointer;
+  border-radius: 2px;
+  background: var(--color-dark-100);
+
+  &:hover {
+    background: var(--color-light-900);
+  }
+}
