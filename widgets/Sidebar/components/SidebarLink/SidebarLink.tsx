@@ -34,7 +34,7 @@ export const SidebarLink = ({
   )
 
   const linkClasses = clsx(
-    'group flex items-center gap-3 border-none bg-transparent px-6 text-inherit no-underline transition-colors duration-200 focus-visible:rounded-[2px] focus-visible:outline-2 focus-visible:outline-(--color-primary-700)',
+    'group flex pr-[7px] items-center gap-3 border-none bg-transparent  text-inherit no-underline transition-colors duration-200 focus-visible:rounded-[2px] focus-visible:outline-2 focus-visible:outline-(--color-primary-700)',
     disabled
       ? 'cursor-not-allowed text-(--color-dark-100)'
       : 'cursor-pointer hover:text-(--color-primary-100) active:text-(--color-primary-500)',
@@ -44,7 +44,7 @@ export const SidebarLink = ({
 
   const content = (
     <>
-      <span className={clsx('shrink-0', contentColorClass)}>{displayIcon}</span>
+      <span className={clsx('flex shrink-0', contentColorClass)}>{displayIcon}</span>
       <Typography
         variant={'bold_14'}
         className={clsx('inline leading-6 tracking-normal', contentColorClass)}

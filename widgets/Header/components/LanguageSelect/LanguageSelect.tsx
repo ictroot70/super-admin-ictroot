@@ -2,7 +2,8 @@
 
 import { useState, useSyncExternalStore } from 'react'
 
-import { RussiaFlag, Select, UkFlag } from '@/shared/ui'
+import { Select } from '@/shared/composites'
+import { RussiaFlag, UkFlag } from '@/shared/ui/SVGComponents'
 
 type Language = 'en' | 'rus'
 
@@ -29,7 +30,7 @@ export const LanguageSelect = () => {
   }
 
   return (
-    <div className={'w-[163px]'}>
+    <div className={'w-40.75'}>
       <Select
         defaultValue={language}
         value={language}
