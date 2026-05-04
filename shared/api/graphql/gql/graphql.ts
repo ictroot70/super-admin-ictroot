@@ -1,4 +1,3 @@
-/* eslint-disable max-lines */
 /** Internal type. DO NOT USE DIRECTLY. */
 type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] }
 /** Internal type. DO NOT USE DIRECTLY. */
@@ -91,6 +90,20 @@ export type GetPaymentsByUserQuery = {
       type: SubscriptionType
       paymentType: PaymentMethod | null
     }>
+  }
+}
+
+export type GetUploadedPhotosByUserQueryVariables = Exact<{
+  userId: number
+  endCursorId?: number | null | undefined
+}>
+
+export type GetUploadedPhotosByUserQuery = {
+  getPostsByUser: {
+    pagesCount: number
+    pageSize: number
+    totalCount: number
+    items: Array<{ id: number | null; url: string | null }> | null
   }
 }
 
@@ -472,6 +485,71 @@ export const GetPaymentsByUserDocument = {
     },
   ],
 } as unknown as DocumentNode<GetPaymentsByUserQuery, GetPaymentsByUserQueryVariables>
+export const GetUploadedPhotosByUserDocument = {
+  kind: 'Document',
+  definitions: [
+    {
+      kind: 'OperationDefinition',
+      operation: 'query',
+      name: { kind: 'Name', value: 'GetUploadedPhotosByUser' },
+      variableDefinitions: [
+        {
+          kind: 'VariableDefinition',
+          variable: { kind: 'Variable', name: { kind: 'Name', value: 'userId' } },
+          type: {
+            kind: 'NonNullType',
+            type: { kind: 'NamedType', name: { kind: 'Name', value: 'Int' } },
+          },
+        },
+        {
+          kind: 'VariableDefinition',
+          variable: { kind: 'Variable', name: { kind: 'Name', value: 'endCursorId' } },
+          type: { kind: 'NamedType', name: { kind: 'Name', value: 'Int' } },
+        },
+      ],
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'getPostsByUser' },
+            arguments: [
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'userId' },
+                value: { kind: 'Variable', name: { kind: 'Name', value: 'userId' } },
+              },
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'endCursorId' },
+                value: { kind: 'Variable', name: { kind: 'Name', value: 'endCursorId' } },
+              },
+            ],
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                { kind: 'Field', name: { kind: 'Name', value: 'pagesCount' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'pageSize' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'totalCount' } },
+                {
+                  kind: 'Field',
+                  name: { kind: 'Name', value: 'items' },
+                  selectionSet: {
+                    kind: 'SelectionSet',
+                    selections: [
+                      { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+                      { kind: 'Field', name: { kind: 'Name', value: 'url' } },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<GetUploadedPhotosByUserQuery, GetUploadedPhotosByUserQueryVariables>
 export const GetUserDocument = {
   kind: 'Document',
   definitions: [
