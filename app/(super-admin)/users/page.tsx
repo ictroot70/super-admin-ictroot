@@ -1,9 +1,20 @@
 // # More information
 'use client' //Todo this is temporal, must delete when will add real page
+import { useRouter } from 'next/navigation'
+
+import { useAdminSessionStore } from '@/features/admin/auth/model/admin-session.store'
 import { UserActionMenu } from '@/features/admin/users'
-import { LabelRadix } from '@/shared'
+import { LabelRadix, Button } from '@/shared'
 
 export default function Page() {
+  const router = useRouter()
+  const clearSession = useAdminSessionStore(state => state.clearSession)
+
+  const handleLogout = () => {
+    clearSession()
+    router.replace('/login')
+  }
+
   return (
     <div>
       <LabelRadix label={'Action menu for test'} />
@@ -13,6 +24,10 @@ export default function Page() {
         isBanned={false}
         onActionComplete={() => {}}
       />
+      <h1 className={'text-2xl font-semibold text-white'}>Users</h1>
+      <Button type={'button'} variant={'outlined'} onClick={handleLogout}>
+        Logout
+      </Button>
       Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ab accusamus ad aspernatur culpa
       delectus dolore error et eum fuga fugiat libero molestiae, molestias nulla perferendis, quasi
       quod reiciendis sint, soluta sunt tenetur. Aliquam, aliquid assumenda consectetur corporis

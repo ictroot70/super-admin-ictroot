@@ -1,35 +1,42 @@
 'use client'
 
+import { zodResolver } from '@hookform/resolvers/zod'
 import { Button, Card, Input, Typography } from '@ictroot/ui-kit'
 import { useRouter } from 'next/navigation'
-import React, { useState } from 'react'
+import { useForm } from 'react-hook-form'
+import { z } from 'zod'
 
 import { useAdminLogin } from '@/features/admin/auth'
 
+const loginSchema = z.object({
+  email: z.string().min(1, 'Email is required').email('Invalid email address'),
+  password: z.string().min(1, 'Password is required'),
+})
+
+type LoginFormValues = z.infer<typeof loginSchema>
+
 export const LoginForm = () => {
   const router = useRouter()
-  const { login, loading, error } = useAdminLogin()
+  const { login, loading } = useAdminLogin()
 
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
-  const [loginFailed, setLoginFailed] = useState(false)
+  const {
+    register,
+    handleSubmit,
+    setError,
+    formState: { errors },
+  } = useForm<LoginFormValues>({
+    resolver: zodResolver(loginSchema),
+    defaultValues: {
+      email: '',
+      password: '',
+    },
+  })
 
-  let authError: string | undefined
-
-  if (loginFailed) {
-    authError = 'Login failed'
-  } else if (error) {
-    authError = 'Request error'
-  }
-
-  const handleSubmit = async (event: React.SyntheticEvent<HTMLFormElement>) => {
-    event.preventDefault()
-    setLoginFailed(false)
-
-    const success = await login(email, password)
+  const onSubmit = async (data: LoginFormValues) => {
+    const success = await login(data.email, data.password)
 
     if (!success) {
-      setLoginFailed(true)
+      setError('password', { message: 'Login failed' })
 
       return
     }
@@ -40,34 +47,31 @@ export const LoginForm = () => {
   return (
     <div className={'flex min-h-screen items-center justify-center bg-black px-4'}>
       <Card className={'w-94.5 px-6 py-6'}>
-        <form onSubmit={handleSubmit} className={'flex flex-col gap-4'}>
+        <form onSubmit={handleSubmit(onSubmit)} className={'flex flex-col gap-4'}>
           <Typography className={'mb-4 text-center'} variant={'h1'}>
             Sign In
           </Typography>
 
           <Input
             id={'email'}
-            name={'email'}
-            autoComplete={'email'}
             inputType={'text'}
             label={'Email'}
             placeholder={'Epam@epam.com'}
+            autoComplete={'email'}
             reserveErrorSpace
-            value={email}
-            onChange={event => setEmail(event.target.value)}
+            error={errors.email?.message}
+            {...register('email')}
           />
 
           <Input
             id={'password'}
-            name={'password'}
-            autoComplete={'current-password'}
             inputType={'hide-able'}
             label={'Password'}
             placeholder={'****************'}
+            autoComplete={'current-password'}
             reserveErrorSpace
-            error={authError}
-            value={password}
-            onChange={event => setPassword(event.target.value)}
+            error={errors.password?.message}
+            {...register('password')}
           />
 
           <Button

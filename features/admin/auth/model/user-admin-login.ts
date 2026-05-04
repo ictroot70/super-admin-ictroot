@@ -1,9 +1,7 @@
 // # loginAdmin mutation (без Basic auth header)
 'use client'
 
-import { useMutation } from '@apollo/client/react'
-
-import { LOGIN_ADMIN_MUTATION } from '@/shared/api/graphql/operations/mutations/login-admin'
+import { LOGIN_ADMIN_MUTATION, useGqlMutation } from '@/shared/api/graphql'
 
 import { useAdminSessionStore } from './admin-session.store'
 
@@ -21,7 +19,7 @@ type LoginAdminVariables = {
 export const useAdminLogin = () => {
   const setSession = useAdminSessionStore(state => state.setSession)
 
-  const [loginAdmin, { loading, error }] = useMutation<LoginAdminResponse, LoginAdminVariables>(
+  const [loginAdmin, { loading, error }] = useGqlMutation<LoginAdminResponse, LoginAdminVariables>(
     LOGIN_ADMIN_MUTATION
   )
 
