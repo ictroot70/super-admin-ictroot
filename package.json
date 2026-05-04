@@ -27,6 +27,7 @@
     "@fontsource-variable/roboto": "^5.2.6",
     "@hookform/resolvers": "^5.1.1",
     "@ictroot/ui-kit": "2.0.0-beta.5",
+    "@radix-ui/react-select": "^2.2.6",
     "clsx": "^2.1.1",
     "graphql": "16.13.2",
     "graphql-ws": "6.0.8",
