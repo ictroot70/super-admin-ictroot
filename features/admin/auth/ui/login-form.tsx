@@ -52,9 +52,9 @@ export const LoginForm = () => {
         }
       >
         <form onSubmit={handleSubmit(onSubmit)} className={'flex flex-col gap-4'}>
-          <h1 className={'mb-4 text-center'}>
-            <Typography variant={'h2'}>Sign In</Typography>
-          </h1>
+          <Typography className={'mb-4 text-center'} variant={'h1'}>
+            Sign In
+          </Typography>
 
           <Input
             id={'email'}
