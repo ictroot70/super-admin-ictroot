@@ -22,22 +22,22 @@
     "verify": "pnpm lint && pnpm lint:styles && pnpm typecheck && pnpm format:check"
   },
   "dependencies": {
-    "@apollo/client": "^4.1.7",
+    "@apollo/client": "4.1.7",
     "@fontsource-variable/inter": "^5.2.6",
     "@fontsource-variable/roboto": "^5.2.6",
     "@hookform/resolvers": "^5.1.1",
     "@ictroot/ui-kit": "2.0.0-beta.5",
     "clsx": "^2.1.1",
-    "graphql": "^16.13.2",
-    "graphql-ws": "^6.0.8",
+    "graphql": "16.13.2",
+    "graphql-ws": "6.0.8",
     "i18next": "^25.3.2",
     "i18next-browser-languagedetector": "^8.2.0",
-    "next": "16.2.4",
+    "next": "6.2.4",
     "react": "19.2.4",
     "react-dom": "19.2.4",
     "react-hook-form": "7.56.1",
     "react-toastify": "^11.0.5",
-    "zod": "^3.25.67",
+    "zod": "3.25.67",
     "zustand": "^5.0.12"
   },
   "devDependencies": {
