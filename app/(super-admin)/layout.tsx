@@ -1,10 +1,11 @@
 'use client'
 
 import { usePathname, useRouter } from 'next/navigation'
-import { useEffect, type ReactNode } from 'react'
+import { type ReactNode, useEffect } from 'react'
 
-import { ApolloAppProvider } from '@/app/providers/apollo'
+import { SuperAdminLayoutShell } from '@/app/super-admin-layout-shell'
 import { useAdminSessionStore } from '@/features/admin/auth/model/admin-session.store'
+import { Loading } from '@/shared/composites'
 
 type Props = Readonly<{ children: ReactNode }>
 
@@ -30,8 +31,16 @@ export default function Layout({ children }: Props) {
   }, [router, shouldRedirectToLogin, shouldRedirectToUsers])
 
   if (!hasHydrated || shouldRedirectToUsers || shouldRedirectToLogin) {
-    return <div>Loading...</div>
+    return (
+      <div>
+        <Loading />
+      </div>
+    )
   }
 
-  return <ApolloAppProvider>{children}</ApolloAppProvider>
+  if (!isLoggedIn) {
+    return <>{children}</>
+  }
+
+  return <SuperAdminLayoutShell>{children}</SuperAdminLayoutShell>
 }
