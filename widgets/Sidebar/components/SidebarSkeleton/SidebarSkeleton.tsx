@@ -20,7 +20,7 @@ export const SidebarSkeleton = () => {
   return (
     <aside
       className={
-        'fixed top-[60px] left-[max(32px,calc((100vw-1172px)/2))] h-[calc(100vh-60px)] w-[160px] border-r border-r-(--color-dark-300) bg-(--color-dark-700) pr-[6px] text-(--color-light-100)'
+        'fixed top-[60px] left-[max(var(--layout-gutter),calc((100vw-var(--layout-max-width))/2+var(--layout-gutter)))] h-[calc(100vh-60px)] w-[220px] border-r border-r-(--color-dark-300) bg-(--color-dark-700) pr-[6px] text-(--color-light-100)'
       }
       aria-hidden
     >

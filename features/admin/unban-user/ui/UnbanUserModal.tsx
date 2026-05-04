@@ -11,12 +11,7 @@ export type UnbanUserModalProps = {
   onConfirm: () => void
 }
 
-export const UnbanUserModal = ({
-  open,
-  userId,
-  userName,
-  onConfirm,
-}: UnbanUserModalProps) => {
+export const UnbanUserModal = ({ open, userId, userName, onConfirm }: UnbanUserModalProps) => {
   const { unbanUser, loading } = useUnbanUser()
   const [errorMessage, setErrorMessage] = useState('')
 
@@ -47,8 +42,8 @@ export const UnbanUserModal = ({
           </Typography>
         }
       />
-      {loading ? <Loading/> : null}
-      {errorMessage ? <ErrorMessage message={errorMessage} variant={'danger_small'}/> : null}
+      {loading ? <Loading /> : null}
+      {errorMessage ? <ErrorMessage message={errorMessage} variant={'danger_small'} /> : null}
     </>
   )
 }

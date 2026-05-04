@@ -1,1 +1,1 @@
-export {UserActionMenu} from './UserActionMenu'
+export { UserActionMenu } from './UserActionMenu'

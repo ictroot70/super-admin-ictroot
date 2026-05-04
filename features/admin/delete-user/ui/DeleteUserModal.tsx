@@ -1,6 +1,6 @@
 import { useState } from 'react'
 
-import {ConfirmModal, ErrorMessage, Loading, Typography} from '@/shared'
+import { ConfirmModal, ErrorMessage, Loading, Typography } from '@/shared'
 
 import { useDeleteUser } from '../model/useDeleteUser'
 
@@ -11,12 +11,7 @@ export type DeleteUserModalProps = {
   onConfirm: () => void
 }
 
-export const DeleteUserModal = ({
-  open,
-  userId,
-  userName,
-  onConfirm,
-}: DeleteUserModalProps) => {
+export const DeleteUserModal = ({ open, userId, userName, onConfirm }: DeleteUserModalProps) => {
   const { deleteUser, loading } = useDeleteUser()
   const [errorMessage, setErrorMessage] = useState('')
 
@@ -47,8 +42,8 @@ export const DeleteUserModal = ({
           </Typography>
         }
       />
-      {loading ? <Loading/> : null}
-      {errorMessage ? <ErrorMessage message={errorMessage} variant={'danger_small'}/> : null}
+      {loading ? <Loading /> : null}
+      {errorMessage ? <ErrorMessage message={errorMessage} variant={'danger_small'} /> : null}
     </>
   )
 }

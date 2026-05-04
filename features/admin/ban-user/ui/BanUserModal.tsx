@@ -1,8 +1,8 @@
-import {useState} from 'react'
+import { useState } from 'react'
 
-import {ConfirmModal, Typography, ErrorMessage, Loading} from '@/shared'
+import { ConfirmModal, Typography, ErrorMessage, Loading } from '@/shared'
 
-import {useBanUser} from '../model/useBanUser'
+import { useBanUser } from '../model/useBanUser'
 
 export type BanUserModalProps = {
   open: boolean
@@ -11,8 +11,8 @@ export type BanUserModalProps = {
   onConfirm: () => void
 }
 
-export const BanUserModal = ({open, userId, userName, onConfirm}: BanUserModalProps) => {
-  const {banUser, loading} = useBanUser()
+export const BanUserModal = ({ open, userId, userName, onConfirm }: BanUserModalProps) => {
+  const { banUser, loading } = useBanUser()
   const [errorMessage, setErrorMessage] = useState('')
 
   const handleConfirm = async (reason?: string) => {
@@ -24,7 +24,7 @@ export const BanUserModal = ({open, userId, userName, onConfirm}: BanUserModalPr
 
     try {
       setErrorMessage('')
-      await banUser({userId, banReason: reason})
+      await banUser({ userId, banReason: reason })
       onConfirm()
     } catch (error) {
       setErrorMessage(error instanceof Error ? error.message : 'Request error')
@@ -49,8 +49,8 @@ export const BanUserModal = ({open, userId, userName, onConfirm}: BanUserModalPr
         }
         withBanReason
       />
-      {loading ? <Loading/> : null}
-      {errorMessage ? <ErrorMessage message={errorMessage} variant={'danger_small'}/> : null}
+      {loading ? <Loading /> : null}
+      {errorMessage ? <ErrorMessage message={errorMessage} variant={'danger_small'} /> : null}
     </>
   )
 }

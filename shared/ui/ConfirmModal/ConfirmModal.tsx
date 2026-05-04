@@ -1,7 +1,9 @@
 'use client'
 import { ReactNode, useState } from 'react'
 
-import { banReasonSchema, Modal, type SelectItemsProps, Button, Input, Select } from '@/shared'
+import { Select, type SelectItemsProps } from '@/shared'
+import { banReasonSchema } from '@/shared/lib'
+import { Modal, Button, Input } from '@/shared/ui'
 
 const ANOTHER_REASON_VALUE = 'another_reason'
 

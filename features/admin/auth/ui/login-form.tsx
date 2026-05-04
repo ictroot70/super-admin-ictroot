@@ -4,7 +4,7 @@ import { Button, Card, Input, Typography } from '@ictroot/ui-kit'
 import { useRouter } from 'next/navigation'
 import React, { useState } from 'react'
 
-import { useAdminLogin } from '../model/user-admin-login'
+import { useAdminLogin } from '@/features/admin/auth'
 
 export const LoginForm = () => {
   const router = useRouter()
@@ -13,6 +13,7 @@ export const LoginForm = () => {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [loginFailed, setLoginFailed] = useState(false)
+
   let authError: string | undefined
 
   if (loginFailed) {
@@ -38,11 +39,11 @@ export const LoginForm = () => {
 
   return (
     <div className={'flex min-h-screen items-center justify-center bg-black px-4'}>
-      <Card className={'w-[378px] border border-[#333333] bg-[#171717] px-6 py-6'}>
+      <Card className={'w-94.5 px-6 py-6'}>
         <form onSubmit={handleSubmit} className={'flex flex-col gap-4'}>
-          <h1 className={'mb-4 text-center'}>
-            <Typography variant={'h2'}>Sign In</Typography>
-          </h1>
+          <Typography className={'mb-4 text-center'} variant={'h1'}>
+            Sign In
+          </Typography>
 
           <Input
             id={'email'}
