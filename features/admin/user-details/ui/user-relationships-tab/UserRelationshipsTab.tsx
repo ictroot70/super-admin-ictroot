@@ -64,7 +64,7 @@ export function UserRelationshipsTab({
 
   if (!items.length) {
     return (
-      <Typography variant={'h2'} className={'text-muted-foreground'}>
+      <Typography variant={'h2'} className={'text-muted-foreground text-center'}>
         No user relationships found.
       </Typography>
     )

@@ -37,7 +37,7 @@ export function UploadedPhotosTab() {
 
   if (!photos.length) {
     return (
-      <Typography variant={'h2'} className={'text-muted-foreground'}>
+      <Typography variant={'h2'} className={'text-muted-foreground text-center'}>
         There are no uploaded photos yet.
       </Typography>
     )

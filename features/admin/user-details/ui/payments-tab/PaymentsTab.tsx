@@ -11,7 +11,12 @@ export function PaymentsTab() {
   if (isLoading) return <Loading />
   if (error) return <div>Failed to load payments.</div>
 
-  if (!items.length) return <Typography variant={'h2'}>There are no payments yet.</Typography>
+  if (!items.length)
+    return (
+      <Typography variant={'h2'} className={'text-center'}>
+        There are no payments yet.
+      </Typography>
+    )
 
   return (
     <div className={'flex h-full min-h-0 flex-col gap-6'}>
