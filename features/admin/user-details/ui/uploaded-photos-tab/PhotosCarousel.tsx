@@ -21,7 +21,7 @@ export function PhotoCarousel({ open, onClose, slides, initialSlide }: Props) {
       className={'border-yellow h-150 w-150 bg-black/80'}
       closeBtnOutside
     >
-      <Carousel slides={slides} options={{ startIndex: initialSlide }} />
+      <Carousel slides={slides} options={{ startIndex: initialSlide }} showDots={false} />
     </Modal>
   )
 }

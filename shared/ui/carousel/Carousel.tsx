@@ -17,6 +17,7 @@ type Props = {
   onSlideChange?: (index: number) => void
   imageSizes?: string
   priorityFirstImage?: boolean
+  showDots?: boolean
 }
 
 export const Carousel: React.FC<Props> = props => {
@@ -27,6 +28,7 @@ export const Carousel: React.FC<Props> = props => {
     onSlideChange,
     imageSizes = IMAGE_SIZES.PUBLIC_POST,
     priorityFirstImage = false,
+    showDots = true,
   } = props
   const [emblaRef, emblaApi] = useEmblaCarousel(options)
   const [selectedIndex, setSelectedIndex] = useState(0)
@@ -115,7 +117,7 @@ export const Carousel: React.FC<Props> = props => {
         </div>
       )}
 
-      {slides.length > 1 && (
+      {showDots && slides.length > 1 && (
         <div className={s.carousel__controls}>
           <div className={s.carousel__dots}>
             {scrollSnaps.map((_, index) => (
