@@ -2,8 +2,9 @@ query GetUser($userId: Int!) {
   getUser(userId: $userId) {
     id
     userName
-    email
     profile {
+      firstName
+      lastName
       avatars {
         url
       }

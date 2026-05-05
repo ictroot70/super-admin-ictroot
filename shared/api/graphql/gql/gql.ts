@@ -19,7 +19,7 @@ type Documents = {
   'query GetFollowing($userId: Int!, $pageSize: Int!, $pageNumber: Int!, $sortBy: String, $sortDirection: SortDirection) {\n  getFollowing(\n    userId: $userId\n    pageSize: $pageSize\n    pageNumber: $pageNumber\n    sortBy: $sortBy\n    sortDirection: $sortDirection\n  ) {\n    pagesCount\n    page\n    pageSize\n    totalCount\n    items {\n      id\n      userId\n      userName\n      firstName\n      lastName\n      createdAt\n    }\n  }\n}': typeof types.GetFollowingDocument
   'query GetPaymentsByUser($userId: Int!, $pageSize: Int, $pageNumber: Int, $sortBy: String, $sortDirection: SortDirection) {\n  getPaymentsByUser(\n    userId: $userId\n    pageSize: $pageSize\n    pageNumber: $pageNumber\n    sortBy: $sortBy\n    sortDirection: $sortDirection\n  ) {\n    pagesCount\n    page\n    pageSize\n    totalCount\n    items {\n      id\n      dateOfPayment\n      endDate\n      price\n      type\n      paymentType\n    }\n  }\n}': typeof types.GetPaymentsByUserDocument
   'query GetUploadedPhotosByUser($userId: Int!, $endCursorId: Int) {\n  getPostsByUser(userId: $userId, endCursorId: $endCursorId) {\n    pagesCount\n    pageSize\n    totalCount\n    items {\n      id\n      url\n    }\n  }\n}': typeof types.GetUploadedPhotosByUserDocument
-  'query GetUser($userId: Int!) {\n  getUser(userId: $userId) {\n    id\n    userName\n    email\n    profile {\n      avatars {\n        url\n      }\n      createdAt\n    }\n  }\n}': typeof types.GetUserDocument
+  'query GetUser($userId: Int!) {\n  getUser(userId: $userId) {\n    id\n    userName\n    profile {\n      firstName\n      lastName\n      avatars {\n        url\n      }\n      createdAt\n    }\n  }\n}': typeof types.GetUserDocument
 }
 const documents: Documents = {
   'mutation LoginAdmin($email: String!, $password: String!) {\n  loginAdmin(email: $email, password: $password) {\n    logged\n  }\n}':
@@ -32,7 +32,7 @@ const documents: Documents = {
     types.GetPaymentsByUserDocument,
   'query GetUploadedPhotosByUser($userId: Int!, $endCursorId: Int) {\n  getPostsByUser(userId: $userId, endCursorId: $endCursorId) {\n    pagesCount\n    pageSize\n    totalCount\n    items {\n      id\n      url\n    }\n  }\n}':
     types.GetUploadedPhotosByUserDocument,
-  'query GetUser($userId: Int!) {\n  getUser(userId: $userId) {\n    id\n    userName\n    email\n    profile {\n      avatars {\n        url\n      }\n      createdAt\n    }\n  }\n}':
+  'query GetUser($userId: Int!) {\n  getUser(userId: $userId) {\n    id\n    userName\n    profile {\n      firstName\n      lastName\n      avatars {\n        url\n      }\n      createdAt\n    }\n  }\n}':
     types.GetUserDocument,
 }
 
@@ -84,8 +84,8 @@ export function gql(
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function gql(
-  source: 'query GetUser($userId: Int!) {\n  getUser(userId: $userId) {\n    id\n    userName\n    email\n    profile {\n      avatars {\n        url\n      }\n      createdAt\n    }\n  }\n}'
-): (typeof documents)['query GetUser($userId: Int!) {\n  getUser(userId: $userId) {\n    id\n    userName\n    email\n    profile {\n      avatars {\n        url\n      }\n      createdAt\n    }\n  }\n}']
+  source: 'query GetUser($userId: Int!) {\n  getUser(userId: $userId) {\n    id\n    userName\n    profile {\n      firstName\n      lastName\n      avatars {\n        url\n      }\n      createdAt\n    }\n  }\n}'
+): (typeof documents)['query GetUser($userId: Int!) {\n  getUser(userId: $userId) {\n    id\n    userName\n    profile {\n      firstName\n      lastName\n      avatars {\n        url\n      }\n      createdAt\n    }\n  }\n}']
 
 export function gql(source: string) {
   return (documents as any)[source] ?? {}

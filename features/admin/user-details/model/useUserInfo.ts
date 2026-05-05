@@ -37,7 +37,8 @@ export const useUserInfo = () => {
           id: user.id,
           name: user.userName,
           avatar: user.profile.avatars?.[0]?.url ?? DEFAULT_AVATAR,
-          profileLink: user.email,
+          firstName: user.profile.firstName,
+          lastName: user.profile.lastName,
           createAt: formatDate(user.profile.createdAt),
         }
       : null,

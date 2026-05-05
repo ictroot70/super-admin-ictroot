@@ -1,5 +1,7 @@
 import Image from 'next/image'
+import Link from 'next/link'
 
+import { APP_ROUTES } from '@/shared/constant'
 import { Typography } from '@/shared/ui'
 
 import { useUserInfo } from '../../model'
@@ -13,7 +15,9 @@ export function UserInfo() {
     return <div>Loading...</div>
   }
 
-  const { id, avatar, name, profileLink, createAt } = profile
+  const { id, avatar, name, createAt, firstName, lastName } = profile
+  const profileLink = APP_ROUTES.USERS.ID(id)
+  const fullName = [firstName, lastName].filter(Boolean).join(' ') || '-'
 
   return (
     <div className={'mb-8'}>
@@ -26,9 +30,11 @@ export function UserInfo() {
           className={'h-15 w-15 shrink-0 rounded-full object-cover'}
         />
         <div>
-          <Typography variant={'h1'}>{name}</Typography>
+          <Typography variant={'h1'}>{fullName}</Typography>
           <Typography variant={'regular_14'} className={'underline'}>
-            {profileLink}
+            <Link href={profileLink} className={'pointer underline'}>
+              {name ?? profileLink}
+            </Link>
           </Typography>
         </div>
       </div>

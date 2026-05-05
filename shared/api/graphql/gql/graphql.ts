@@ -115,8 +115,12 @@ export type GetUserQuery = {
   getUser: {
     id: number
     userName: string
-    email: string
-    profile: { createdAt: string; avatars: Array<{ url: string | null }> | null }
+    profile: {
+      firstName: string | null
+      lastName: string | null
+      createdAt: string
+      avatars: Array<{ url: string | null }> | null
+    }
   }
 }
 
@@ -585,13 +589,14 @@ export const GetUserDocument = {
               selections: [
                 { kind: 'Field', name: { kind: 'Name', value: 'id' } },
                 { kind: 'Field', name: { kind: 'Name', value: 'userName' } },
-                { kind: 'Field', name: { kind: 'Name', value: 'email' } },
                 {
                   kind: 'Field',
                   name: { kind: 'Name', value: 'profile' },
                   selectionSet: {
                     kind: 'SelectionSet',
                     selections: [
+                      { kind: 'Field', name: { kind: 'Name', value: 'firstName' } },
+                      { kind: 'Field', name: { kind: 'Name', value: 'lastName' } },
                       {
                         kind: 'Field',
                         name: { kind: 'Name', value: 'avatars' },
