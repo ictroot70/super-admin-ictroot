@@ -5,7 +5,7 @@ import { notFound, useParams } from 'next/navigation'
 import { useState } from 'react'
 
 import { parseUserIdParam } from '@/shared/lib/route-params'
-import { LoadingBar, Typography } from '@/shared/ui'
+import { Loading, LoadingBar, Typography } from '@/shared/ui'
 
 import { useUploadedPhotos, useInfiniteScroll } from '../../model'
 import { PhotoCarousel } from './PhotosCarousel'
@@ -32,7 +32,7 @@ export function UploadedPhotosTab() {
 
   const slides = photos.map(photo => photo.url)
 
-  if (isInitialLoading) return <div>Loading...</div>
+  if (isInitialLoading) return <Loading />
   if (error && !photos.length) return <div>Failed to load uploaded photos.</div>
 
   if (!photos.length) {

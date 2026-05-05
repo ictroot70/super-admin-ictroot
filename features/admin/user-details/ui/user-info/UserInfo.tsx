@@ -5,6 +5,7 @@ import { APP_ROUTES } from '@/shared/constant'
 import { Typography } from '@/shared/ui'
 
 import { useUserInfo } from '../../model'
+import { UserInfoSkeleton } from './UserInfoSkeleton'
 
 const DEFAULT_AVATAR = '/default-avatar.svg'
 
@@ -12,7 +13,7 @@ export function UserInfo() {
   const { profile, loading } = useUserInfo()
 
   if (!profile || loading) {
-    return <div>Loading...</div>
+    return <UserInfoSkeleton />
   }
 
   const { id, avatar, name, createAt, firstName, lastName } = profile

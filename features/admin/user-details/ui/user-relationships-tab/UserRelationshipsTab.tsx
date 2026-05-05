@@ -5,6 +5,7 @@ import Link from 'next/link'
 import { APP_ROUTES } from '@/shared/constant/app-routes'
 import { formatDate } from '@/shared/lib/format'
 import {
+  Loading,
   LoadingBar,
   Pagination,
   type PaginationProps,
@@ -58,7 +59,7 @@ export function UserRelationshipsTab({
   onSort,
   errorMessage,
 }: Props) {
-  if (isLoading) return <div>Loading...</div>
+  if (isLoading) return <Loading />
   if (error) return <div>{errorMessage}</div>
 
   if (!items.length) {

@@ -5,6 +5,7 @@ import { useEffect, type ReactNode } from 'react'
 
 import { ApolloAppProvider } from '@/app/providers/apollo'
 import { useAdminSessionStore } from '@/features/admin/auth/model/admin-session.store'
+import { Loading } from '@/shared/ui'
 
 type Props = Readonly<{ children: ReactNode }>
 
@@ -30,7 +31,7 @@ export default function Layout({ children }: Props) {
   }, [router, shouldRedirectToLogin, shouldRedirectToUsers])
 
   if (!hasHydrated || shouldRedirectToUsers || shouldRedirectToLogin) {
-    return <div>Loading...</div>
+    return <Loading />
   }
 
   return <ApolloAppProvider>{children}</ApolloAppProvider>

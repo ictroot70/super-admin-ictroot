@@ -43,7 +43,7 @@ export default function UserDetailsLayout({ children }: Props) {
         fullWidth
       />
 
-      <div className={'mt-6'}>{children}</div>
+      <div className={'h-full grow-1 pt-6 pb-6'}>{children}</div>
     </section>
   )
 }

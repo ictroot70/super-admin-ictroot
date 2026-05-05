@@ -1,6 +1,6 @@
 'use client'
 
-import { Pagination, LoadingBar, Typography } from '@/shared/ui'
+import { Pagination, LoadingBar, Typography, Loading } from '@/shared/ui'
 
 import { usePaymentsTab } from '../../model'
 import { PaymentsTableTab } from './PaymentsTableTab'
@@ -8,7 +8,7 @@ import { PaymentsTableTab } from './PaymentsTableTab'
 export function PaymentsTab() {
   const { items, sort, error, isLoading, isRefreshing, paginationProps, onSort } = usePaymentsTab()
 
-  if (isLoading) return <div>Loading...</div>
+  if (isLoading) return <Loading />
   if (error) return <div>Failed to load payments.</div>
 
   if (!items.length) return <Typography variant={'h2'}>There are no payments yet.</Typography>
