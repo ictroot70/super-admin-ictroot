@@ -1,7 +1,7 @@
 'use client'
 
 import { NetworkStatus } from '@apollo/client'
-import { notFound, useParams } from 'next/navigation'
+import { useParams } from 'next/navigation'
 import { useMemo } from 'react'
 
 import { useGqlQuery } from '@/shared/api/graphql'
@@ -20,6 +20,7 @@ import { type PaymentsSortBy } from '../types/paymentsTab.type'
 export const usePaymentsTab = () => {
   const { userId: userIdParam } = useParams<{ userId: string }>()
   const userId = parseUserIdParam(userIdParam)
+  const safeUserId = userId ?? 0
 
   const { sort, onSort } = useSort<PaymentsSortBy>()
   const { page, pageSize, onPageChange, onPageSizeChange, resetPage } = usePagination()
@@ -29,19 +30,15 @@ export const usePaymentsTab = () => {
     onSort(key)
   }
 
-  if (!userId) {
-    notFound()
-  }
-
   const variables = useMemo<GetPaymentsByUserQueryVariables>(
     () => ({
-      userId,
+      userId: safeUserId,
       pageNumber: page,
       pageSize,
       sortBy: sort.key,
       sortDirection: sort.direction,
     }),
-    [userId, page, pageSize, sort]
+    [safeUserId, page, pageSize, sort]
   )
 
   const { data, previousData, loading, error, networkStatus } = useGqlQuery<

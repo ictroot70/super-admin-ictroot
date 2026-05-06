@@ -1,5 +1,5 @@
 'use client'
-import { notFound, useParams } from 'next/navigation'
+import { useParams } from 'next/navigation'
 
 import { useGqlQuery } from '@/shared/api/graphql'
 import {
@@ -14,15 +14,12 @@ import { parseUserIdParam } from '@/shared/lib/route-params'
 export const useUserInfo = () => {
   const params = useParams<{ userId: string }>()
   const userId = parseUserIdParam(params.userId)
-
-  if (userId === null) {
-    notFound()
-  }
+  const safeUserId = userId ?? 0
 
   const { data, loading, error } = useGqlQuery<GetUserQuery, GetUserQueryVariables>(
     GetUserDocument,
     {
-      variables: { userId },
+      variables: { userId: safeUserId },
       skip: !userId,
     }
   )

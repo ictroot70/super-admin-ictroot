@@ -2,7 +2,7 @@
 
 import { NetworkStatus } from '@apollo/client'
 import { TypedDocumentNode as DocumentNode } from '@graphql-typed-document-node/core'
-import { notFound, useParams } from 'next/navigation'
+import { useParams } from 'next/navigation'
 import { useMemo } from 'react'
 
 import { useGqlQuery } from '@/shared/api/graphql'
@@ -36,6 +36,7 @@ export const useUserRelationshipsTab = <
 }: UseUserRelationshipsTabOptions<TQuery, TVariables>) => {
   const { userId: userIdParam } = useParams<{ userId: string }>()
   const userId = parseUserIdParam(userIdParam)
+  const safeUserId = userId ?? 0
 
   const { sort, onSort } = useSort<UserRelationshipsSortBy>()
   const { page, pageSize, onPageChange, onPageSizeChange, resetPage } = usePagination()
@@ -45,20 +46,16 @@ export const useUserRelationshipsTab = <
     onSort(key)
   }
 
-  if (!userId) {
-    notFound()
-  }
-
   const variables = useMemo<TVariables>(
     () =>
       ({
-        userId,
+        userId: safeUserId,
         pageNumber: page,
         pageSize,
         sortBy: sort.key,
         sortDirection: sort.direction,
       }) as TVariables,
-    [userId, page, pageSize, sort.key, sort.direction]
+    [safeUserId, page, pageSize, sort.key, sort.direction]
   )
 
   const { data, previousData, loading, error, networkStatus } = useGqlQuery<TQuery, TVariables>(
