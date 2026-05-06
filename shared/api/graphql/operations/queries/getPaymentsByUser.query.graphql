@@ -23,6 +23,13 @@ query GetPaymentsByUser(
       price
       type
       paymentType
+      payments {
+        createdAt
+        endDate
+        amount
+        paymentMethod
+        type
+      }
     }
   }
 }

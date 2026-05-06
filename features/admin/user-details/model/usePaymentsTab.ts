@@ -65,8 +65,21 @@ export const usePaymentsTab = () => {
   const isRefreshing =
     networkStatus === NetworkStatus.setVariables || networkStatus === NetworkStatus.refetch
 
+  const normalizedItems = payments.items.map(item => {
+    const primaryPayment = item.payments?.[0] ?? null
+
+    return {
+      ...item,
+      dateOfPayment: primaryPayment?.createdAt ?? item.dateOfPayment ?? null,
+      endDate: primaryPayment?.endDate ?? item.endDate ?? null,
+      price: primaryPayment?.amount ?? item.price ?? null,
+      type: primaryPayment?.type ?? item.type ?? null,
+      paymentType: primaryPayment?.paymentMethod ?? item.paymentType ?? null,
+    }
+  })
+
   return {
-    items: payments.items,
+    items: normalizedItems,
     sort,
     error,
     isLoading,

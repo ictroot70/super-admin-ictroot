@@ -1,4 +1,3 @@
-/* eslint-disable max-lines */
 /** Internal type. DO NOT USE DIRECTLY. */
 type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] }
 /** Internal type. DO NOT USE DIRECTLY. */
@@ -90,6 +89,13 @@ export type GetPaymentsByUserQuery = {
       price: number
       type: SubscriptionType
       paymentType: PaymentMethod | null
+      payments: Array<{
+        createdAt: string | null
+        endDate: string | null
+        amount: number | null
+        paymentMethod: PaymentMethod | null
+        type: SubscriptionType | null
+      }>
     }>
   }
 }
@@ -479,6 +485,20 @@ export const GetPaymentsByUserDocument = {
                       { kind: 'Field', name: { kind: 'Name', value: 'price' } },
                       { kind: 'Field', name: { kind: 'Name', value: 'type' } },
                       { kind: 'Field', name: { kind: 'Name', value: 'paymentType' } },
+                      {
+                        kind: 'Field',
+                        name: { kind: 'Name', value: 'payments' },
+                        selectionSet: {
+                          kind: 'SelectionSet',
+                          selections: [
+                            { kind: 'Field', name: { kind: 'Name', value: 'createdAt' } },
+                            { kind: 'Field', name: { kind: 'Name', value: 'endDate' } },
+                            { kind: 'Field', name: { kind: 'Name', value: 'amount' } },
+                            { kind: 'Field', name: { kind: 'Name', value: 'paymentMethod' } },
+                            { kind: 'Field', name: { kind: 'Name', value: 'type' } },
+                          ],
+                        },
+                      },
                     ],
                   },
                 },
