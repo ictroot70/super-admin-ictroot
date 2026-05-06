@@ -7,8 +7,6 @@ import { Typography } from '@/shared/ui'
 import { useUserInfo } from '../../model'
 import { UserInfoSkeleton } from './UserInfoSkeleton'
 
-const DEFAULT_AVATAR = '/default-avatar.svg'
-
 export function UserInfo() {
   const { profile, loading } = useUserInfo()
 
@@ -16,7 +14,7 @@ export function UserInfo() {
     return <UserInfoSkeleton />
   }
 
-  const { id, avatar, name, createAt, firstName, lastName } = profile
+  const { id, avatar, name, createdAt, firstName, lastName } = profile
   const profileLink = APP_ROUTES.USERS.ID(id)
   const fullName = [firstName, lastName].filter(Boolean).join(' ') || '-'
 
@@ -25,7 +23,7 @@ export function UserInfo() {
       <div className={'flex items-center gap-6'}>
         <Image
           alt={'Avatar'}
-          src={avatar || DEFAULT_AVATAR}
+          src={avatar}
           width={60}
           height={60}
           className={'h-15 w-15 shrink-0 rounded-full object-cover'}
@@ -50,7 +48,7 @@ export function UserInfo() {
           <Typography variant={'regular_14'} className={'text-(--color-light-900)'}>
             {'Profile Creation Date'}
           </Typography>
-          <Typography variant={'regular_16'}>{createAt}</Typography>
+          <Typography variant={'regular_16'}>{createdAt}</Typography>
         </div>
       </div>
     </div>

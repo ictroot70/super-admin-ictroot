@@ -48,7 +48,7 @@ const mergeUploadedPhotoPages = (
   }
 }
 
-export const useUploadedPhotos = (userId: number | null) => {
+export const useUploadedPhotosTab = (userId: number | null) => {
   const variables = useMemo<GetUploadedPhotosByUserQueryVariables>(
     () => ({
       userId: userId!,

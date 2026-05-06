@@ -4,10 +4,11 @@ import Image from 'next/image'
 import { notFound, useParams } from 'next/navigation'
 import { useState } from 'react'
 
+import { useInfiniteScroll } from '@/shared/lib/infinite-scroll'
 import { parseUserIdParam } from '@/shared/lib/route-params'
 import { Loading, LoadingBar, Typography } from '@/shared/ui'
 
-import { useUploadedPhotos, useInfiniteScroll } from '../../model'
+import { useUploadedPhotosTab } from '../../model'
 import { PhotoCarousel } from './PhotosCarousel'
 
 export function UploadedPhotosTab() {
@@ -19,7 +20,7 @@ export function UploadedPhotosTab() {
   }
 
   const { photos, error, hasMore, isInitialLoading, isFetchingMore, loadMore } =
-    useUploadedPhotos(userId)
+    useUploadedPhotosTab(userId)
 
   const { ref: sentinelRef } = useInfiniteScroll({
     hasMore,
@@ -51,7 +52,7 @@ export function UploadedPhotosTab() {
             return (
               <div
                 key={photo.id}
-                className={'relative block aspect-[234/228] w-full cursor-pointer overflow-hidden'}
+                className={'relative block aspect-234/228 w-full cursor-pointer overflow-hidden'}
                 onClick={() => {
                   setStartIndex(index)
                   setIsModalOpen(true)

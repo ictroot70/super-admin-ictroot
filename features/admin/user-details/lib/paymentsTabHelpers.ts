@@ -4,9 +4,9 @@ export const mapSubscriptionTypeToLabel = (type: SubscriptionType) => {
   switch (type) {
     case 'DAY':
       return '1 day'
-    case 'MONTHLY':
-      return '7 days'
     case 'WEEKLY':
+      return '7 days'
+    case 'MONTHLY':
       return '1 month'
   }
 }
