@@ -1,5 +1,4 @@
 'use client'
-import { useParams } from 'next/navigation'
 
 import { useGqlQuery } from '@/shared/api/graphql'
 import {
@@ -9,17 +8,16 @@ import {
 } from '@/shared/api/graphql/gql/graphql'
 import { DEFAULT_AVATAR } from '@/shared/constant'
 import { formatDate } from '@/shared/lib/format'
-import { parseUserIdParam } from '@/shared/lib/route-params'
 
-export const useUserInfo = () => {
-  const params = useParams<{ userId: string }>()
-  const userId = parseUserIdParam(params.userId)
-  const safeUserId = userId ?? 0
+type Props = {
+  userId: number
+}
 
+export const useUserInfo = ({ userId }: Props) => {
   const { data, loading, error } = useGqlQuery<GetUserQuery, GetUserQueryVariables>(
     GetUserDocument,
     {
-      variables: { userId: safeUserId },
+      variables: { userId },
       skip: !userId,
     }
   )

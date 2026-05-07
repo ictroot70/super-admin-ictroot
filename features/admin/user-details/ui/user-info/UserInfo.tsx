@@ -4,16 +4,18 @@ import Link from 'next/link'
 import { APP_ROUTES } from '@/shared/constant'
 import { Typography } from '@/shared/ui'
 
-import { useUserInfo } from '../../model'
-import { UserInfoSkeleton } from './UserInfoSkeleton'
-
-export function UserInfo() {
-  const { profile, loading } = useUserInfo()
-
-  if (!profile || loading) {
-    return <UserInfoSkeleton />
+type Props = {
+  profile: {
+    id: number
+    name: string
+    avatar: string
+    firstName: string | null
+    lastName: string | null
+    createdAt: string
   }
+}
 
+export function UserInfo({ profile }: Props) {
   const { id, avatar, name, createdAt, firstName, lastName } = profile
   const profileLink = APP_ROUTES.USERS.ID(id)
   const fullName = [firstName, lastName].filter(Boolean).join(' ') || '-'
