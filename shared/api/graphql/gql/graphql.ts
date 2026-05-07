@@ -369,33 +369,50 @@ export type UnbanUserMutationVariables = Exact<{
 
 export type UnbanUserMutation = { __typename?: 'Mutation'; unbanUser: boolean }
 
-export type GetUsersQueryVariables = Exact<{
+export type GetPostsQueryVariables = Exact<{
+  endCursorPostId?: InputMaybe<Scalars['Int']['input']>
+  searchTerm?: InputMaybe<Scalars['String']['input']>
   pageSize?: InputMaybe<Scalars['Int']['input']>
-  pageNumber?: InputMaybe<Scalars['Int']['input']>
   sortBy?: InputMaybe<Scalars['String']['input']>
   sortDirection?: InputMaybe<SortDirection>
-  searchTerm?: InputMaybe<Scalars['String']['input']>
-  statusFilter?: InputMaybe<UserBlockStatus>
 }>
 
-export type GetUsersQuery = {
+export type GetPostsQuery = {
   __typename?: 'Query'
-  getUsers: {
-    __typename?: 'UsersPaginationModel'
-    users: Array<{
-      __typename?: 'User'
+  getPosts: {
+    __typename?: 'PostsPaginationModel'
+    pageSize: number
+    pagesCount: number
+    totalCount: number
+    items: Array<{
+      __typename?: 'Post'
       id: number
-      userName: string
-      email: string
+      ownerId: number
+      description: string
+      createdAt: any
+      updatedAt: any
+      images?: Array<{
+        __typename?: 'ImagePost'
+        id?: number | null
+        url?: string | null
+        width?: number | null
+        height?: number | null
+      }> | null
+      postOwner: {
+        __typename?: 'PostOwnerModel'
+        id: number
+        userName: string
+        firstName?: string | null
+        lastName?: string | null
+        avatars?: Array<{
+          __typename?: 'Avatar'
+          url?: string | null
+          width?: number | null
+          height?: number | null
+        }> | null
+      }
       userBan?: { __typename?: 'UserBan'; reason: string; createdAt: any } | null
     }>
-    pagination: {
-      __typename?: 'PaginationModel'
-      totalCount: number
-      pagesCount: number
-      page: number
-      pageSize: number
-    }
   }
 }
 
@@ -573,22 +590,27 @@ export const UnbanUserDocument = {
     },
   ],
 } as unknown as DocumentNode<UnbanUserMutation, UnbanUserMutationVariables>
-export const GetUsersDocument = {
+export const GetPostsDocument = {
   kind: 'Document',
   definitions: [
     {
       kind: 'OperationDefinition',
       operation: 'query',
-      name: { kind: 'Name', value: 'GetUsers' },
+      name: { kind: 'Name', value: 'GetPosts' },
       variableDefinitions: [
         {
           kind: 'VariableDefinition',
-          variable: { kind: 'Variable', name: { kind: 'Name', value: 'pageSize' } },
+          variable: { kind: 'Variable', name: { kind: 'Name', value: 'endCursorPostId' } },
           type: { kind: 'NamedType', name: { kind: 'Name', value: 'Int' } },
         },
         {
           kind: 'VariableDefinition',
-          variable: { kind: 'Variable', name: { kind: 'Name', value: 'pageNumber' } },
+          variable: { kind: 'Variable', name: { kind: 'Name', value: 'searchTerm' } },
+          type: { kind: 'NamedType', name: { kind: 'Name', value: 'String' } },
+        },
+        {
+          kind: 'VariableDefinition',
+          variable: { kind: 'Variable', name: { kind: 'Name', value: 'pageSize' } },
           type: { kind: 'NamedType', name: { kind: 'Name', value: 'Int' } },
         },
         {
@@ -601,33 +623,28 @@ export const GetUsersDocument = {
           variable: { kind: 'Variable', name: { kind: 'Name', value: 'sortDirection' } },
           type: { kind: 'NamedType', name: { kind: 'Name', value: 'SortDirection' } },
         },
-        {
-          kind: 'VariableDefinition',
-          variable: { kind: 'Variable', name: { kind: 'Name', value: 'searchTerm' } },
-          type: { kind: 'NamedType', name: { kind: 'Name', value: 'String' } },
-        },
-        {
-          kind: 'VariableDefinition',
-          variable: { kind: 'Variable', name: { kind: 'Name', value: 'statusFilter' } },
-          type: { kind: 'NamedType', name: { kind: 'Name', value: 'UserBlockStatus' } },
-        },
       ],
       selectionSet: {
         kind: 'SelectionSet',
         selections: [
           {
             kind: 'Field',
-            name: { kind: 'Name', value: 'getUsers' },
+            name: { kind: 'Name', value: 'getPosts' },
             arguments: [
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'endCursorPostId' },
+                value: { kind: 'Variable', name: { kind: 'Name', value: 'endCursorPostId' } },
+              },
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'searchTerm' },
+                value: { kind: 'Variable', name: { kind: 'Name', value: 'searchTerm' } },
+              },
               {
                 kind: 'Argument',
                 name: { kind: 'Name', value: 'pageSize' },
                 value: { kind: 'Variable', name: { kind: 'Name', value: 'pageSize' } },
-              },
-              {
-                kind: 'Argument',
-                name: { kind: 'Name', value: 'pageNumber' },
-                value: { kind: 'Variable', name: { kind: 'Name', value: 'pageNumber' } },
               },
               {
                 kind: 'Argument',
@@ -639,29 +656,62 @@ export const GetUsersDocument = {
                 name: { kind: 'Name', value: 'sortDirection' },
                 value: { kind: 'Variable', name: { kind: 'Name', value: 'sortDirection' } },
               },
-              {
-                kind: 'Argument',
-                name: { kind: 'Name', value: 'searchTerm' },
-                value: { kind: 'Variable', name: { kind: 'Name', value: 'searchTerm' } },
-              },
-              {
-                kind: 'Argument',
-                name: { kind: 'Name', value: 'statusFilter' },
-                value: { kind: 'Variable', name: { kind: 'Name', value: 'statusFilter' } },
-              },
             ],
             selectionSet: {
               kind: 'SelectionSet',
               selections: [
+                { kind: 'Field', name: { kind: 'Name', value: 'pageSize' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'pagesCount' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'totalCount' } },
                 {
                   kind: 'Field',
-                  name: { kind: 'Name', value: 'users' },
+                  name: { kind: 'Name', value: 'items' },
                   selectionSet: {
                     kind: 'SelectionSet',
                     selections: [
                       { kind: 'Field', name: { kind: 'Name', value: 'id' } },
-                      { kind: 'Field', name: { kind: 'Name', value: 'userName' } },
-                      { kind: 'Field', name: { kind: 'Name', value: 'email' } },
+                      { kind: 'Field', name: { kind: 'Name', value: 'ownerId' } },
+                      { kind: 'Field', name: { kind: 'Name', value: 'description' } },
+                      { kind: 'Field', name: { kind: 'Name', value: 'createdAt' } },
+                      { kind: 'Field', name: { kind: 'Name', value: 'updatedAt' } },
+                      {
+                        kind: 'Field',
+                        name: { kind: 'Name', value: 'images' },
+                        selectionSet: {
+                          kind: 'SelectionSet',
+                          selections: [
+                            { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+                            { kind: 'Field', name: { kind: 'Name', value: 'url' } },
+                            { kind: 'Field', name: { kind: 'Name', value: 'width' } },
+                            { kind: 'Field', name: { kind: 'Name', value: 'height' } },
+                          ],
+                        },
+                      },
+                      {
+                        kind: 'Field',
+                        name: { kind: 'Name', value: 'postOwner' },
+                        selectionSet: {
+                          kind: 'SelectionSet',
+                          selections: [
+                            { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+                            { kind: 'Field', name: { kind: 'Name', value: 'userName' } },
+                            { kind: 'Field', name: { kind: 'Name', value: 'firstName' } },
+                            { kind: 'Field', name: { kind: 'Name', value: 'lastName' } },
+                            {
+                              kind: 'Field',
+                              name: { kind: 'Name', value: 'avatars' },
+                              selectionSet: {
+                                kind: 'SelectionSet',
+                                selections: [
+                                  { kind: 'Field', name: { kind: 'Name', value: 'url' } },
+                                  { kind: 'Field', name: { kind: 'Name', value: 'width' } },
+                                  { kind: 'Field', name: { kind: 'Name', value: 'height' } },
+                                ],
+                              },
+                            },
+                          ],
+                        },
+                      },
                       {
                         kind: 'Field',
                         name: { kind: 'Name', value: 'userBan' },
@@ -676,19 +726,6 @@ export const GetUsersDocument = {
                     ],
                   },
                 },
-                {
-                  kind: 'Field',
-                  name: { kind: 'Name', value: 'pagination' },
-                  selectionSet: {
-                    kind: 'SelectionSet',
-                    selections: [
-                      { kind: 'Field', name: { kind: 'Name', value: 'totalCount' } },
-                      { kind: 'Field', name: { kind: 'Name', value: 'pagesCount' } },
-                      { kind: 'Field', name: { kind: 'Name', value: 'page' } },
-                      { kind: 'Field', name: { kind: 'Name', value: 'pageSize' } },
-                    ],
-                  },
-                },
               ],
             },
           },
@@ -696,4 +733,4 @@ export const GetUsersDocument = {
       },
     },
   ],
-} as unknown as DocumentNode<GetUsersQuery, GetUsersQueryVariables>
+} as unknown as DocumentNode<GetPostsQuery, GetPostsQueryVariables>
