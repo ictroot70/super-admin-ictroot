@@ -9,9 +9,10 @@ export type BanUserModalProps = {
   userId: string
   userName: string
   onConfirm: () => void
+  onClose: () => void
 }
 
-export const BanUserModal = ({ open, userId, userName, onConfirm }: BanUserModalProps) => {
+export const BanUserModal = ({ open, userId, userName, onConfirm, onClose }: BanUserModalProps) => {
   const { banUser, loading } = useBanUser()
   const [errorMessage, setErrorMessage] = useState('')
 
@@ -26,6 +27,7 @@ export const BanUserModal = ({ open, userId, userName, onConfirm }: BanUserModal
       setErrorMessage('')
       await banUser({ userId, banReason: reason })
       onConfirm()
+      onClose()
     } catch (error) {
       setErrorMessage(error instanceof Error ? error.message : 'Request error')
     }
@@ -35,7 +37,7 @@ export const BanUserModal = ({ open, userId, userName, onConfirm }: BanUserModal
     <>
       <ConfirmModal
         open={open}
-        onClose={onConfirm}
+        onClose={onClose}
         onConfirm={handleConfirm}
         title={'Ban user'}
         description={

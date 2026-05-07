@@ -1,0 +1,47 @@
+query GetPosts(
+  $endCursorPostId: Int
+  $searchTerm: String
+  $pageSize: Int
+  $sortBy: String
+  $sortDirection: SortDirection
+) {
+  getPosts(
+    endCursorPostId: $endCursorPostId
+    searchTerm: $searchTerm
+    pageSize: $pageSize
+    sortBy: $sortBy
+    sortDirection: $sortDirection
+  ) {
+    pageSize
+    pagesCount
+    totalCount
+    items {
+      id
+      ownerId
+      description
+      createdAt
+      updatedAt
+      images {
+        id
+        url
+        width
+        height
+      }
+      postOwner {
+        id
+        userName
+        firstName
+        lastName
+        avatars {
+          url
+          width
+          height
+        }
+      }
+      userBan {
+        reason
+        createdAt
+      }
+    }
+  }
+}
