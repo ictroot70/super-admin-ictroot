@@ -66,6 +66,7 @@ export const UserActionMenu = (props: UserActionMenuProps) => {
           setUnbanOpen(false)
           onActionComplete()
         }}
+        onClose={() => setUnbanOpen(false)}
       />
 
       <DeleteUserModal
