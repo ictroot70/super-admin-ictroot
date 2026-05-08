@@ -1,28 +1,28 @@
-"use client";
+'use client'
 
-import { useEffect } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter } from 'next/navigation'
+import { useEffect } from 'react'
 
-import { useAdminSessionStore } from "@/features/admin/auth/model/admin-session.store";
-import { ADMIN_ROUTES } from "@/shared/constant/admin-routes";
+import { useAdminSessionStore } from '@/features/admin/auth/model/admin-session.store'
 
 export default function Home() {
-  const router = useRouter();
-  const isLoggedIn = useAdminSessionStore((state) => state.isLoggedIn);
-  const hasHydrated = useAdminSessionStore((state) => state.hasHydrated);
+  const router = useRouter()
+  const isLoggedIn = useAdminSessionStore(state => state.isLoggedIn)
+  const hasHydrated = useAdminSessionStore(state => state.hasHydrated)
 
   useEffect(() => {
     if (!hasHydrated) {
-      return;
+      return
     }
 
     if (isLoggedIn) {
-      router.replace(ADMIN_ROUTES.USERS);
-      return;
+      router.replace('/users')
+
+      return
     }
 
-    router.replace(ADMIN_ROUTES.LOGIN);
-  }, [hasHydrated, isLoggedIn, router]);
+    router.replace('/login')
+  }, [hasHydrated, isLoggedIn, router])
 
-  return null;
+  return null
 }

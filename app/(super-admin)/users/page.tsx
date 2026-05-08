@@ -1,32 +1,26 @@
-"use client";
+'use client'
 
-import { Button } from "@ictroot/ui-kit";
-import { useRouter } from "next/navigation";
+import { Button } from '@ictroot/ui-kit'
+import { useRouter } from 'next/navigation'
 
-import { useAdminSessionStore } from "@/features/admin/auth/model/admin-session.store";
-import { Users } from "@/features/admin/users/ui/Users";
-import { ADMIN_ROUTES } from "@/shared/constant/admin-routes";
+import { useAdminSessionStore } from '@/features/admin/auth/model/admin-session.store'
 
 export default function Page() {
-  const router = useRouter();
-  const clearSession = useAdminSessionStore((state) => state.clearSession);
+  const router = useRouter()
+  const clearSession = useAdminSessionStore(state => state.clearSession)
 
   const handleLogout = () => {
-    clearSession();
-    router.replace(ADMIN_ROUTES.LOGIN);
-  };
+    clearSession()
+    router.replace('/login')
+  }
 
   return (
-    <div className="flex flex-col min-h-screen bg-black">
-      <div className="flex justify-end p-4 border-b border-dark-100">
-        <Button type="button" variant="outlined" onClick={handleLogout}>
-          Logout
-        </Button>
-      </div>
+    <div className={'flex min-h-screen flex-col items-center justify-center gap-6 bg-black px-4'}>
+      <h1 className={'text-2xl font-semibold text-white'}>Users</h1>
 
-      <main className="flex-1">
-        <Users />
-      </main>
+      <Button type={'button'} variant={'outlined'} onClick={handleLogout}>
+        Logout
+      </Button>
     </div>
-  );
+  )
 }

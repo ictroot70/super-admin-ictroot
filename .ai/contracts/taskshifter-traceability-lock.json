@@ -1,0 +1,178 @@
+{
+  "traceabilityVersion": "2.0.0",
+  "updatedAt": "2026-04-22",
+  "purpose": "Map super-admin UC blocks to locked product contract groups.",
+  "sources": [
+    {
+      "id": "TZ-USERS-BLOCK",
+      "title": "GraphQL super-admin: Users list",
+      "uc": [
+        {
+          "id": "UC-1",
+          "title": "Admin authorization"
+        },
+        {
+          "id": "UC-2",
+          "title": "Users list view"
+        },
+        {
+          "id": "UC-3",
+          "title": "Delete user"
+        },
+        {
+          "id": "UC-4",
+          "title": "Search users"
+        },
+        {
+          "id": "UC-5",
+          "title": "Sort users"
+        },
+        {
+          "id": "UC-6",
+          "title": "More information"
+        }
+      ]
+    },
+    {
+      "id": "TZ-MODERATION-PAYMENTS-BLOCK",
+      "title": "GraphQL super-admin: Ban/Unban + Payments",
+      "uc": [
+        {
+          "id": "UC-1",
+          "title": "Ban user"
+        },
+        {
+          "id": "UC-2",
+          "title": "Unban user"
+        },
+        {
+          "id": "UC-3",
+          "title": "Payments list"
+        }
+      ]
+    },
+    {
+      "id": "TZ-POSTS-BLOCK",
+      "title": "GraphQL super-admin: Posts list with subscription",
+      "uc": [
+        {
+          "id": "UC-1",
+          "title": "View all posts + realtime + moderation entry"
+        }
+      ]
+    }
+  ],
+  "mappings": [
+    {
+      "sourceId": "TZ-USERS-BLOCK",
+      "ucId": "UC-1",
+      "contractGroupIds": [
+        "auth-core"
+      ],
+      "contractItemIds": [
+        "AUTH-LOGIN-FLOW",
+        "AUTH-BASIC-RULE"
+      ]
+    },
+    {
+      "sourceId": "TZ-USERS-BLOCK",
+      "ucId": "UC-2",
+      "contractGroupIds": [
+        "users-admin-core"
+      ],
+      "contractItemIds": [
+        "USERS-LIST-PAGING-SEARCH-SORT"
+      ]
+    },
+    {
+      "sourceId": "TZ-USERS-BLOCK",
+      "ucId": "UC-3",
+      "contractGroupIds": [
+        "moderation-core"
+      ],
+      "contractItemIds": [
+        "MODERATION-CONFIRM-MATRIX"
+      ]
+    },
+    {
+      "sourceId": "TZ-USERS-BLOCK",
+      "ucId": "UC-4",
+      "contractGroupIds": [
+        "users-admin-core"
+      ],
+      "contractItemIds": [
+        "USERS-LIST-PAGING-SEARCH-SORT"
+      ]
+    },
+    {
+      "sourceId": "TZ-USERS-BLOCK",
+      "ucId": "UC-5",
+      "contractGroupIds": [
+        "users-admin-core"
+      ],
+      "contractItemIds": [
+        "USERS-LIST-PAGING-SEARCH-SORT"
+      ]
+    },
+    {
+      "sourceId": "TZ-USERS-BLOCK",
+      "ucId": "UC-6",
+      "contractGroupIds": [
+        "users-admin-core"
+      ],
+      "contractItemIds": [
+        "USERS-DETAILS-TABS"
+      ]
+    },
+    {
+      "sourceId": "TZ-MODERATION-PAYMENTS-BLOCK",
+      "ucId": "UC-1",
+      "contractGroupIds": [
+        "moderation-core"
+      ],
+      "contractItemIds": [
+        "MODERATION-CONFIRM-MATRIX",
+        "MODERATION-BAN-REASON"
+      ]
+    },
+    {
+      "sourceId": "TZ-MODERATION-PAYMENTS-BLOCK",
+      "ucId": "UC-2",
+      "contractGroupIds": [
+        "moderation-core"
+      ],
+      "contractItemIds": [
+        "MODERATION-CONFIRM-MATRIX"
+      ]
+    },
+    {
+      "sourceId": "TZ-MODERATION-PAYMENTS-BLOCK",
+      "ucId": "UC-3",
+      "contractGroupIds": [
+        "payments-admin-core"
+      ],
+      "contractItemIds": [
+        "PAYMENTS-LIST-SEARCH-SORT-PAGING"
+      ]
+    },
+    {
+      "sourceId": "TZ-POSTS-BLOCK",
+      "ucId": "UC-1",
+      "contractGroupIds": [
+        "posts-admin-core",
+        "moderation-core"
+      ],
+      "contractItemIds": [
+        "POSTS-INFINITE-REALTIME",
+        "POSTS-MODERATION-REUSE",
+        "MODERATION-BAN-REASON"
+      ]
+    }
+  ],
+  "knownGaps": [
+    {
+      "gapId": "AUTO-CONTRACT-TESTS",
+      "description": "Most locked scenarios are still guarded by process checks and manual smoke; expand automated contract tests over time."
+    }
+  ]
+}
