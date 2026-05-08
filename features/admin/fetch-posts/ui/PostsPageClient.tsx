@@ -7,7 +7,7 @@ import { BanUserModal } from '@/features/admin/ban-user'
 import { useInfiniteScroll } from '@/features/admin/fetch-posts/model/useInfiniteScroll'
 import { usePostsList } from '@/features/admin/fetch-posts/model/userPostsList'
 import { UnbanUserModal } from '@/features/admin/unban-user'
-import { Loading } from '@/shared/composites'
+import { LinearProgress, Loading } from '@/shared/composites'
 import { Input, Typography } from '@/shared/ui'
 
 type ModerationAction = 'ban' | 'unban'
@@ -26,7 +26,6 @@ export const PostsPageClient = () => {
     inputValue,
     isTyping,
     isSearching,
-    isFirstLoadDone,
     isSwappingPosts,
     onSearchChange,
     loadMore,
@@ -63,6 +62,9 @@ export const PostsPageClient = () => {
 
   return (
     <div className={'flex flex-col gap-9'}>
+      <div className={'fixed top-0 right-0 left-0 z-100 w-full'}>
+        <LinearProgress active={isInitialLoading || isTyping || isSearching} />
+      </div>
       <div className={'bg-background sticky top-0 z-50 pt-9'}>
         <Input
           inputType={'search'}
@@ -71,16 +73,6 @@ export const PostsPageClient = () => {
           onChange={e => onSearchChange(e.target.value)}
           className={'relative z-10'}
         />
-        <div className={'h-7 pt-2'}>
-          <Typography
-            variant={'regular_14'}
-            className={
-              (isTyping || isSearching) && isFirstLoadDone ? 'text-light-900' : 'text-transparent'
-            }
-          >
-            Searching...
-          </Typography>
-        </div>
         <div
           className={
             'from-background pointer-events-none absolute right-0 left-0 h-8 bg-linear-to-b from-10% to-transparent'
