@@ -14,18 +14,22 @@ import {
   IMAGE_SIZES,
   IMAGE_LOADING_STRATEGY,
   SafeImage,
+  Block,
+  BlockFull,
 } from '@/shared'
 
 const DEFAULT_IMAGE = '/default-image.svg'
 const MAX_CHAR_COUNT = 67
 
+type ModerationAction = 'ban' | 'unban'
+
 type Props = {
   post: PostVM
-  onBanOwnerAction: (userId: string, userName: string) => void
+  onModerationAction: (userId: string, userName: string, action: ModerationAction) => void
   isPriorityPost?: boolean
 }
 
-const AdminPostComponent = ({ post, onBanOwnerAction, isPriorityPost = false }: Props) => {
+const AdminPostComponent = ({ post, onModerationAction, isPriorityPost = false }: Props) => {
   const { postOwner, images, description, createdAt, userBan } = post
 
   const [isExpanded, setIsExpanded] = useState(false)
@@ -123,16 +127,20 @@ const AdminPostComponent = ({ post, onBanOwnerAction, isPriorityPost = false }: 
         </Link>
 
         {userBan ? (
-          <span className={'bg-danger-500 text-light-100 rounded px-2 py-0.5 text-xs font-medium'}>
-            Banned
-          </span>
+          <button
+            type={'button'}
+            className={'flex h-auto w-auto cursor-pointer rounded-full p-0.75'}
+            onClick={() => onModerationAction(String(postOwner.id), postOwner.userName, 'unban')}
+          >
+            <BlockFull className={'bg-danger-500'} />
+          </button>
         ) : (
           <button
             type={'button'}
-            onClick={() => onBanOwnerAction(String(postOwner.id), postOwner.userName)}
-            className={'text-danger-500 hover:bg-dark-500 rounded px-2 py-1 text-xs transition'}
+            onClick={() => onModerationAction(String(postOwner.id), postOwner.userName, 'ban')}
+            className={'flex h-auto w-auto cursor-pointer rounded-full p-0.75'}
           >
-            Ban user
+            <Block />
           </button>
         )}
       </div>

@@ -14,6 +14,7 @@ export type PostsListState = {
   posts: PostVM[]
   error: unknown
   isInitialLoading: boolean
+  isTyping: boolean
   isSearching: boolean
   isFirstLoadDone: boolean
   isFetchingMore: boolean
@@ -24,6 +25,7 @@ export type PostsListState = {
   inputValue: string
   searchTerm: string
   onSearchChange: (value: string) => void
+  updateUserBanState: (userId: string, isBanned: boolean) => void
 }
 
 export const usePostsList = (): PostsListState => {
@@ -32,6 +34,7 @@ export const usePostsList = (): PostsListState => {
 
   const [endCursorPostId, setEndCursorPostId] = useState<number | null>(null)
 
+  const [isTyping, setIsTyping] = useState(false)
   const [isSearching, setIsSearching] = useState(false)
   const [inputValue, setInputValue] = useState('')
   const [searchTerm, setSearchTerm] = useState('')
@@ -157,12 +160,14 @@ export const usePostsList = (): PostsListState => {
   const onSearchChange = useCallback(
     (value: string) => {
       setInputValue(value)
+      setIsTyping(true)
 
       if (debounceTimer.current) {
         clearTimeout(debounceTimer.current)
       }
 
       debounceTimer.current = setTimeout(() => {
+        setIsTyping(false)
         setSearchTerm(value)
         lastRequestedCursorRef.current = null
 
@@ -185,15 +190,37 @@ export const usePostsList = (): PostsListState => {
 
   const hasMore = endCursorPostId !== null && posts.length < totalCount
 
+  const updateUserBanState = useCallback((userId: string, isBanned: boolean) => {
+    setPosts(prev =>
+      prev.map<PostVM>(post => {
+        if (String(post.postOwner.id) !== userId) {
+          return post
+        }
+
+        return {
+          ...post,
+          userBan: isBanned
+            ? ({
+                createdAt: new Date().toISOString(),
+              } as NonNullable<PostVM['userBan']>)
+            : null,
+        }
+      })
+    )
+  }, [])
+
   return {
     posts,
     error,
 
     isInitialLoading,
+    isTyping,
     isSearching,
     isFirstLoadDone,
     isFetchingMore,
     isSwappingPosts,
+
+    updateUserBanState,
 
     hasMore,
     endCursorPostId,
