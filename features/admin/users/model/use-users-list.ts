@@ -1,6 +1,8 @@
+
+
 "use client";
 
-import { useState, useEffect, useMemo, useCallback, useRef } from "react";
+import { useState, useMemo, useCallback, useRef, useEffect } from "react";
 import { useGqlQuery } from "@/shared/api/graphql";
 import {
   GetUsersDocument,
@@ -17,6 +19,9 @@ import {
   UsersViewModel,
 } from ".";
 import { useDebounce } from "../utils/useDebounce";
+// import { UserBlockStatus } from "@/entities/admin/user"; // 🔥 Закомментировано, пока нет в схеме
+
+export const USERS_PAGE_SIZE_OPTIONS = [8, 16, 32];
 
 export function useUsersList() {
   const [page, setPage] = useState(1);
@@ -25,98 +30,95 @@ export function useUsersList() {
   const [sortValue, setSortValue] = useState<SortValue>("createdAt_desc");
   const [filterStatus, setFilterStatus] = useState<FilterValue>("ALL");
 
-  const prevDepsRef = useRef<string>("");
-  const debouncedSearch = useDebounce(searchTerm, 500);
+  const debouncedSearch = useDebounce(searchTerm, 300);
+
+
+  const prevFiltersRef = useRef({ debouncedSearch, sortValue, filterStatus, pageSize });
 
   useEffect(() => {
-    const depsKey = `${debouncedSearch}-${sortValue}-${filterStatus}-${pageSize}`;
-    if (prevDepsRef.current && prevDepsRef.current !== depsKey) {
+    const prev = prevFiltersRef.current;
+    const hasChanges =
+      prev.debouncedSearch !== debouncedSearch ||
+      prev.sortValue !== sortValue ||
+      prev.filterStatus !== filterStatus ||
+      prev.pageSize !== pageSize;
+
+    if (hasChanges) {
       setPage(1);
     }
-    prevDepsRef.current = depsKey;
+    prevFiltersRef.current = { debouncedSearch, sortValue, filterStatus, pageSize };
   }, [debouncedSearch, sortValue, filterStatus, pageSize]);
 
   const [sortField, sortDirection] = useMemo(() => {
-    const [field, direction] = sortValue.split("_") as [
-      UsersSortBy,
-      SortDirection,
-    ];
+    const [field, direction] = sortValue.split("_") as [UsersSortBy, SortDirection];
     const mappedField = field === UsersSortBy.USER_NAME ? "userName" : field;
     return [mappedField, direction];
   }, [sortValue]);
 
-  const isEmailSearch = debouncedSearch.trim().includes("@");
 
-  const variables: GetUsersQueryVariables = useMemo(
-    () => ({
+  const variables: GetUsersQueryVariables = useMemo(() => {
+    const vars: GetUsersQueryVariables = {
       pageNumber: page,
-      pageSize: isEmailSearch ? 100 : pageSize,
-      searchTerm: isEmailSearch
-        ? undefined
-        : debouncedSearch.trim() || undefined,
+      pageSize: pageSize,
       sortBy: sortField,
       sortDirection,
-    }),
-    [page, pageSize, debouncedSearch, sortField, sortDirection, isEmailSearch],
-  );
+      // 🔥 statusFilter закомментирован — раскомментируйте после `pnpm codegen`, когда поле появится в схеме
+      // statusFilter: filterStatus as UserBlockStatus,
+    };
+
+    const trimmedSearch = debouncedSearch.trim();
+    if (trimmedSearch) {
+      vars.searchTerm = trimmedSearch;
+    }
+
+    return vars;
+  }, [page, pageSize, debouncedSearch, sortField, sortDirection, filterStatus]);
 
   const { data, loading, error, refetch } = useGqlQuery<
     GetUsersQuery,
     GetUsersQueryVariables
   >(GetUsersDocument, {
     variables,
-    fetchPolicy: "cache-and-network",
+    fetchPolicy: "cache-first",
+    returnPartialData: true,
+    nextFetchPolicy: "cache-first",
   });
 
-  const { items, hasActiveFilters } = useMemo(() => {
-    const rawUsers = data?.getUsers?.users || [];
-    const searchTrimmed = debouncedSearch.trim().toLowerCase();
+  const { items, totalCount, pagesCount, currentPage, currentPageSize } = useMemo(() => {
+    const usersData = data?.getUsers;
 
-    let filtered = rawUsers.filter((user) => {
-      const isBlocked = user.userBan !== null && user.userBan !== undefined;
-      if (filterStatus === "ALL") return true;
-      return filterStatus === "BLOCKED" ? isBlocked : !isBlocked;
-    });
-
-    if (searchTrimmed) {
-      if (isEmailSearch) {
-        filtered = filtered.filter((user) =>
-          user.email?.toLowerCase().includes(searchTrimmed),
-        );
-      } else {
-        filtered = filtered.filter((user) => {
-          const emailMatch = user.email?.toLowerCase().includes(searchTrimmed);
-          const usernameMatch = user.userName
-            ?.toLowerCase()
-            .includes(searchTrimmed);
-          return emailMatch || usernameMatch;
-        });
-      }
+    if (!usersData) {
+      return {
+        items: [],
+        totalCount: 0,
+        pagesCount: 1,
+        currentPage: 1,
+        currentPageSize: pageSize,
+      };
     }
 
-    const viewModelItems: UsersViewModel[] = filtered.map((user) => ({
-      userId: user.id,
-      username: user.userName,
-      email: user.email,
-      profileLink: `/profile/${user.userName}`,
-      dateAdded: user.createdAt as string,
-      isBlocked: user.userBan !== null,
+    const viewModelItems: UsersViewModel[] = usersData.users.map((user) => ({
+      userId: user.id ?? 0,
+      username: user.userName ?? "Unknown",
+      email: user.email ?? "",
+      profileLink: `/profile/${user.userName ?? "unknown"}`,
+      dateAdded: user.createdAt ?? "",
+      isBlocked: user.userBan !== null && user.userBan !== undefined,
     }));
 
-    const hasActiveFilters =
-      debouncedSearch.trim().length > 0 || filterStatus !== "ALL";
+    return {
+      items: viewModelItems,
+      totalCount: usersData.pagination?.totalCount ?? 0,
+      pagesCount: usersData.pagination?.pagesCount ?? 1,
+      currentPage: usersData.pagination?.page ?? 1,
+      currentPageSize: usersData.pagination?.pageSize ?? pageSize,
+    };
+  }, [data, pageSize]);
 
-    return { items: viewModelItems, hasActiveFilters };
-  }, [data, filterStatus, debouncedSearch, isEmailSearch]);
-
-  const pagination = data?.getUsers?.pagination || {
-    page: 1,
-    pageSize: 8,
-    totalCount: 0,
-    pagesCount: 1,
-  };
-
-  const totalPages = pagination.pagesCount > 0 ? pagination.pagesCount : 1;
+  // Флаг для UI: есть ли активные фильтры
+  const hasActiveFilters = useMemo(() => {
+    return debouncedSearch.trim().length > 0 || filterStatus !== "ALL";
+  }, [debouncedSearch, filterStatus]);
 
   const sort: UsersSortState = useMemo(
     () => ({
@@ -126,48 +128,39 @@ export function useUsersList() {
     [sortField, sortDirection],
   );
 
-  const handleSort = useCallback(
-    (key: UsersSortBy) => {
-      setSortValue((prev) => {
-        const [currentField] = prev.split("_");
-        const isSameField = currentField === key;
-        const newDirection: SortDirection =
-          isSameField && sortDirection === "asc" ? "desc" : "asc";
-        return `${key}_${newDirection}`;
-      });
-    },
-    [sortDirection],
-  );
+  const handleSort = useCallback((key: UsersSortBy) => {
+    setSortValue((prev) => {
+      const [currentField] = prev.split("_");
+      const isSameField = currentField === key;
+      const newDirection: SortDirection =
+        isSameField && sortDirection === "asc" ? "desc" : "asc";
+      return `${key}_${newDirection}`;
+    });
+  }, [sortDirection]);
 
-  const handlePageChange = useCallback(
-    (newPage: number) => setPage(newPage),
-    [],
-  );
+  const handlePageChange = useCallback((newPage: number) => {
+    setPage(newPage);
+  }, []);
 
   const handleItemsPerPageChange = useCallback((newPageSize: number) => {
     setPageSize(newPageSize);
-    setPage(1);
   }, []);
 
   const handleClearFilters = useCallback(() => {
     setSearchTerm("");
     setFilterStatus("ALL");
-    setPage(1);
   }, []);
 
-  return {
+  return useMemo(() => ({
     users: {
-      data:
-        items.length > 0 || !loading
-          ? {
-              items,
-              page: pagination.page,
-              pageSize: pagination.pageSize,
-              totalCount: pagination.totalCount,
-              totalPages,
-              hasActiveFilters,
-            }
-          : null,
+      data: {
+        items,
+        page: currentPage,
+        pageSize: currentPageSize,
+        totalCount,
+        totalPages: pagesCount,
+        hasActiveFilters,
+      },
       isLoading: loading,
       isError: !!error,
     },
@@ -181,5 +174,24 @@ export function useUsersList() {
     setSearchTerm,
     setFilterStatus,
     refetch,
-  };
+  }), [
+    items,
+    currentPage,
+    currentPageSize,
+    totalCount,
+    pagesCount,
+    hasActiveFilters,
+    loading,
+    error,
+    sort,
+    searchTerm,
+    filterStatus,
+    handleSort,
+    handlePageChange,
+    handleItemsPerPageChange,
+    handleClearFilters,
+    setSearchTerm,
+    setFilterStatus,
+    refetch,
+  ]);
 }
