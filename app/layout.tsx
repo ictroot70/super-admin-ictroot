@@ -1,37 +1,47 @@
-import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
-import "./globals.css";
+import type { Metadata } from 'next'
+import type { ReactNode } from 'react'
 
-import { ApolloAppProvider } from "./providers/apollo/apollo-provider";
+import { Geist, Geist_Mono } from 'next/font/google' // 🔥 Добавьте, если используете Geist
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
+// 🔥 Импорт провайдера — используйте абсолютный путь (как в A6.2)
+import { ApolloAppProvider } from '@/app/providers/apollo'
+// 🔥 AppHeader из A6.2 — нужен для навигации/аутентификации
+import { AppHeader } from '@/widgets/Header'
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
+// 🔥 Если используете Geist — раскомментируйте:
+// const geistSans = Geist({ variable: "--font-geist-sans", subsets: ["latin"] })
+// const geistMono = Geist_Mono({ variable: "--font-geist-mono", subsets: ["latin"] })
+// 🔥 Или если используете Inter/Roboto (как в A6.2):
+// import '@fontsource-variable/inter'
+// import '@fontsource-variable/roboto'
+import './globals.css'
 
 export const metadata: Metadata = {
-  title: "Super Admin",
-  description: "Admin panel",
-};
+  // 🔥 Берём расширенную метадату из A6.2
+  title: 'Super Admin',
+  description: 'Super admin dashboard for ICTRoot',
+  authors: [{ name: 'Ictroot Team', url: 'https://ictroot.uk' }],
+  metadataBase: new URL('https://ictroot.uk'),
+  robots: { index: true, follow: true },
+  icons: {
+    icon: '/favicon.ico',
+    shortcut: '/favicon.ico',
+    apple: '/apple-touch-icon.png',
+  },
+}
 
-export default function RootLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+export default function RootLayout({ children }: Readonly<{ children: ReactNode }>) {
   return (
-    <html
-      lang="ru"
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
-    >
-      <body className="min-h-full flex flex-col">
-        <ApolloAppProvider>{children}</ApolloAppProvider>
+    // 🔥 lang="ru" оставляем из вашей ветки (если приложение на русском)
+    <html lang={"ru"} className={"h-full antialiased"}>
+      {/* 🔥 flex flex-col оставляем, если нужен вертикальный флекс-лейаут */}
+      <body className={"min-h-full flex flex-col"}>
+        <ApolloAppProvider>
+          {/* 🔥 AppHeader из A6.2 — обязателен, если в приложении есть хедер */}
+          <AppHeader />
+          {children}
+        </ApolloAppProvider>
       </body>
     </html>
-  );
+  )
 }

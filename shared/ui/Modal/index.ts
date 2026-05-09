@@ -1,2 +1,1 @@
-export { Modal } from "./Modal";
-export type { ModalProps } from "./Modal";
+export { Modal, ModalFrame, type ModalProps, type ModalFrameProps } from '@ictroot/ui-kit/modal'

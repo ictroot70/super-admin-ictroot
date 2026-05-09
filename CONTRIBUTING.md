@@ -14,6 +14,12 @@
 - GraphQL client stack: `@apollo/client` + `graphql-ws`.
 - В рамках Sprint 8 альтернативные GraphQL-клиенты не используются.
 
+## Менеджер пакетов
+
+- Поддерживается только **pnpm** (версия зафиксирована в поле `packageManager` в `package.json`, lock — `pnpm-lock.yaml`).
+- Не используйте `npm install` / `yarn` в корне репозитория: появятся лишние lock-файлы и расхождение с CI (`pnpm install --frozen-lockfile`).
+- Первый старт: `pnpm install`, далее команды из `package.json` только через `pnpm …`.
+
 ## Структура репозитория (Sprint 8)
 
 - Роуты: `app/(super-admin)/...`

@@ -1,10 +1,9 @@
+import Image from "next/image";
 import React, { type AriaAttributes, type ReactNode } from "react";
 
-import Image from "next/image";
+import { TableHeaderCell } from "../Table";
 
 import s from "./SortableHeaderCell.module.scss";
-
-import { TableHeaderCell } from "../Table";
 
 type Props<T extends string> = {
   title: ReactNode;

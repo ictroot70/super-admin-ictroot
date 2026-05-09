@@ -1,10 +1,12 @@
 "use client";
 
 import React, { memo } from "react";
+
 import { Button, Typography } from "@/shared/ui";
+
+import { FilterValue } from "../../model";
 import { Controls } from "../Controls/Controls";
 import { PageContainer } from "../PageContainer/PageContainer";
-import { FilterValue } from "../../model";
 
 interface EmptyFiltersStateProps {
   searchTerm: string;
@@ -30,14 +32,14 @@ export const EmptyFiltersState = memo(
           filterStatus={filterStatus}
           onFilterChange={onFilterChange}
         />
-        <div className="grid place-items-center gap-4 text-center py-12">
-          <Typography variant="h2" className="text-light-100">
+        <div className={"grid place-items-center gap-4 text-center py-12"}>
+          <Typography variant={"h2"} className={"text-light-100"}>
             No users found
           </Typography>
-          <Typography variant="h3" className="text-dark-100">
+          <Typography variant={"h3"} className={"text-dark-100"}>
             Try adjusting your search or filter criteria
           </Typography>
-          <Button variant="primary" onClick={onClearFilters}>
+          <Button variant={"primary"} onClick={onClearFilters}>
             Clear filters
           </Button>
         </div>

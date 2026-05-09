@@ -3,6 +3,8 @@
 "use client";
 
 import { useState, useMemo, useCallback, useRef, useEffect } from "react";
+
+import { UserBlockStatus } from "@/entities/admin/user";
 import { useGqlQuery } from "@/shared/api/graphql";
 import {
   GetUsersDocument,
@@ -19,7 +21,6 @@ import {
   UsersViewModel,
 } from ".";
 import { useDebounce } from "../utils/useDebounce";
-// import { UserBlockStatus } from "@/entities/admin/user"; // 🔥 Закомментировано, пока нет в схеме
 
 export const USERS_PAGE_SIZE_OPTIONS = [8, 16, 32];
 
@@ -31,7 +32,6 @@ export function useUsersList() {
   const [filterStatus, setFilterStatus] = useState<FilterValue>("ALL");
 
   const debouncedSearch = useDebounce(searchTerm, 300);
-
 
   const prevFiltersRef = useRef({ debouncedSearch, sortValue, filterStatus, pageSize });
 
@@ -52,9 +52,9 @@ export function useUsersList() {
   const [sortField, sortDirection] = useMemo(() => {
     const [field, direction] = sortValue.split("_") as [UsersSortBy, SortDirection];
     const mappedField = field === UsersSortBy.USER_NAME ? "userName" : field;
+
     return [mappedField, direction];
   }, [sortValue]);
-
 
   const variables: GetUsersQueryVariables = useMemo(() => {
     const vars: GetUsersQueryVariables = {
@@ -62,11 +62,11 @@ export function useUsersList() {
       pageSize: pageSize,
       sortBy: sortField,
       sortDirection,
-      // 🔥 statusFilter закомментирован — раскомментируйте после `pnpm codegen`, когда поле появится в схеме
-      // statusFilter: filterStatus as UserBlockStatus,
+      statusFilter: filterStatus as UserBlockStatus, // 🔥 Включаем фильтр
     };
 
     const trimmedSearch = debouncedSearch.trim();
+
     if (trimmedSearch) {
       vars.searchTerm = trimmedSearch;
     }
@@ -98,11 +98,11 @@ export function useUsersList() {
     }
 
     const viewModelItems: UsersViewModel[] = usersData.users.map((user) => ({
-      userId: user.id ?? 0,
+      userId: user.id, // ✅ id: Int! в схеме — не может быть null
       username: user.userName ?? "Unknown",
       email: user.email ?? "",
       profileLink: `/profile/${user.userName ?? "unknown"}`,
-      dateAdded: user.createdAt ?? "",
+      dateAdded: user.createdAt, // ✅ createdAt: DateTime! — не может быть null
       isBlocked: user.userBan !== null && user.userBan !== undefined,
     }));
 
@@ -115,7 +115,6 @@ export function useUsersList() {
     };
   }, [data, pageSize]);
 
-  // Флаг для UI: есть ли активные фильтры
   const hasActiveFilters = useMemo(() => {
     return debouncedSearch.trim().length > 0 || filterStatus !== "ALL";
   }, [debouncedSearch, filterStatus]);
@@ -134,6 +133,7 @@ export function useUsersList() {
       const isSameField = currentField === key;
       const newDirection: SortDirection =
         isSameField && sortDirection === "asc" ? "desc" : "asc";
+
       return `${key}_${newDirection}`;
     });
   }, [sortDirection]);
@@ -150,6 +150,7 @@ export function useUsersList() {
     setSearchTerm("");
     setFilterStatus("ALL");
   }, []);
+
 
   return useMemo(() => ({
     users: {

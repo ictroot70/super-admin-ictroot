@@ -1,7 +1,7 @@
 "use client";
 
-import { useEffect } from "react";
 import { useRouter, usePathname } from "next/navigation";
+import { useEffect } from "react";
 
 import { useAdminSessionStore } from "@/features/admin/auth/model/admin-session.store";
 import { ADMIN_ROUTES } from "@/shared/constant/admin-routes";
@@ -22,6 +22,7 @@ export function useAuthRedirect() {
   useEffect(() => {
     if (shouldRedirectToUsers) {
       router.replace(ADMIN_ROUTES.USERS);
+
       return;
     }
 

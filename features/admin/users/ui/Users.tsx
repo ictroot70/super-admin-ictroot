@@ -1,15 +1,15 @@
 "use client";
 
-import { Pagination } from "@/shared/ui";
 import { Loading } from "@/shared/composites";
-import { useUsersList, USERS_PAGE_SIZE_OPTIONS } from "../model";
+import { Pagination } from "@/shared/ui";
 
-import { PageContainer } from "./PageContainer/PageContainer";
+import { useUsersList, USERS_PAGE_SIZE_OPTIONS } from "../model";
 import { Controls } from "./Controls/Controls";
-import { UsersTable } from "./UsersTable/UsersTable";
-import { ErrorState } from "./ErrorState/ErrorState";
-import { EmptyState } from "./EmptyState/EmptyState";
 import { EmptyFiltersState } from "./EmptyState/EmptyFiltersState";
+import { EmptyState } from "./EmptyState/EmptyState";
+import { ErrorState } from "./ErrorState/ErrorState";
+import { PageContainer } from "./PageContainer/PageContainer";
+import { UsersTable } from "./UsersTable/UsersTable";
 
 export function Users() {
   const {
@@ -48,6 +48,7 @@ export function Users() {
         />
       );
     }
+
     return <EmptyState />;
   }
 

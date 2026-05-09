@@ -1,0 +1,51 @@
+name: Unit Tests
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+      - develop
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  unit-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10.11.1
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'pnpm'
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Resolve unit test command
+        id: test_cmd
+        shell: bash
+        run: |
+          CMD=$(node -e "const fs=require('fs');const pkg=JSON.parse(fs.readFileSync('package.json','utf8'));const s=pkg.scripts||{};process.stdout.write(s['test:run']?'test:run':(s.test?'test':''));")
+          echo "command=$CMD" >> "$GITHUB_OUTPUT"
+          if [ -z "$CMD" ]; then
+            echo "No unit-test script configured in package.json yet."
+          fi
+
+      - name: Run unit tests
+        if: steps.test_cmd.outputs.command != ''
+        run: pnpm run ${{ steps.test_cmd.outputs.command }}
+
+      - name: Skip unit tests (not configured)
+        if: steps.test_cmd.outputs.command == ''
+        run: echo "Skipping unit tests because no test script is configured."

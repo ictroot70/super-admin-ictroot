@@ -1,27 +1,27 @@
-"use client";
+'use client'
 
-import { create } from "zustand";
-import { createJSONStorage, persist } from "zustand/middleware";
+import { create } from 'zustand'
+import { createJSONStorage, persist } from 'zustand/middleware'
 
 type AdminSessionState = {
-  email: string | null;
-  password: string | null;
-  isLoggedIn: boolean;
-  hasHydrated: boolean;
-  setHasHydrated: (value: boolean) => void;
-  setSession: (email: string, password: string) => void;
-  clearSession: () => void;
-};
+  email: string | null
+  password: string | null
+  isLoggedIn: boolean
+  hasHydrated: boolean
+  setHasHydrated: (value: boolean) => void
+  setSession: (email: string, password: string) => void
+  clearSession: () => void
+}
 
 export const useAdminSessionStore = create<AdminSessionState>()(
   persist(
-    (set) => ({
+    set => ({
       email: null,
       password: null,
       isLoggedIn: false,
       hasHydrated: false,
 
-      setHasHydrated: (value) =>
+      setHasHydrated: value =>
         set({
           hasHydrated: value,
         }),
@@ -41,11 +41,11 @@ export const useAdminSessionStore = create<AdminSessionState>()(
         }),
     }),
     {
-      name: "admin-session",
+      name: 'admin-session',
       storage: createJSONStorage(() => sessionStorage),
-      onRehydrateStorage: () => (state) => {
-        state?.setHasHydrated(true);
+      onRehydrateStorage: () => state => {
+        state?.setHasHydrated(true)
       },
-    },
-  ),
-);
+    }
+  )
+)

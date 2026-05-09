@@ -1,33 +1,47 @@
-"use client";
+'use client'
 
-import { Suspense, type ReactNode } from "react";
+import { usePathname, useRouter } from 'next/navigation'
+import { type ReactNode, useEffect } from 'react'
 
-import { ApolloAppProvider } from "@/app/providers/apollo";
-import { Loading } from "@/shared/composites";
-import { ADMIN_ROUTES } from "@/shared/constant/admin-routes";
-import { useAuthRedirect } from "./_hooks/use-auth-redirect";
+import { SuperAdminLayoutShell } from '@/app/super-admin-layout-shell'
+import { useAdminSessionStore } from '@/features/admin/auth/model/admin-session.store'
+import { Loading } from '@/shared/composites'
 
-type Props = Readonly<{ children: ReactNode }>;
+type Props = Readonly<{ children: ReactNode }>
 
 export default function Layout({ children }: Props) {
-  const { shouldShowLoading } = useAuthRedirect();
+  const router = useRouter()
+  const pathname = usePathname()
+  const isLoggedIn = useAdminSessionStore(state => state.isLoggedIn)
+  const hasHydrated = useAdminSessionStore(state => state.hasHydrated)
 
-  if (shouldShowLoading) {
+  const shouldRedirectToUsers = hasHydrated && pathname === '/login' && isLoggedIn
+  const shouldRedirectToLogin = hasHydrated && pathname !== '/login' && !isLoggedIn
+
+  useEffect(() => {
+    if (shouldRedirectToUsers) {
+      router.replace('/users')
+
+      return
+    }
+
+    if (shouldRedirectToLogin) {
+      router.replace('/login')
+    }
+  }, [router, shouldRedirectToLogin, shouldRedirectToUsers])
+
+  if (!hasHydrated || shouldRedirectToUsers || shouldRedirectToLogin) {
     return (
-      <ApolloAppProvider>
-        <div className="flex items-center justify-center min-h-screen">
-          <Loading />
-        </div>
-      </ApolloAppProvider>
-    );
+      <div>
+        <Loading />
+      </div>
+    )
   }
 
-  return (
-    <ApolloAppProvider>
-      <Suspense fallback={<Loading />}>{children}</Suspense>
-    </ApolloAppProvider>
-  );
+  if (!isLoggedIn) {
+    return <>{children}</>
+  }
+
+  return <SuperAdminLayoutShell>{children}</SuperAdminLayoutShell>
 }
 
-// Export route constants for external use
-export { ADMIN_ROUTES };

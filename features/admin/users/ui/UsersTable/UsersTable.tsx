@@ -1,3 +1,4 @@
+import { Button } from "@/shared";
 import {
   SortableHeaderCell,
   Table,
@@ -8,6 +9,7 @@ import {
   TableRow,
 } from "@/shared/composites/Table";
 import { formatDate } from "@/shared/lib/formatters";
+
 import { UsersSortBy, UsersSortState } from "../../model";
 
 export interface UsersViewModel {
@@ -41,7 +43,7 @@ type Props = {
 
 export function UsersTable({ items, sort, onSort }: Props) {
   return (
-    <div className="overflow-x-auto">
+    <div className={"overflow-x-auto"}>
       <Table>
         <TableHead>
           <TableRow>
@@ -56,7 +58,7 @@ export function UsersTable({ items, sort, onSort }: Props) {
                   onSort={onSort}
                 />
               ) : (
-                <TableHeaderCell key={column.id} scope="col">
+                <TableHeaderCell key={column.id} scope={"col"}>
                   {column.title}
                 </TableHeaderCell>
               ),
@@ -68,8 +70,8 @@ export function UsersTable({ items, sort, onSort }: Props) {
             items.map((item) => (
               <TableRow key={item.userId}>
                 <TableCell>
-                  <div className="flex items-center gap-2">
-                    {item.isBlocked && <span className="text-xs">🚫</span>}
+                  <div className={"flex items-center gap-2"}>
+                    {item.isBlocked && <span className={"text-xs"}>🚫</span>}
                     <span>{item.userId}</span>
                   </div>
                 </TableCell>
@@ -77,21 +79,21 @@ export function UsersTable({ items, sort, onSort }: Props) {
                 <TableCell>
                   <a
                     href={item.profileLink}
-                    className="text-[var(--color-primary)] no-underline hover:underline"
-                    target="_blank"
-                    rel="noopener noreferrer"
+                    className={"text-[var(--color-primary)] no-underline hover:underline"}
+                    target={"_blank"}
+                    rel={"noopener noreferrer"}
                   >
                     {item.username}
                   </a>
                 </TableCell>
                 <TableCell>{formatDate(item.dateAdded)}</TableCell>
                 <TableCell>
-                  <button
-                    className="cursor-pointer border-none bg-transparent p-1 text-xl hover:opacity-80"
-                    aria-label="User actions"
+                  <Button
+                    className={"cursor-pointer border-none bg-transparent p-1 text-xl hover:opacity-80"}
+                    aria-label={"User actions"}
                   >
                     ⋮
-                  </button>
+                  </Button>
                 </TableCell>
               </TableRow>
             ))
@@ -99,7 +101,7 @@ export function UsersTable({ items, sort, onSort }: Props) {
             <TableRow>
               <TableCell
                 colSpan={columns.length}
-                className="opacity-60 text-center p-8"
+                className={"opacity-60 text-center p-8"}
               >
                 No users found
               </TableCell>

@@ -1,0 +1,1 @@
+export { AdminPost } from './AdminPost'
