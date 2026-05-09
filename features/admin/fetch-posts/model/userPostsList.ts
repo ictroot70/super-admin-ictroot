@@ -199,11 +199,7 @@ export const usePostsList = (): PostsListState => {
 
         return {
           ...post,
-          userBan: isBanned
-            ? ({
-                createdAt: new Date().toISOString(),
-              } as NonNullable<PostVM['userBan']>)
-            : null,
+          userBan: isBanned ? { createdAt: '', reason: '' } : null,
         }
       })
     )
