@@ -1,6 +1,6 @@
 'use client'
-
-import { Pagination, LoadingBar, Typography, Loading } from '@/shared/ui'
+import { Loading } from '@/shared/composites'
+import { Pagination, LoadingBar, Typography } from '@/shared/ui'
 
 import { usePaymentsTab } from '../../model'
 import { PaymentsTableTab } from './PaymentsTableTab'

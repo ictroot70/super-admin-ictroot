@@ -4,9 +4,10 @@ import Image from 'next/image'
 import { notFound, useParams } from 'next/navigation'
 import { useState } from 'react'
 
+import { Loading } from '@/shared/composites'
 import { useInfiniteScroll } from '@/shared/lib/infinite-scroll'
 import { parseUserIdParam } from '@/shared/lib/route-params'
-import { Loading, LoadingBar, Typography } from '@/shared/ui'
+import { LoadingBar, Typography } from '@/shared/ui'
 
 import { useUploadedPhotosTab } from '../../model'
 import { PhotoCarousel } from './PhotosCarousel'

@@ -14,7 +14,7 @@ import {
 import { UserInfo } from '@/features/admin/user-details/ui/user-info/UserInfo'
 import { APP_ROUTES } from '@/shared/constant'
 import { parseUserIdParam } from '@/shared/lib/route-params'
-import { ArrowBack, Loading, Typography } from '@/shared/ui'
+import { ArrowBack, LoadingBar, Typography } from '@/shared/ui'
 import { Tabs } from '@/shared/ui/tabs'
 
 type Props = {
@@ -36,7 +36,7 @@ export default function UserDetailsLayout({ children }: Props) {
   const { profile, loading, error } = useUserInfo({ userId })
 
   if (loading) {
-    return <Loading />
+    return <LoadingBar />
   }
 
   if (!profile || error) {

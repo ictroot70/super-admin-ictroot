@@ -9,7 +9,7 @@ importers:
   .:
     dependencies:
       '@apollo/client':
-        specifier: ^4.1.7
+        specifier: 4.1.7
         version: 4.1.7(graphql-ws@6.0.8(graphql@16.13.2)(ws@8.20.0))(graphql@16.13.2)(react-dom@19.2.4(react@19.2.4))(react@19.2.4)(rxjs@7.8.2)
       '@fontsource-variable/inter':
         specifier: ^5.2.6
@@ -36,7 +36,7 @@ importers:
         specifier: ^8.6.0
         version: 8.6.0(react@19.2.4)
       graphql:
-        specifier: 16.13.2
+        specifier: ^16.13.2
         version: 16.13.2
       graphql-ws:
         specifier: ^6.0.8
@@ -8822,7 +8822,7 @@ snapshots:
 
   yoctocolors@2.1.2: {}
 
-  zod-validation-error@4.0.2(zod@3.25.76):
+  zod-validation-error@4.0.2(zod@3.25.67):
     dependencies:
       zod: 3.25.67
 

@@ -2,10 +2,10 @@
 
 import Link from 'next/link'
 
+import { Loading } from '@/shared/composites'
 import { APP_ROUTES } from '@/shared/constant/app-routes'
 import { formatDate } from '@/shared/lib/format'
 import {
-  Loading,
   LoadingBar,
   Pagination,
   type PaginationProps,
