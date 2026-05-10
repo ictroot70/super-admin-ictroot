@@ -41,13 +41,13 @@ export function UserInfo({ profile }: Props) {
       </div>
       <div className={'mt-5 flex flex-wrap gap-18'}>
         <div>
-          <Typography variant={'regular_14'} className={'text-(--color-light-900)'}>
+          <Typography variant={'regular_14'} className={'text-light-900'}>
             {'UserID'}
           </Typography>
           <Typography variant={'regular_16'}>{id}</Typography>
         </div>
         <div>
-          <Typography variant={'regular_14'} className={'text-(--color-light-900)'}>
+          <Typography variant={'regular_14'} className={'text-light-900'}>
             {'Profile Creation Date'}
           </Typography>
           <Typography variant={'regular_16'}>{createdAt}</Typography>
