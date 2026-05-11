@@ -7928,6 +7928,8 @@ snapshots:
     dependencies:
       p-limit: 3.1.0
 
+  yocto-queue@0.1.0: {}
+
   parent-module@1.0.1:
     dependencies:
       callsites: 3.1.0
