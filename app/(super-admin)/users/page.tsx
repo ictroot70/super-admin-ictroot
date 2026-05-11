@@ -19,7 +19,7 @@ export default function Page() {
     <div>
       <LabelRadix label={'Action menu for test'} />
       <UserActionMenu
-        userId={'test id'}
+        userId={0o00}
         userName={'test userName'}
         isBanned={false}
         onActionComplete={() => {}}

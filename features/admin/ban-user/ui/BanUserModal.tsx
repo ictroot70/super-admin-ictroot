@@ -6,12 +6,13 @@ import { useBanUser } from '../model/useBanUser'
 
 export type BanUserModalProps = {
   open: boolean
-  userId: string
+  userId: number
   userName: string
   onConfirm: () => void
+  onClose: () => void
 }
 
-export const BanUserModal = ({ open, userId, userName, onConfirm }: BanUserModalProps) => {
+export const BanUserModal = ({ open, userId, userName, onConfirm, onClose }: BanUserModalProps) => {
   const { banUser, loading } = useBanUser()
   const [errorMessage, setErrorMessage] = useState('')
 
@@ -35,7 +36,7 @@ export const BanUserModal = ({ open, userId, userName, onConfirm }: BanUserModal
     <>
       <ConfirmModal
         open={open}
-        onClose={onConfirm}
+        onClose={onClose}
         onConfirm={handleConfirm}
         title={'Ban user'}
         description={

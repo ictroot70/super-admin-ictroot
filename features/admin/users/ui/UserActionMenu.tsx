@@ -10,7 +10,7 @@ import { DropdownMenu, DropdownItem } from '@/shared/ui'
 import { MoreHorizontal, Block, BlockFull, PersonRemoveOutline } from '@/shared/ui/SVGComponents'
 
 interface UserActionMenuProps {
-  userId: string
+  userId: number
   userName: string
   isBanned: boolean
   onActionComplete: () => void
@@ -53,9 +53,9 @@ export const UserActionMenu = (props: UserActionMenuProps) => {
         userId={userId}
         userName={userName}
         onConfirm={() => {
-          setBanOpen(false)
           onActionComplete()
         }}
+        onClose={() => setBanOpen(false)}
       />
 
       <UnbanUserModal
@@ -63,9 +63,9 @@ export const UserActionMenu = (props: UserActionMenuProps) => {
         userId={userId}
         userName={userName}
         onConfirm={() => {
-          setUnbanOpen(false)
           onActionComplete()
         }}
+        onClose={() => setUnbanOpen(false)}
       />
 
       <DeleteUserModal
@@ -73,9 +73,9 @@ export const UserActionMenu = (props: UserActionMenuProps) => {
         userId={userId}
         userName={userName}
         onConfirm={() => {
-          setDeleteOpen(false)
           onActionComplete()
         }}
+        onClose={() => setDeleteOpen(false)}
       />
     </div>
   )
