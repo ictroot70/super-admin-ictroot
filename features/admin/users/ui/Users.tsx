@@ -1,15 +1,15 @@
-"use client";
+'use client'
 
-import { Loading } from "@/shared/composites";
-import { Pagination } from "@/shared/ui";
+import { Loading } from '@/shared/composites'
+import { Pagination } from '@/shared/ui'
 
-import { useUsersList, USERS_PAGE_SIZE_OPTIONS } from "../model";
-import { Controls } from "./Controls/Controls";
-import { EmptyFiltersState } from "./EmptyState/EmptyFiltersState";
-import { EmptyState } from "./EmptyState/EmptyState";
-import { ErrorState } from "./ErrorState/ErrorState";
-import { PageContainer } from "./PageContainer/PageContainer";
-import { UsersTable } from "./UsersTable/UsersTable";
+import { useUsersList, USERS_PAGE_SIZE_OPTIONS } from '../model'
+import { Controls } from './Controls/Controls'
+import { EmptyFiltersState } from './EmptyState/EmptyFiltersState'
+import { EmptyState } from './EmptyState/EmptyState'
+import { ErrorState } from './ErrorState/ErrorState'
+import { PageContainer } from './PageContainer/PageContainer'
+import { UsersTable } from './UsersTable/UsersTable'
 
 export function Users() {
   const {
@@ -23,18 +23,18 @@ export function Users() {
     handleClearFilters,
     setSearchTerm,
     setFilterStatus,
-  } = useUsersList();
+  } = useUsersList()
 
   if (users.isLoading) {
-    return <Loading />;
+    return <Loading />
   }
 
   if (users.isError || !users.data) {
-    return <ErrorState />;
+    return <ErrorState />
   }
 
-  const { items, page, totalCount, pageSize, hasActiveFilters } = users.data;
-  const isEmpty = items.length === 0;
+  const { items, page, totalCount, pageSize, hasActiveFilters } = users.data
+  const isEmpty = items.length === 0
 
   if (isEmpty) {
     if (hasActiveFilters) {
@@ -46,10 +46,10 @@ export function Users() {
           onFilterChange={setFilterStatus}
           onClearFilters={handleClearFilters}
         />
-      );
+      )
     }
 
-    return <EmptyState />;
+    return <EmptyState />
   }
 
   return (
@@ -72,5 +72,5 @@ export function Users() {
         pageSizeOptions={USERS_PAGE_SIZE_OPTIONS}
       />
     </PageContainer>
-  );
+  )
 }
