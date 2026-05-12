@@ -4,6 +4,7 @@ import { useCallback, useEffect, useRef, useState, useTransition } from 'react'
 
 import { PostVM } from '@/entities/admin/post'
 import { normalizePost } from '@/entities/admin/post/model/normalizePost'
+import { usePostAdded } from '@/features/admin/subscribe-posts/model/use-post-added'
 import { useGqlLazyQuery } from '@/shared/api/graphql'
 import { GetPostsDocument, type GetPostsQuery } from '@/shared/api/graphql/gql/graphql'
 
@@ -59,8 +60,30 @@ export const usePostsList = (): PostsListState => {
     })
   }, [])
 
-  //Todo: ⚠️ A6.2 PREPARE (Евгений, добавишь сюда свою функцию)
-  // const mergePrepend = () => {}
+  const mergePrepend = useCallback((item: PostVM) => {
+    setPosts(prev => {
+      const alreadyExists = prev.some(post => post.id === item.id)
+
+      if (alreadyExists) {
+        return prev
+      }
+
+      setTotalCount(count => count + 1)
+
+      return [item, ...prev]
+    })
+  }, [])
+
+  const handlePostAdded = useCallback(
+    (post: Parameters<typeof normalizePost>[0]) => {
+      const normalizedPost = normalizePost(post)
+
+      mergePrepend(normalizedPost)
+    },
+    [mergePrepend]
+  )
+
+  usePostAdded({ onPostAdded: handlePostAdded })
 
   const applyResponse = useCallback(
     (data: GetPostsQuery, mode: 'replace' | 'append') => {
@@ -225,8 +248,5 @@ export const usePostsList = (): PostsListState => {
     inputValue,
     searchTerm,
     onSearchChange,
-
-    // ⚠️ A6.2 extension point
-    // mergePrepend можно использовать для realtime
   }
 }

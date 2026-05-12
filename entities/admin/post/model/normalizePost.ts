@@ -1,6 +1,6 @@
-import { GetPostsQuery } from '@/shared/api'
+import { type GetPostsQuery, type Post } from '@/shared/api/graphql/gql/graphql'
 
-export const normalizePost = (post: GetPostsQuery['getPosts']['items'][number]) => {
+export const normalizePost = (post: GetPostsQuery['getPosts']['items'][number] | Post) => {
   return {
     id: post.id,
     ownerId: post.ownerId,
