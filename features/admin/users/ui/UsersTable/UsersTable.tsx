@@ -1,4 +1,3 @@
-import { Button } from '@/shared'
 import {
   SortableHeaderCell,
   Table,
@@ -10,6 +9,7 @@ import {
 } from '@/shared/composites/Table'
 
 import { UsersSortBy, UsersSortState, UsersViewModel } from '../../model'
+import { UserActionMenu } from '../UserActionMenu'
 
 type Column = {
   id: string
@@ -29,9 +29,14 @@ type Props = {
   sort: UsersSortState
   items: UsersViewModel[]
   onSort: (key: UsersSortBy) => void
+  onUserActionComplete?: () => void // Добавьте опциональный коллбэк
 }
 
-export function UsersTable({ items, sort, onSort }: Props) {
+export function UsersTable({ items, sort, onSort, onUserActionComplete }: Props) {
+  const handleActionComplete = () => {
+    onUserActionComplete?.()
+  }
+
   return (
     <div className={'mb-[36px] overflow-x-auto'}>
       <Table>
@@ -78,14 +83,12 @@ export function UsersTable({ items, sort, onSort }: Props) {
                 </TableCell>
                 <TableCell>{item.dateAdded}</TableCell>
                 <TableCell>
-                  <Button
-                    className={
-                      'cursor-pointer border-none bg-transparent p-1 text-xl hover:opacity-80'
-                    }
-                    aria-label={'User actions'}
-                  >
-                    ⋮
-                  </Button>
+                  <UserActionMenu
+                    userId={String(item.userId)}
+                    userName={item.username}
+                    isBanned={item.isBlocked}
+                    onActionComplete={handleActionComplete}
+                  />
                 </TableCell>
               </TableRow>
             ))
