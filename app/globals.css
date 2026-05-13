@@ -57,11 +57,9 @@
     --foreground: var(--color-light-100);
   }
 }
-
 html {
   scrollbar-gutter: stable both-edges;
 }
-
 html:has(body[data-scroll-locked]) {
   overflow: hidden;
 }
