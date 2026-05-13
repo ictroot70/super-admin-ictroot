@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect } from 'react'
 
 /**
  * Хук для debounce значений.
@@ -14,17 +14,17 @@ import { useState, useEffect } from "react";
  * const debouncedSearch = useDebounce(search, 400)
  */
 export const useDebounce = <T>(value: T, delay: number = 500): T => {
-  const [debouncedValue, setDebouncedValue] = useState<T>(value);
+  const [debouncedValue, setDebouncedValue] = useState<T>(value)
 
   useEffect(() => {
     const timerId = setTimeout(() => {
-      setDebouncedValue(value);
-    }, delay);
+      setDebouncedValue(value)
+    }, delay)
 
     return () => {
-      clearTimeout(timerId);
-    };
-  }, [value, delay]);
+      clearTimeout(timerId)
+    }
+  }, [value, delay])
 
-  return debouncedValue;
-};
+  return debouncedValue
+}

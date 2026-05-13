@@ -1,59 +1,59 @@
 export interface RegisterInputDto {
-  userName: string;
-  email: string;
-  password: string;
-  baseUrl?: string;
+  userName: string
+  email: string
+  password: string
+  baseUrl?: string
 }
 
 export interface LoginInputDto {
-  email: string;
-  password: string;
+  email: string
+  password: string
 }
 
 export interface ConfirmationCodeInputDto {
-  confirmationCode: string;
+  confirmationCode: string
 }
 
 export interface RegistrationEmailResendingInputDto {
-  email: string;
-  baseUrl?: string;
+  email: string
+  baseUrl?: string
 }
 
 export interface TokenTypeSwaggerDto {
-  accessToken: string;
+  accessToken: string
 }
 
 export interface PasswordRecoveryInputDto {
-  email: string;
-  recaptcha: string;
-  baseUrl?: string;
+  email: string
+  recaptcha: string
+  baseUrl?: string
 }
 
 export interface PasswordRecoveryResendingInputDto {
-  email: string;
-  baseUrl?: string;
+  email: string
+  baseUrl?: string
 }
 
 export interface PasswordRecoveryCodeInputDto {
-  recoveryCode: string;
+  recoveryCode: string
 }
 
 export interface PasswordRecoveryViewDto {
-  email: string;
+  email: string
 }
 
 export interface NewPasswordInputDto {
-  newPassword: string;
-  recoveryCode: string;
+  newPassword: string
+  recoveryCode: string
 }
 
 export interface FieldError {
-  message: string;
-  field: string;
+  message: string
+  field: string
 }
 
 export interface ApiErrorResultDto {
-  statusCode: number;
-  messages: FieldError[];
-  error: string;
+  statusCode: number
+  messages: FieldError[]
+  error: string
 }

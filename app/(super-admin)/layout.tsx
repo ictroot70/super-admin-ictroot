@@ -44,4 +44,3 @@ export default function Layout({ children }: Props) {
 
   return <SuperAdminLayoutShell>{children}</SuperAdminLayoutShell>
 }
-

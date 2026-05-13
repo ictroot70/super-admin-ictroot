@@ -14,47 +14,47 @@ import {
 import { FilterValue, SortValue, UsersSortBy, UsersSortState, UsersViewModel } from '.'
 import { useDebounce } from '../utils/useDebounce'
 
-export const USERS_PAGE_SIZE_OPTIONS = [8, 16, 32]
+function normalizeSort(sortValue: SortValue): { sortBy: string; sortDirection: SortDirection } {
+  const [field, direction] = sortValue.split('_') as [UsersSortBy, SortDirection]
+  const sortBy = field === UsersSortBy.USER_NAME ? 'userName' : field
+
+  return { sortBy, sortDirection: direction }
+}
 
 export function useUsersList() {
-  const [page, setPage] = useState(1)
+  const [pageNumber, setPageNumber] = useState(1)
   const [pageSize, setPageSize] = useState(8)
   const [searchTerm, setSearchTerm] = useState('')
   const [sortValue, setSortValue] = useState<SortValue>('createdAt_desc')
-  const [filterStatus, setFilterStatus] = useState<FilterValue>('ALL')
+  const [statusFilter, setStatusFilter] = useState<FilterValue>('ALL')
 
   const debouncedSearch = useDebounce(searchTerm, 300)
 
-  const prevFiltersRef = useRef({ debouncedSearch, sortValue, filterStatus, pageSize })
+  const prevFiltersRef = useRef({ debouncedSearch, sortValue, statusFilter, pageSize })
 
   useEffect(() => {
     const prev = prevFiltersRef.current
     const hasChanges =
       prev.debouncedSearch !== debouncedSearch ||
       prev.sortValue !== sortValue ||
-      prev.filterStatus !== filterStatus ||
+      prev.statusFilter !== statusFilter ||
       prev.pageSize !== pageSize
 
     if (hasChanges) {
-      setPage(1)
+      setPageNumber(1)
     }
-    prevFiltersRef.current = { debouncedSearch, sortValue, filterStatus, pageSize }
-  }, [debouncedSearch, sortValue, filterStatus, pageSize])
+    prevFiltersRef.current = { debouncedSearch, sortValue, statusFilter, pageSize }
+  }, [debouncedSearch, sortValue, statusFilter, pageSize])
 
-  const [sortField, sortDirection] = useMemo(() => {
-    const [field, direction] = sortValue.split('_') as [UsersSortBy, SortDirection]
-    const mappedField = field === UsersSortBy.USER_NAME ? 'userName' : field
-
-    return [mappedField, direction]
-  }, [sortValue])
+  const { sortBy, sortDirection } = useMemo(() => normalizeSort(sortValue), [sortValue])
 
   const variables: GetUsersQueryVariables = useMemo(() => {
     const vars: GetUsersQueryVariables = {
-      pageNumber: page,
+      pageNumber: pageNumber,
       pageSize: pageSize,
-      sortBy: sortField,
-      sortDirection,
-      statusFilter: filterStatus as UserBlockStatus,
+      sortBy: sortBy,
+      sortDirection: sortDirection,
+      statusFilter: statusFilter as UserBlockStatus,
     }
 
     const trimmedSearch = debouncedSearch.trim()
@@ -64,32 +64,36 @@ export function useUsersList() {
     }
 
     return vars
-  }, [page, pageSize, debouncedSearch, sortField, sortDirection, filterStatus])
+  }, [pageNumber, pageSize, debouncedSearch, sortBy, sortDirection, statusFilter])
 
   const { data, loading, error, refetch } = useGqlQuery<GetUsersQuery, GetUsersQueryVariables>(
     GetUsersDocument,
     {
       variables,
-      fetchPolicy: 'cache-first',
-      returnPartialData: true,
-      nextFetchPolicy: 'cache-first',
+      fetchPolicy: 'cache-and-network',
+      notifyOnNetworkStatusChange: true,
     }
   )
 
-  const { items, totalCount, pagesCount, currentPage, currentPageSize } = useMemo(() => {
-    const usersData = data?.getUsers
+  const [hasEverReceivedData, setHasEverReceivedData] = useState(false)
+  const hasSetDataRef = useRef(false)
 
-    if (!usersData) {
-      return {
-        items: [],
-        totalCount: 0,
-        pagesCount: 1,
-        currentPage: 1,
-        currentPageSize: pageSize,
-      }
+  useEffect(() => {
+    if (data?.getUsers?.users?.length && !hasSetDataRef.current) {
+      hasSetDataRef.current = true
+      setHasEverReceivedData(true)
     }
+  }, [data])
 
-    const viewModelItems: UsersViewModel[] = (usersData?.users ?? []).map(user => ({
+  const isInitialLoading = loading && !hasEverReceivedData
+  const isFetching = loading && hasEverReceivedData
+
+  const usersData = data?.getUsers
+
+  const items: UsersViewModel[] = useMemo(() => {
+    if (!usersData?.users) return []
+
+    return usersData.users.map(user => ({
       userId: user.id ?? 0,
       username: user.userName ?? 'Unknown',
       email: user.email ?? '',
@@ -97,26 +101,23 @@ export function useUsersList() {
       dateAdded: new Date(user.createdAt).toLocaleDateString('ru-RU'),
       isBlocked: Boolean(user.userBan),
     }))
+  }, [usersData])
 
-    return {
-      items: viewModelItems,
-      totalCount: usersData.pagination?.totalCount ?? 0,
-      pagesCount: usersData.pagination?.pagesCount ?? 1,
-      currentPage: usersData.pagination?.page ?? 1,
-      currentPageSize: usersData.pagination?.pageSize ?? pageSize,
-    }
-  }, [data, pageSize])
+  const totalCount = usersData?.pagination?.totalCount ?? 0
+  const pagesCount = usersData?.pagination?.pagesCount ?? 1
+  const currentPage = usersData?.pagination?.page ?? pageNumber
+  const currentPageSize = usersData?.pagination?.pageSize ?? pageSize
 
   const hasActiveFilters = useMemo(() => {
-    return debouncedSearch.trim().length > 0 || filterStatus !== 'ALL'
-  }, [debouncedSearch, filterStatus])
+    return debouncedSearch.trim().length > 0 || statusFilter !== 'ALL'
+  }, [debouncedSearch, statusFilter])
 
   const sort: UsersSortState = useMemo(
     () => ({
-      key: sortField as UsersSortBy,
+      key: sortBy as UsersSortBy,
       direction: sortDirection,
     }),
-    [sortField, sortDirection]
+    [sortBy, sortDirection]
   )
 
   const handleSort = useCallback(
@@ -124,7 +125,6 @@ export function useUsersList() {
       setSortValue(prev => {
         const [currentField] = prev.split('_')
         const isSameField = currentField === key
-
         const newDirection: SortDirection =
           isSameField && sortDirection === SortDirection.Asc
             ? SortDirection.Desc
@@ -137,7 +137,7 @@ export function useUsersList() {
   )
 
   const handlePageChange = useCallback((newPage: number) => {
-    setPage(newPage)
+    setPageNumber(newPage)
   }, [])
 
   const handleItemsPerPageChange = useCallback((newPageSize: number) => {
@@ -146,53 +146,32 @@ export function useUsersList() {
 
   const handleClearFilters = useCallback(() => {
     setSearchTerm('')
-    setFilterStatus('ALL')
+    setStatusFilter('ALL')
   }, [])
 
-  return useMemo(
-    () => ({
-      users: {
-        data: {
-          items,
-          page: currentPage,
-          pageSize: currentPageSize,
-          totalCount,
-          totalPages: pagesCount,
-          hasActiveFilters,
-        },
-        isLoading: loading,
-        isError: !!error,
+  return {
+    users: {
+      data: {
+        items,
+        page: currentPage,
+        pageSize: currentPageSize,
+        totalCount,
+        totalPages: pagesCount,
+        hasActiveFilters,
       },
-      sort,
-      searchTerm,
-      filterStatus,
-      handleSort,
-      handlePageChange,
-      handleItemsPerPageChange,
-      handleClearFilters,
-      setSearchTerm,
-      setFilterStatus,
-      refetch,
-    }),
-    [
-      items,
-      currentPage,
-      currentPageSize,
-      totalCount,
-      pagesCount,
-      hasActiveFilters,
-      loading,
-      error,
-      sort,
-      searchTerm,
-      filterStatus,
-      handleSort,
-      handlePageChange,
-      handleItemsPerPageChange,
-      handleClearFilters,
-      setSearchTerm,
-      setFilterStatus,
-      refetch,
-    ]
-  )
+      isInitialLoading,
+      isFetching,
+      isError: !!error,
+    },
+    sort,
+    searchTerm,
+    filterStatus: statusFilter,
+    handleSort,
+    handlePageChange,
+    handleItemsPerPageChange,
+    handleClearFilters,
+    setSearchTerm,
+    setFilterStatus: setStatusFilter,
+    refetch,
+  }
 }

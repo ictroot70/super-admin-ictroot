@@ -1,6 +1,5 @@
 export enum UsersSortBy {
-  CREATED_AT = "createdAt",
-  USER_NAME = "userName",
-  EMAIL = "email",
-  STATUS = "status",
+  CREATED_AT = 'createdAt',
+  USER_NAME = 'userName',
+  EMAIL = 'email',
 }

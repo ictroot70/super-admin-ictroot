@@ -9,16 +9,7 @@ import {
   TableRow,
 } from '@/shared/composites/Table'
 
-import { UsersSortBy, UsersSortState } from '../../model'
-
-export interface UsersViewModel {
-  userId: number
-  username: string
-  email: string
-  profileLink: string
-  dateAdded: string
-  isBlocked: boolean
-}
+import { UsersSortBy, UsersSortState, UsersViewModel } from '../../model'
 
 type Column = {
   id: string
@@ -27,7 +18,7 @@ type Column = {
 }
 
 const columns: Column[] = [
-  { id: 'userId', title: 'User ID', sortKey: UsersSortBy.CREATED_AT },
+  { id: 'userId', title: 'User ID' },
   { id: 'email', title: 'Profile link', sortKey: UsersSortBy.EMAIL },
   { id: 'username', title: 'Username', sortKey: UsersSortBy.USER_NAME },
   { id: 'dateAdded', title: 'Date Added', sortKey: UsersSortBy.CREATED_AT },

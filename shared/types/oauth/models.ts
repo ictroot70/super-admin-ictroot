@@ -1,9 +1,9 @@
 export interface ProviderCodeInputDto {
-  redirectUrl?: string;
-  code: string;
+  redirectUrl?: string
+  code: string
 }
 
 export interface ProviderLoginResSwaggerDto {
-  accessToken: string;
-  email: string;
+  accessToken: string
+  email: string
 }

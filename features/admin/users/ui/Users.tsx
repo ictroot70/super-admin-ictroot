@@ -23,21 +23,19 @@ export function Users() {
     handleClearFilters,
     setSearchTerm,
     setFilterStatus,
+    refetch,
   } = useUsersList()
 
-  if (users.isLoading) {
+  if (users.isInitialLoading) {
     return <Loading />
   }
 
-  if (users.isError || !users.data) {
-    return <ErrorState />
+  if (users.isError && !users.data?.items.length) {
+    return <ErrorState onRetry={refetch} />
   }
 
-  const { items, page, totalCount, pageSize, hasActiveFilters } = users.data
-  const isEmpty = items.length === 0
-
-  if (isEmpty) {
-    if (hasActiveFilters) {
+  if (!users.data?.items.length && !users.isFetching) {
+    if (users.data?.hasActiveFilters) {
       return (
         <EmptyFiltersState
           searchTerm={searchTerm}
@@ -54,6 +52,12 @@ export function Users() {
 
   return (
     <PageContainer>
+      {users.isFetching && (
+        <div className={'bg-primary-500/20 fixed top-0 right-0 left-0 z-50 h-0.5'}>
+          <div className={'bg-primary-500 h-full w-1/3 animate-pulse'} />
+        </div>
+      )}
+
       <Controls
         searchTerm={searchTerm}
         onSearchChange={setSearchTerm}
@@ -61,16 +65,24 @@ export function Users() {
         onFilterChange={setFilterStatus}
       />
 
-      <UsersTable items={items} sort={sort} onSort={handleSort} />
+      <div
+        className={`transition-opacity duration-200 ${
+          users.isFetching ? 'pointer-events-none opacity-60' : 'opacity-100'
+        }`}
+      >
+        <UsersTable items={users.data?.items || []} sort={sort} onSort={handleSort} />
+      </div>
 
-      <Pagination
-        currentPage={page}
-        totalItems={totalCount}
-        itemsPerPage={pageSize}
-        onPageChange={handlePageChange}
-        onItemsPerPageChange={handleItemsPerPageChange}
-        pageSizeOptions={USERS_PAGE_SIZE_OPTIONS}
-      />
+      {users.data && users.data.totalCount > 0 && (
+        <Pagination
+          currentPage={users.data.page}
+          totalItems={users.data.totalCount}
+          itemsPerPage={users.data.pageSize}
+          onPageChange={handlePageChange}
+          onItemsPerPageChange={handleItemsPerPageChange}
+          pageSizeOptions={USERS_PAGE_SIZE_OPTIONS}
+        />
+      )}
     </PageContainer>
   )
 }
