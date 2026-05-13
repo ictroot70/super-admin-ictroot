@@ -14,6 +14,7 @@ type PaymentsSortBy = 'createdAt' | 'amount' | 'paymentMethod' | 'userName'
 
 export function usePaymentsList() {
   const [page, setPage] = useState(1)
+  const [pageSize, setPageSize] = useState(10)
   const [searchTerm, setSearchTermState] = useState('')
   const [sortBy, setSortBy] = useState<PaymentsSortBy>('createdAt')
   const [sortDirection, setSortDirection] = useState<SortDirection>('desc')
@@ -24,7 +25,7 @@ export function usePaymentsList() {
   >(GetPaymentsDocument, {
     variables: {
       pageNumber: page,
-      pageSize: 6,
+      pageSize,
       searchTerm: searchTerm.trim() || undefined,
       sortBy,
       sortDirection,
@@ -68,11 +69,16 @@ export function usePaymentsList() {
     setPage(newPage)
   }
 
+  const handlePageSizeChange = (newPageSize: number) => {
+    setPageSize(newPageSize)
+    setPage(1)
+  }
+
   return {
     payments: {
       items,
       page: data?.getPayments.page ?? 1,
-      pageSize: data?.getPayments.pageSize ?? 6,
+      pageSize: data?.getPayments.pageSize ?? pageSize,
       totalCount: data?.getPayments.totalCount ?? 0,
       totalPages: data?.getPayments.pagesCount ?? 1,
       isLoading: loading,
@@ -84,6 +90,7 @@ export function usePaymentsList() {
     setSearchTerm,
     handleSort,
     handlePageChange,
+    handlePageSizeChange,
     refetch,
   }
 }

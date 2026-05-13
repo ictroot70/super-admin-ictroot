@@ -4,11 +4,20 @@ import { CheckboxRadix, Input, Pagination } from '@ictroot/ui-kit'
 import { useState } from 'react'
 
 import { usePaymentsList } from '@/features/admin/payments/model/use-payments-list'
+import {
+  SortableHeaderCell,
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeaderCell,
+  TableRow,
+} from '@/shared/ui'
 
 type PaymentsSortBy = 'createdAt' | 'amount' | 'paymentMethod' | 'userName'
 
 type Column = {
-  key: PaymentsSortBy
+  key?: PaymentsSortBy
   title: string
 }
 
@@ -16,6 +25,7 @@ const columns: Column[] = [
   { key: 'userName', title: 'Full Name' },
   { key: 'createdAt', title: 'Date added' },
   { key: 'amount', title: 'Amount, $' },
+  { title: 'Subscription' },
   { key: 'paymentMethod', title: 'Payment Method' },
 ]
 
@@ -61,18 +71,6 @@ const formatPaymentMethod = (value: string) => {
   }
 }
 
-const getDirectionMark = (isActive: boolean, sortDirection: 'asc' | 'desc') => {
-  if (!isActive) {
-    return ''
-  }
-
-  if (sortDirection === 'asc') {
-    return ' ↑'
-  }
-
-  return ' ↓'
-}
-
 const getAvatarUrl = (
   avatars:
     | {
@@ -99,6 +97,7 @@ export function Payments() {
     setSearchTerm,
     handleSort,
     handlePageChange,
+    handlePageSizeChange,
   } = usePaymentsList()
 
   const [isAutoUpdateEnabled, setIsAutoUpdateEnabled] = useState(true)
@@ -118,41 +117,36 @@ export function Payments() {
   } else {
     content = (
       <>
-        <div className={'overflow-x-auto rounded-[2px] border border-[#171717]'}>
-          <table className={'w-full border-collapse'}>
-            <thead className={'bg-[#171717]'}>
-              <tr className={'border-b border-[#171717]'}>
-                {columns.map(column => {
-                  const isActive = sortBy === column.key
-                  const directionMark = getDirectionMark(isActive, sortDirection)
-
-                  return (
-                    <th key={column.key} className={'px-6 py-4 text-left'}>
-                      <button
-                        type={'button'}
-                        onClick={() => handleSort(column.key)}
-                        className={'text-light-100 cursor-pointer bg-transparent'}
-                      >
-                        {column.title}
-                        {directionMark}
-                      </button>
-                    </th>
+        <div className={'overflow-x-auto rounded-[2px]'}>
+          <Table>
+            <TableHead>
+              <TableRow>
+                {columns.map(column =>
+                  column.key ? (
+                    <SortableHeaderCell
+                      key={column.title}
+                      columnKey={column.key}
+                      title={column.title}
+                      activeKey={sortBy}
+                      direction={sortDirection}
+                      onSort={handleSort}
+                    />
+                  ) : (
+                    <TableHeaderCell key={column.title} scope={'col'}>
+                      {column.title}
+                    </TableHeaderCell>
                   )
-                })}
-                <th className={'text-light-100 px-6 py-4 text-left'}>{'Subscription'}</th>
-              </tr>
-            </thead>
+                )}
+              </TableRow>
+            </TableHead>
 
-            <tbody>
+            <TableBody>
               {payments.items.map(item => {
                 const avatarUrl = getAvatarUrl(item.avatars)
 
                 return (
-                  <tr
-                    key={item.id ?? `${item.userId}-${item.createdAt}`}
-                    className={'border-b border-[#1F1F1F] last:border-b-0'}
-                  >
-                    <td className={'px-6 py-4'}>
+                  <TableRow key={item.id ?? `${item.userId}-${item.createdAt}`}>
+                    <TableCell>
                       <div className={'flex items-center gap-3'}>
                         {avatarUrl ? (
                           <div
@@ -163,7 +157,7 @@ export function Payments() {
                         ) : (
                           <div
                             className={
-                              'text-light-100 flex h-9 w-9 items-center justify-center rounded-full border border-[#171717] text-xs'
+                              'text-light-100 flex h-9 w-9 items-center justify-center rounded-full border border-(--color-dark-500) text-xs'
                             }
                           >
                             {item.userName.slice(0, 1).toUpperCase()}
@@ -172,24 +166,20 @@ export function Payments() {
 
                         <span className={'text-light-100'}>{item.userName}</span>
                       </div>
-                    </td>
+                    </TableCell>
 
-                    <td className={'text-light-100 px-6 py-4'}>{formatDate(item.createdAt)}</td>
+                    <TableCell>{formatDate(item.createdAt)}</TableCell>
 
-                    <td className={'text-light-100 px-6 py-4'}>
-                      {formatAmount(item.amount, item.currency)}
-                    </td>
+                    <TableCell>{formatAmount(item.amount, item.currency)}</TableCell>
 
-                    <td className={'text-light-100 px-6 py-4'}>
-                      {formatPaymentMethod(item.paymentMethod)}
-                    </td>
+                    <TableCell>{formatSubscription(item.type)}</TableCell>
 
-                    <td className={'text-light-100 px-6 py-4'}>{formatSubscription(item.type)}</td>
-                  </tr>
+                    <TableCell>{formatPaymentMethod(item.paymentMethod)}</TableCell>
+                  </TableRow>
                 )
               })}
-            </tbody>
-          </table>
+            </TableBody>
+          </Table>
         </div>
 
         <div className={'mt-6'}>
@@ -198,6 +188,8 @@ export function Payments() {
             totalItems={payments.totalCount}
             itemsPerPage={payments.pageSize}
             onPageChange={handlePageChange}
+            pageSizeOptions={[10, 20, 50, 100]}
+            onItemsPerPageChange={handlePageSizeChange}
           />
         </div>
       </>
@@ -207,7 +199,7 @@ export function Payments() {
   return (
     <div className={'mx-auto w-full max-w-[1200px] px-6 py-8'}>
       <div className={'mb-6 flex justify-end'}>
-        <label className={'text-light-100 flex items-center gap-3'}>
+        <label className={'text-light-100 flex items-center gap-3 whitespace-nowrap'}>
           <CheckboxRadix
             checked={isAutoUpdateEnabled}
             onCheckedChange={checked => setIsAutoUpdateEnabled(Boolean(checked))}
@@ -216,7 +208,7 @@ export function Payments() {
         </label>
       </div>
 
-      <div className={'mb-6 max-w-[440px]'}>
+      <div className={'mb-6 w-full'}>
         <Input
           inputType={'search'}
           value={searchTerm}
