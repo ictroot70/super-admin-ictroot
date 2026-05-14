@@ -5,16 +5,11 @@ import { memo, useEffect, useRef, useState } from 'react'
 
 import { type PostVM } from '@/entities/admin/post'
 import { useTimeAgo } from '@/entities/admin/post/hooks/useTimeAgo'
-import {
-  Carousel,
-  Avatar,
-  Typography,
-  ScrollAreaRadix,
-  APP_ROUTES,
-  IMAGE_SIZES,
-  IMAGE_LOADING_STRATEGY,
-  SafeImage,
-} from '@/shared'
+import { Typography, ScrollAreaRadix } from '@/shared'
+import { Avatar } from '@/shared/composites/Avatar'
+import { Carousel } from '@/shared/composites/Carousel'
+import { SafeImage } from '@/shared/composites/SafeImage'
+import { IMAGE_LOADING_STRATEGY, IMAGE_SIZES, APP_ROUTES } from '@/shared/constant'
 
 const DEFAULT_IMAGE = '/default-image.svg'
 const MAX_CHAR_COUNT = 67
