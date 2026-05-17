@@ -1,4 +1,4 @@
-import { ArrowDownSimple, Bell } from '@ictroot/ui-kit/icons'
+import Image from 'next/image'
 import { type AriaAttributes, type ReactNode } from 'react'
 
 import { TableHeaderCell } from '../Table'
@@ -45,20 +45,19 @@ export function SortableHeaderCell<T extends string>({
   )
 }
 
+const ICON_MAP: Record<'asc' | 'desc' | 'unsorted', string> = {
+  asc: '/asc.svg',
+  desc: '/desc.svg',
+  unsorted: '/unsorted.svg',
+}
+
 function SortIcon({ direction }: { direction: 'asc' | 'desc' | null }) {
-  const iconClass = 'w-3 h-3 inline-flex items-center ml-1'
-
-  if (direction === 'asc') {
-    return <ArrowDownSimple className={`${iconClass} rotate-180`} aria-hidden />
-  }
-
-  if (direction === 'desc') {
-    return <ArrowDownSimple className={iconClass} aria-hidden />
-  }
+  const iconKey: 'asc' | 'desc' | 'unsorted' = direction ?? 'unsorted'
+  const src = ICON_MAP[iconKey]
 
   return (
-    <span className={`${iconClass} opacity-30`}>
-      <Bell className={'h-2 w-2'} aria-hidden />
+    <span className={'ml-1.5 inline-flex items-center'}>
+      <Image src={src} alt={''} aria-hidden width={8} height={6} />
     </span>
   )
 }

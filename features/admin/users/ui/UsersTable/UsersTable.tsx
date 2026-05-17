@@ -21,7 +21,7 @@ type Column = {
 const columns: Column[] = [
   { id: 'userId', title: 'User ID' },
   { id: 'email', title: 'Profile link', sortKey: UsersSortBy.EMAIL },
-  { id: 'username', title: 'Username', sortKey: UsersSortBy.USER_NAME },
+  { id: 'username', title: 'Username' },
   { id: 'dateAdded', title: 'Date Added', sortKey: UsersSortBy.CREATED_AT },
   { id: 'actions', title: '' },
 ]

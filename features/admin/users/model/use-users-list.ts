@@ -10,6 +10,7 @@ import {
   SortDirection,
   UserBlockStatus,
 } from '@/shared/api/graphql/gql/graphql'
+import { formatDate } from '@/shared/lib/formatters'
 
 import { FilterValue, SortValue, UsersSortBy, UsersSortState, UsersViewModel } from '.'
 import { useDebounce } from '../utils/useDebounce'
@@ -97,8 +98,8 @@ export function useUsersList() {
       userId: user.id ?? 0,
       username: user.userName ?? 'Unknown',
       email: user.email ?? '',
-      profileLink: `/profile/${user.userName ?? 'unknown'}`,
-      dateAdded: new Date(user.createdAt).toLocaleDateString('ru-RU'),
+      profileLink: `/users/${user.id}`, // Изменено на users/{id}
+      dateAdded: formatDate(user.createdAt), // Используем formatDate для единообразия
       isBlocked: Boolean(user.userBan),
     }))
   }, [usersData])
