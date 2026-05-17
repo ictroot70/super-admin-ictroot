@@ -7,6 +7,7 @@ import {
   TableHeaderCell,
   TableRow,
 } from '@/shared/composites/Table'
+import { BlockFull } from '@/shared/ui'
 
 import { UsersSortBy, UsersSortState, UsersViewModel } from '../../model'
 import { UserActionMenu } from '../UserActionMenu'
@@ -66,7 +67,12 @@ export function UsersTable({ items, sort, onSort, onUserActionComplete }: Props)
               <TableRow key={item.userId}>
                 <TableCell>
                   <div className={'flex items-center gap-2'}>
-                    {item.isBlocked && <span className={'text-xs'}>🚫</span>}
+                    {item.isBlocked && (
+                      <BlockFull
+                        className={'h-4 w-4 flex-shrink-0 text-red-500'}
+                        aria-label={'User is blocked'}
+                      />
+                    )}
                     <span>{item.userId}</span>
                   </div>
                 </TableCell>

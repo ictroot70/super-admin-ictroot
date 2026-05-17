@@ -70,7 +70,12 @@ export function Users() {
           users.isFetching ? 'pointer-events-none opacity-60' : 'opacity-100'
         }`}
       >
-        <UsersTable items={users.data?.items || []} sort={sort} onSort={handleSort} />
+        <UsersTable
+          items={users.data?.items || []}
+          sort={sort}
+          onSort={handleSort}
+          onUserActionComplete={refetch}
+        />{' '}
       </div>
 
       {users.data && users.data.totalCount > 0 && (

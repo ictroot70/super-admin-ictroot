@@ -1,5 +1,5 @@
-import Image from 'next/image'
-import React, { type AriaAttributes, type ReactNode } from 'react'
+import { ArrowDownSimple, Bell } from '@ictroot/ui-kit/icons'
+import { type AriaAttributes, type ReactNode } from 'react'
 
 import { TableHeaderCell } from '../Table'
 
@@ -46,13 +46,19 @@ export function SortableHeaderCell<T extends string>({
 }
 
 function SortIcon({ direction }: { direction: 'asc' | 'desc' | null }) {
+  const iconClass = 'w-3 h-3 inline-flex items-center ml-1'
+
+  if (direction === 'asc') {
+    return <ArrowDownSimple className={`${iconClass} rotate-180`} aria-hidden />
+  }
+
+  if (direction === 'desc') {
+    return <ArrowDownSimple className={iconClass} aria-hidden />
+  }
+
   return (
-    <span className={s.icon}>
-      {direction ? (
-        <Image src={`/${direction}.svg`} alt={''} aria-hidden width={8} height={6} />
-      ) : (
-        <Image src={'/unsorted.svg'} alt={''} aria-hidden width={8} height={12} />
-      )}
+    <span className={`${iconClass} opacity-30`}>
+      <Bell className={'h-2 w-2'} aria-hidden />
     </span>
   )
 }
