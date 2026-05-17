@@ -75,7 +75,7 @@ export function Users() {
           sort={sort}
           onSort={handleSort}
           onUserActionComplete={refetch}
-        />{' '}
+        />
       </div>
 
       {users.data && users.data.totalCount > 0 && (

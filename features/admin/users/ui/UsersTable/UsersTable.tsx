@@ -30,7 +30,7 @@ type Props = {
   sort: UsersSortState
   items: UsersViewModel[]
   onSort: (key: UsersSortBy) => void
-  onUserActionComplete?: () => void // Добавьте опциональный коллбэк
+  onUserActionComplete?: () => void
 }
 
 export function UsersTable({ items, sort, onSort, onUserActionComplete }: Props) {
