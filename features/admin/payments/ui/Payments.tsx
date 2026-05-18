@@ -4,6 +4,8 @@ import { CheckboxRadix, Input, Pagination } from '@ictroot/ui-kit'
 import { useState } from 'react'
 
 import { usePaymentsList } from '@/features/admin/payments/model/use-payments-list'
+import { formatAmount } from '@/shared/lib/format/amount'
+import { formatDate } from '@/shared/lib/format/date'
 import {
   SortableHeaderCell,
   Table,
@@ -28,22 +30,6 @@ const columns: Column[] = [
   { title: 'Subscription' },
   { key: 'paymentMethod', title: 'Payment Method' },
 ]
-
-const formatDate = (value: string | null) => {
-  if (!value) {
-    return '—'
-  }
-
-  return new Date(value).toLocaleDateString('ru-RU')
-}
-
-const formatAmount = (amount: number | null, currency: string | null) => {
-  if (amount === null) {
-    return '—'
-  }
-
-  return `${amount} ${currency ?? ''}`.trim()
-}
 
 const formatSubscription = (value: string) => {
   switch (value) {
@@ -102,7 +88,9 @@ export function Payments() {
 
   const [isAutoUpdateEnabled, setIsAutoUpdateEnabled] = useState(true)
 
-  const isInitialLoading = payments.isLoading && payments.items.length === 0
+  const hasItems = payments.items.length > 0
+  const isInitialLoading = payments.isLoading && !hasItems
+  const isBackgroundLoading = payments.isLoading && hasItems
 
   if (payments.isError) {
     return <div>{'Failed to load payments'}</div>
@@ -112,7 +100,7 @@ export function Payments() {
 
   if (isInitialLoading) {
     content = <div>{'Loading...'}</div>
-  } else if (payments.items.length === 0) {
+  } else if (!hasItems) {
     content = <div>{'No payments found'}</div>
   } else {
     content = (
@@ -170,7 +158,7 @@ export function Payments() {
 
                     <TableCell>{formatDate(item.createdAt)}</TableCell>
 
-                    <TableCell>{formatAmount(item.amount, item.currency)}</TableCell>
+                    <TableCell>{formatAmount(item.amount)}</TableCell>
 
                     <TableCell>{formatSubscription(item.type)}</TableCell>
 
@@ -188,7 +176,7 @@ export function Payments() {
             totalItems={payments.totalCount}
             itemsPerPage={payments.pageSize}
             onPageChange={handlePageChange}
-            pageSizeOptions={[10, 20, 50, 100]}
+            pageSizeOptions={[6, 10, 20, 50, 100]}
             onItemsPerPageChange={handlePageSizeChange}
           />
         </div>
@@ -198,7 +186,13 @@ export function Payments() {
 
   return (
     <div className={'mx-auto w-full max-w-[1200px] px-6 py-8'}>
-      <div className={'mb-6 flex justify-end'}>
+      <div className={'mb-6 flex items-center justify-between gap-4'}>
+        <div className={'min-h-6'}>
+          {isBackgroundLoading ? (
+            <span className={'text-light-900 text-sm'}>{'Updating payments...'}</span>
+          ) : null}
+        </div>
+
         <label className={'text-light-100 flex items-center gap-3 whitespace-nowrap'}>
           <CheckboxRadix
             checked={isAutoUpdateEnabled}

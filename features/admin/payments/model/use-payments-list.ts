@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 import { useGqlQuery } from '@/shared/api/graphql'
 import {
@@ -14,27 +14,39 @@ type PaymentsSortBy = 'createdAt' | 'amount' | 'paymentMethod' | 'userName'
 
 export function usePaymentsList() {
   const [page, setPage] = useState(1)
-  const [pageSize, setPageSize] = useState(10)
-  const [searchTerm, setSearchTermState] = useState('')
+  const [pageSize, setPageSize] = useState(6)
+  const [rawSearchTerm, setRawSearchTerm] = useState('')
+  const [debouncedSearchTerm, setDebouncedSearchTerm] = useState('')
   const [sortBy, setSortBy] = useState<PaymentsSortBy>('createdAt')
   const [sortDirection, setSortDirection] = useState<SortDirection>('desc')
 
-  const { data, loading, error, refetch } = useGqlQuery<
+  useEffect(() => {
+    const timeoutId = window.setTimeout(() => {
+      setDebouncedSearchTerm(rawSearchTerm)
+    }, 400)
+
+    return () => window.clearTimeout(timeoutId)
+  }, [rawSearchTerm])
+
+  const { data, previousData, loading, error, refetch } = useGqlQuery<
     GetPaymentsQuery,
     GetPaymentsQueryVariables
   >(GetPaymentsDocument, {
     variables: {
       pageNumber: page,
       pageSize,
-      searchTerm: searchTerm.trim() || undefined,
+      searchTerm: debouncedSearchTerm.trim() || undefined,
       sortBy,
       sortDirection,
     },
     fetchPolicy: 'cache-and-network',
+    notifyOnNetworkStatusChange: true,
   })
 
+  const resolvedData = data ?? previousData
+
   const items =
-    data?.getPayments.items.map(item => ({
+    resolvedData?.getPayments.items.map(item => ({
       id: item.id,
       userId: item.userId,
       userName: item.userName,
@@ -48,7 +60,7 @@ export function usePaymentsList() {
     })) ?? []
 
   const setSearchTerm = (value: string) => {
-    setSearchTermState(value)
+    setRawSearchTerm(value)
     setPage(1)
   }
 
@@ -77,14 +89,14 @@ export function usePaymentsList() {
   return {
     payments: {
       items,
-      page: data?.getPayments.page ?? 1,
-      pageSize: data?.getPayments.pageSize ?? pageSize,
-      totalCount: data?.getPayments.totalCount ?? 0,
-      totalPages: data?.getPayments.pagesCount ?? 1,
+      page: resolvedData?.getPayments.page ?? 1,
+      pageSize: resolvedData?.getPayments.pageSize ?? pageSize,
+      totalCount: resolvedData?.getPayments.totalCount ?? 0,
+      totalPages: resolvedData?.getPayments.pagesCount ?? 1,
       isLoading: loading,
       isError: Boolean(error),
     },
-    searchTerm,
+    searchTerm: rawSearchTerm,
     sortBy,
     sortDirection,
     setSearchTerm,
