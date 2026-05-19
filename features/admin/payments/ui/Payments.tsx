@@ -4,6 +4,7 @@ import { CheckboxRadix, Input, Pagination } from '@ictroot/ui-kit'
 import { useState } from 'react'
 
 import { usePaymentsList } from '@/features/admin/payments/model/use-payments-list'
+import { LinearProgress } from '@/shared/composites'
 import { formatAmount } from '@/shared/lib/format/amount'
 import { formatDate } from '@/shared/lib/format/date'
 import {
@@ -186,13 +187,11 @@ export function Payments() {
 
   return (
     <div className={'mx-auto w-full max-w-[1200px] px-6 py-8'}>
-      <div className={'mb-6 flex items-center justify-between gap-4'}>
-        <div className={'min-h-6'}>
-          {isBackgroundLoading ? (
-            <span className={'text-light-900 text-sm'}>{'Updating payments...'}</span>
-          ) : null}
-        </div>
+      <div className={'fixed top-0 right-0 left-0 z-100 w-full'}>
+        <LinearProgress active={isInitialLoading || isBackgroundLoading} />
+      </div>
 
+      <div className={'mb-6 flex justify-end'}>
         <label className={'text-light-100 flex items-center gap-3 whitespace-nowrap'}>
           <CheckboxRadix
             checked={isAutoUpdateEnabled}
