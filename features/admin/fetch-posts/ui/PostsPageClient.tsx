@@ -13,7 +13,7 @@ import { Input, Typography } from '@/shared/ui'
 type ModerationAction = 'ban' | 'unban'
 
 type ModerationTarget = {
-  userId: string
+  userId: number
   userName: string
   action: ModerationAction
 }
@@ -43,7 +43,7 @@ export const PostsPageClient = () => {
   })
 
   const handleModerationAction = useCallback(
-    (userId: string, userName: string, action: ModerationAction) => {
+    (userId: number, userName: string, action: ModerationAction) => {
       setModerationTarget({ userId, userName, action })
     },
     []

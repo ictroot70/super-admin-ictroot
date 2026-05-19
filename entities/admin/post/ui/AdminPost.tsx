@@ -25,7 +25,7 @@ type ModerationAction = 'ban' | 'unban'
 
 type Props = {
   post: PostVM
-  onModerationAction: (userId: string, userName: string, action: ModerationAction) => void
+  onModerationAction: (userId: number, userName: string, action: ModerationAction) => void
   isPriorityPost?: boolean
 }
 
@@ -130,14 +130,14 @@ const AdminPostComponent = ({ post, onModerationAction, isPriorityPost = false }
           <button
             type={'button'}
             className={'flex h-auto w-auto cursor-pointer rounded-full p-0.75'}
-            onClick={() => onModerationAction(String(postOwner.id), postOwner.userName, 'unban')}
+            onClick={() => onModerationAction(postOwner.id, postOwner.userName, 'unban')}
           >
             <BlockFull className={'bg-danger-500'} />
           </button>
         ) : (
           <button
             type={'button'}
-            onClick={() => onModerationAction(String(postOwner.id), postOwner.userName, 'ban')}
+            onClick={() => onModerationAction(postOwner.id, postOwner.userName, 'ban')}
             className={'flex h-auto w-auto cursor-pointer rounded-full p-0.75'}
           >
             <Block />

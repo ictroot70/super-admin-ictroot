@@ -26,7 +26,7 @@ export type PostsListState = {
   inputValue: string
   searchTerm: string
   onSearchChange: (value: string) => void
-  updateUserBanState: (userId: string, isBanned: boolean) => void
+  updateUserBanState: (userId: number, isBanned: boolean) => void
 }
 
 export const usePostsList = (): PostsListState => {
@@ -213,10 +213,10 @@ export const usePostsList = (): PostsListState => {
 
   const hasMore = endCursorPostId !== null && posts.length < totalCount
 
-  const updateUserBanState = useCallback((userId: string, isBanned: boolean) => {
+  const updateUserBanState = useCallback((userId: number, isBanned: boolean) => {
     setPosts(prev =>
       prev.map<PostVM>(post => {
-        if (String(post.postOwner.id) !== userId) {
+        if (post.postOwner.id !== userId) {
           return post
         }
 
