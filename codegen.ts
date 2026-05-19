@@ -9,6 +9,11 @@ const config: CodegenConfig = {
       presetConfig: {
         gqlTagName: 'gql',
       },
+      config: {
+        scalars: {
+          DateTime: 'string',
+        },
+      },
     },
   },
   ignoreNoDocuments: true,

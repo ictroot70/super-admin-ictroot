@@ -1,0 +1,41 @@
+query GetUsers(
+  $pageNumber: Int
+  $pageSize: Int
+  $searchTerm: String
+  $sortBy: String
+  $sortDirection: SortDirection
+) {
+  getUsers(
+    pageNumber: $pageNumber
+    pageSize: $pageSize
+    searchTerm: $searchTerm
+    sortBy: $sortBy
+    sortDirection: $sortDirection
+  ) {
+    users {
+      id
+      userName
+      email
+      createdAt
+      profile {
+        firstName
+        lastName
+        __typename
+      }
+      userBan {
+        reason
+        createdAt
+        __typename
+      }
+      __typename
+    }
+    pagination {
+      page
+      pageSize
+      totalCount
+      pagesCount
+      __typename
+    }
+    __typename
+  }
+}
