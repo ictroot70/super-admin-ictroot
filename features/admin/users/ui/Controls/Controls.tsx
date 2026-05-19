@@ -1,6 +1,6 @@
 'use client'
 
-import React, { ChangeEvent, memo } from 'react'
+import { ChangeEvent, memo } from 'react'
 
 import { Select } from '@/shared'
 import { Input } from '@/shared/ui'

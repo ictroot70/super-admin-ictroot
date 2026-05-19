@@ -30,12 +30,15 @@ export function Users() {
     return <Loading />
   }
 
-  if (users.isError && !users.data?.items.length) {
+  if (users.isError && !users.data?.items.length && !users.isFetching) {
     return <ErrorState onRetry={refetch} />
   }
 
-  if (!users.data?.items.length && !users.isFetching) {
-    if (users.data?.hasActiveFilters) {
+  const isEmpty = !users.data?.items.length
+  const hasActiveFilters = users.data?.hasActiveFilters ?? false
+
+  if (isEmpty && !users.isFetching) {
+    if (hasActiveFilters) {
       return (
         <EmptyFiltersState
           searchTerm={searchTerm}
@@ -52,12 +55,6 @@ export function Users() {
 
   return (
     <PageContainer>
-      {users.isFetching && (
-        <div className={'bg-primary-500/20 fixed top-0 right-0 left-0 z-50 h-0.5'}>
-          <div className={'bg-primary-500 h-full w-1/3 animate-pulse'} />
-        </div>
-      )}
-
       <Controls
         searchTerm={searchTerm}
         onSearchChange={setSearchTerm}
@@ -75,6 +72,7 @@ export function Users() {
           sort={sort}
           onSort={handleSort}
           onUserActionComplete={refetch}
+          isFetching={users.isFetching}
         />
       </div>
 

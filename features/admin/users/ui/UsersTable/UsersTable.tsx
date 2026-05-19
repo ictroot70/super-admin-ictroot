@@ -1,3 +1,4 @@
+import { BlockFull } from '@/shared'
 import {
   SortableHeaderCell,
   Table,
@@ -7,7 +8,7 @@ import {
   TableHeaderCell,
   TableRow,
 } from '@/shared/composites/Table'
-import { BlockFull } from '@/shared/ui'
+import { LoadingBar } from '@/shared/ui/loading-bar'
 
 import { UsersSortBy, UsersSortState, UsersViewModel } from '../../model'
 import { UserActionMenu } from '../UserActionMenu'
@@ -31,15 +32,18 @@ type Props = {
   items: UsersViewModel[]
   onSort: (key: UsersSortBy) => void
   onUserActionComplete?: () => void
+  isFetching?: boolean // ✅ Новый проп
 }
 
-export function UsersTable({ items, sort, onSort, onUserActionComplete }: Props) {
+export function UsersTable({ items, sort, onSort, onUserActionComplete, isFetching }: Props) {
   const handleActionComplete = () => {
     onUserActionComplete?.()
   }
 
   return (
-    <div className={'mb-[36px] overflow-x-auto'}>
+    <div className={'relative mb-[36px] overflow-x-auto'}>
+      {isFetching && <LoadingBar />}
+
       <Table>
         <TableHead>
           <TableRow>
@@ -62,49 +66,41 @@ export function UsersTable({ items, sort, onSort, onUserActionComplete }: Props)
           </TableRow>
         </TableHead>
         <TableBody>
-          {items.length > 0 ? (
-            items.map(item => (
-              <TableRow key={item.userId}>
-                <TableCell>
-                  <div className={'flex items-center gap-2'}>
-                    {item.isBlocked && (
-                      <BlockFull
-                        className={'h-4 w-4 flex-shrink-0 text-red-500'}
-                        aria-label={'User is blocked'}
-                      />
-                    )}
-                    <span>{item.userId}</span>
-                  </div>
-                </TableCell>
-                <TableCell>{item.email}</TableCell>
-                <TableCell>
-                  <a
-                    href={item.profileLink}
-                    className={'text-[var(--color-primary)] no-underline hover:underline'}
-                    target={'_blank'}
-                    rel={'noopener noreferrer'}
-                  >
-                    {item.username}
-                  </a>
-                </TableCell>
-                <TableCell>{item.dateAdded}</TableCell>
-                <TableCell>
-                  <UserActionMenu
-                    userId={String(item.userId)}
-                    userName={item.username}
-                    isBanned={item.isBlocked}
-                    onActionComplete={handleActionComplete}
-                  />
-                </TableCell>
-              </TableRow>
-            ))
-          ) : (
-            <TableRow>
-              <TableCell colSpan={columns.length} className={'p-8 text-center opacity-60'}>
-                No users found
+          {items.map(item => (
+            <TableRow key={item.userId}>
+              <TableCell>
+                <div className={'flex items-center gap-2'}>
+                  {item.isBlocked && (
+                    <BlockFull
+                      className={'h-4 w-4 flex-shrink-0 text-red-500'}
+                      aria-label={'User is blocked'}
+                    />
+                  )}
+                  <span>{item.userId}</span>
+                </div>
+              </TableCell>
+              <TableCell>{item.email}</TableCell>
+              <TableCell>
+                <a
+                  href={item.profileLink}
+                  className={'text-[var(--color-primary)] no-underline hover:underline'}
+                  target={'_blank'}
+                  rel={'noopener noreferrer'}
+                >
+                  {item.username}
+                </a>
+              </TableCell>
+              <TableCell>{item.dateAdded}</TableCell>
+              <TableCell>
+                <UserActionMenu
+                  userId={String(item.userId)}
+                  userName={item.username}
+                  isBanned={item.isBlocked}
+                  onActionComplete={handleActionComplete}
+                />
               </TableCell>
             </TableRow>
-          )}
+          ))}
         </TableBody>
       </Table>
     </div>

@@ -37,7 +37,7 @@ export const EmptyFiltersState = memo(
             No users found
           </Typography>
           <Typography variant={'h3'} className={'text-dark-100'}>
-            Try adjusting your search or filter criteria
+            Try your search or filter criteria
           </Typography>
           <Button variant={'primary'} onClick={onClearFilters}>
             Clear filters
