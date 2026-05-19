@@ -7,7 +7,7 @@ import {
   GetPaymentsDocument,
   type GetPaymentsQuery,
   type GetPaymentsQueryVariables,
-  type SortDirection,
+  SortDirection,
 } from '@/shared/api/graphql/gql/graphql'
 
 type PaymentsSortBy = 'createdAt' | 'amount' | 'paymentMethod' | 'userName'
@@ -18,7 +18,7 @@ export function usePaymentsList() {
   const [rawSearchTerm, setRawSearchTerm] = useState('')
   const [debouncedSearchTerm, setDebouncedSearchTerm] = useState('')
   const [sortBy, setSortBy] = useState<PaymentsSortBy>('createdAt')
-  const [sortDirection, setSortDirection] = useState<SortDirection>('desc')
+  const [sortDirection, setSortDirection] = useState<SortDirection>(SortDirection.Desc)
 
   useEffect(() => {
     const timeoutId = window.setTimeout(() => {
@@ -68,13 +68,13 @@ export function usePaymentsList() {
     setPage(1)
 
     if (field === sortBy) {
-      setSortDirection(sortDirection === 'asc' ? 'desc' : 'asc')
+      setSortDirection(sortDirection === SortDirection.Asc ? SortDirection.Desc : SortDirection.Asc)
 
       return
     }
 
     setSortBy(field)
-    setSortDirection('asc')
+    setSortDirection(SortDirection.Asc)
   }
 
   const handlePageChange = (newPage: number) => {

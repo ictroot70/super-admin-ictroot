@@ -61,12 +61,14 @@ const formatPaymentMethod = (value: string) => {
 const getAvatarUrl = (
   avatars:
     | {
-        url: string | null
-        width: number | null
-        height: number | null
-        fileSize: number | null
+        __typename?: 'Avatar'
+        url?: string | null
+        width?: number | null
+        height?: number | null
+        fileSize?: number | null
       }[]
     | null
+    | undefined
 ) => {
   if (!avatars || avatars.length === 0) {
     return null
@@ -157,9 +159,9 @@ export function Payments() {
                       </div>
                     </TableCell>
 
-                    <TableCell>{formatDate(item.createdAt)}</TableCell>
+                    <TableCell>{formatDate(item.createdAt ?? null)}</TableCell>
 
-                    <TableCell>{formatAmount(item.amount)}</TableCell>
+                    <TableCell>{formatAmount(item.amount ?? null)}</TableCell>
 
                     <TableCell>{formatSubscription(item.type)}</TableCell>
 
