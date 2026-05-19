@@ -1,8 +1,21 @@
-import { gql } from '@apollo/client'
-
-export const POST_ADDED_SUBSCRIPTION = gql`
-  subscription PostAdded {
-    postAdded {
+query GetPosts(
+  $endCursorPostId: Int
+  $searchTerm: String
+  $pageSize: Int
+  $sortBy: String
+  $sortDirection: SortDirection
+) {
+  getPosts(
+    endCursorPostId: $endCursorPostId
+    searchTerm: $searchTerm
+    pageSize: $pageSize
+    sortBy: $sortBy
+    sortDirection: $sortDirection
+  ) {
+    pageSize
+    pagesCount
+    totalCount
+    items {
       id
       ownerId
       description
@@ -31,4 +44,4 @@ export const POST_ADDED_SUBSCRIPTION = gql`
       }
     }
   }
-`
+}
