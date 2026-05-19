@@ -6,7 +6,7 @@ import {
 } from '@/shared/api/graphql/gql/graphql'
 
 type BanUserArgs = {
-  userId: string
+  userId: number
   banReason: string
 }
 
@@ -16,7 +16,7 @@ export const useBanUser = () => {
   const banUser = async ({ userId, banReason }: BanUserArgs) => {
     const result = await mutate({
       variables: {
-        userId: Number(userId),
+        userId: userId,
         banReason,
       },
     })

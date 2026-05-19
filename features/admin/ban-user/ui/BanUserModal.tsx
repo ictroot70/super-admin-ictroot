@@ -6,7 +6,7 @@ import { useBanUser } from '../model/useBanUser'
 
 export type BanUserModalProps = {
   open: boolean
-  userId: string
+  userId: number
   userName: string
   onConfirm: () => void
   onClose: () => void
@@ -27,7 +27,7 @@ export const BanUserModal = ({ open, userId, userName, onConfirm, onClose }: Ban
       setErrorMessage('')
       await banUser({ userId, banReason: reason })
       onConfirm()
-      onClose()
+      // onClose()
     } catch (error) {
       setErrorMessage(error instanceof Error ? error.message : 'Request error')
     }

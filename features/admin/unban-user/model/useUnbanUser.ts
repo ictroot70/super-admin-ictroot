@@ -6,7 +6,7 @@ import {
 } from '@/shared/api/graphql/gql/graphql'
 
 type UnbanUserArgs = {
-  userId: string
+  userId: number
 }
 
 export const useUnbanUser = () => {
@@ -17,7 +17,7 @@ export const useUnbanUser = () => {
   const unbanUser = async ({ userId }: UnbanUserArgs) => {
     const result = await mutate({
       variables: {
-        userId: Number(userId),
+        userId: userId,
       },
     })
 

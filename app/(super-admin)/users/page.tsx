@@ -16,16 +16,16 @@ export default function Page() {
   }
 
   return (
-    <div className={'flex flex-col'}>
+    <div>
       <LabelRadix label={'Action menu for test'} />
       <UserActionMenu
-        userId={'test id'}
+        userId={0o00}
         userName={'test userName'}
         isBanned={false}
         onActionComplete={() => {}}
       />
-      <h1 className={'mbe-5 text-2xl font-semibold text-white'}>Users</h1>
-      <Button className={'mbe-8! w-2xs!'} variant={'outlined'} onClick={handleLogout}>
+      <h1 className={'text-2xl font-semibold text-white'}>Users</h1>
+      <Button type={'button'} variant={'outlined'} onClick={handleLogout}>
         Logout
       </Button>
       Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ab accusamus ad aspernatur culpa

@@ -6,7 +6,7 @@ import { useUnbanUser } from '../model/useUnbanUser'
 
 export type UnbanUserModalProps = {
   open: boolean
-  userId: string
+  userId: number
   userName: string
   onConfirm: () => void
   onClose: () => void

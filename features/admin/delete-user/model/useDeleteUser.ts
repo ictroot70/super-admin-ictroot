@@ -6,7 +6,7 @@ import {
 } from '@/shared/api/graphql/gql/graphql'
 
 type DeleteUserArgs = {
-  userId: string
+  userId: number
 }
 
 export const useDeleteUser = () => {
@@ -17,7 +17,7 @@ export const useDeleteUser = () => {
   const deleteUser = async ({ userId }: DeleteUserArgs) => {
     const result = await mutate({
       variables: {
-        userId: Number(userId),
+        userId: userId,
       },
     })
 
