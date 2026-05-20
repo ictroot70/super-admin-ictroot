@@ -26,7 +26,7 @@ export const UserActionMenu = (props: UserActionMenuProps) => {
 
   const banItem: DropdownItem = isBanned
     ? { label: 'Un-ban User', icon: <Block />, onClick: () => setUnbanOpen(true) }
-    : { label: 'Ban User', icon: <BlockFull />, onClick: () => setBanOpen(true) }
+    : { label: 'Ban in the system', icon: <BlockFull />, onClick: () => setBanOpen(true) }
 
   const items: DropdownItem[] = [
     { label: 'Delete User', icon: <PersonRemoveOutline />, onClick: () => setDeleteOpen(true) },
@@ -40,13 +40,7 @@ export const UserActionMenu = (props: UserActionMenuProps) => {
 
   return (
     <div className={'dropdown-menu relative inline-block w-full'}>
-      <DropdownMenu
-        contentClassName={'w-[178px] h-[121px]'}
-        items={items}
-        align={'start'}
-        side={'bottom'}
-        showArrow
-      />
+      <DropdownMenu items={items} align={'end'} side={'bottom'} />
 
       <BanUserModal
         open={isBanOpen}
