@@ -6,12 +6,19 @@ import { useDeleteUser } from '../model/useDeleteUser'
 
 export type DeleteUserModalProps = {
   open: boolean
-  userId: string
+  userId: number
   userName: string
   onConfirm: () => void
+  onClose: () => void
 }
 
-export const DeleteUserModal = ({ open, userId, userName, onConfirm }: DeleteUserModalProps) => {
+export const DeleteUserModal = ({
+  open,
+  userId,
+  userName,
+  onConfirm,
+  onClose,
+}: DeleteUserModalProps) => {
   const { deleteUser, loading } = useDeleteUser()
   const [errorMessage, setErrorMessage] = useState('')
 
@@ -29,7 +36,7 @@ export const DeleteUserModal = ({ open, userId, userName, onConfirm }: DeleteUse
     <>
       <ConfirmModal
         open={open}
-        onClose={onConfirm}
+        onClose={onClose}
         onConfirm={handleConfirm}
         title={'Delete user'}
         description={

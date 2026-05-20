@@ -69,6 +69,7 @@ query GetUsers($pageSize: Int, $pageNumber: Int) {
 pnpm codegen
 ```
 
+
 # Режим watch — автоматически при изменении .graphql файлов
 
 ```bash
