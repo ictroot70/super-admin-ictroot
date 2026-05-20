@@ -70,4 +70,5 @@ body {
   font-family: Arial, Helvetica, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  pointer-events: auto !important; /* TODO: Убрать !important, когда в ui-kit для Dropdown добавим modal={false} (снимает конфликт Radix с вложенной модалкой) */
 }
