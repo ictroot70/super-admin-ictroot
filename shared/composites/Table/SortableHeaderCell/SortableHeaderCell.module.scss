@@ -1,0 +1,26 @@
+.button {
+  cursor: pointer;
+
+  display: inline-flex;
+  gap: 6px;
+  align-items: center;
+
+  padding: 0;
+  border: none;
+
+  font: inherit;
+  color: inherit;
+
+  background: none;
+}
+
+.button:focus-visible {
+  border-radius: 2px;
+  outline: 2px solid var(--color-primary-500);
+  outline-offset: 2px;
+}
+
+.icon {
+  display: inline-flex;
+  align-items: center;
+}
