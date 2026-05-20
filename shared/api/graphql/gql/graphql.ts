@@ -1,4 +1,3 @@
-/* eslint-disable max-lines */
 /** Internal type. DO NOT USE DIRECTLY. */
 type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] }
 /** Internal type. DO NOT USE DIRECTLY. */
@@ -12,12 +11,31 @@ export type SortDirection = 'asc' | 'desc'
 
 export type SubscriptionType = 'DAY' | 'MONTHLY' | 'WEEKLY'
 
+export type BanUserMutationVariables = Exact<{
+  userId: number
+  banReason: string
+}>
+
+export type BanUserMutation = { banUser: boolean }
+
 export type LoginAdminMutationVariables = Exact<{
   email: string
   password: string
 }>
 
 export type LoginAdminMutation = { loginAdmin: { logged: boolean } }
+
+export type RemoveUserMutationVariables = Exact<{
+  userId: number
+}>
+
+export type RemoveUserMutation = { removeUser: boolean }
+
+export type UnbanUserMutationVariables = Exact<{
+  userId: number
+}>
+
+export type UnbanUserMutation = { unbanUser: boolean }
 
 export type GetFollowersQueryVariables = Exact<{
   userId: number
@@ -132,6 +150,55 @@ export type GetUserQuery = {
   }
 }
 
+export const BanUserDocument = {
+  kind: 'Document',
+  definitions: [
+    {
+      kind: 'OperationDefinition',
+      operation: 'mutation',
+      name: { kind: 'Name', value: 'BanUser' },
+      variableDefinitions: [
+        {
+          kind: 'VariableDefinition',
+          variable: { kind: 'Variable', name: { kind: 'Name', value: 'userId' } },
+          type: {
+            kind: 'NonNullType',
+            type: { kind: 'NamedType', name: { kind: 'Name', value: 'Int' } },
+          },
+        },
+        {
+          kind: 'VariableDefinition',
+          variable: { kind: 'Variable', name: { kind: 'Name', value: 'banReason' } },
+          type: {
+            kind: 'NonNullType',
+            type: { kind: 'NamedType', name: { kind: 'Name', value: 'String' } },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'banUser' },
+            arguments: [
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'userId' },
+                value: { kind: 'Variable', name: { kind: 'Name', value: 'userId' } },
+              },
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'banReason' },
+                value: { kind: 'Variable', name: { kind: 'Name', value: 'banReason' } },
+              },
+            ],
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<BanUserMutation, BanUserMutationVariables>
 export const LoginAdminDocument = {
   kind: 'Document',
   definitions: [
@@ -185,6 +252,78 @@ export const LoginAdminDocument = {
     },
   ],
 } as unknown as DocumentNode<LoginAdminMutation, LoginAdminMutationVariables>
+export const RemoveUserDocument = {
+  kind: 'Document',
+  definitions: [
+    {
+      kind: 'OperationDefinition',
+      operation: 'mutation',
+      name: { kind: 'Name', value: 'RemoveUser' },
+      variableDefinitions: [
+        {
+          kind: 'VariableDefinition',
+          variable: { kind: 'Variable', name: { kind: 'Name', value: 'userId' } },
+          type: {
+            kind: 'NonNullType',
+            type: { kind: 'NamedType', name: { kind: 'Name', value: 'Int' } },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'removeUser' },
+            arguments: [
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'userId' },
+                value: { kind: 'Variable', name: { kind: 'Name', value: 'userId' } },
+              },
+            ],
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<RemoveUserMutation, RemoveUserMutationVariables>
+export const UnbanUserDocument = {
+  kind: 'Document',
+  definitions: [
+    {
+      kind: 'OperationDefinition',
+      operation: 'mutation',
+      name: { kind: 'Name', value: 'UnbanUser' },
+      variableDefinitions: [
+        {
+          kind: 'VariableDefinition',
+          variable: { kind: 'Variable', name: { kind: 'Name', value: 'userId' } },
+          type: {
+            kind: 'NonNullType',
+            type: { kind: 'NamedType', name: { kind: 'Name', value: 'Int' } },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'unbanUser' },
+            arguments: [
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'userId' },
+                value: { kind: 'Variable', name: { kind: 'Name', value: 'userId' } },
+              },
+            ],
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<UnbanUserMutation, UnbanUserMutationVariables>
 export const GetFollowersDocument = {
   kind: 'Document',
   definitions: [
