@@ -57,6 +57,22 @@
     --foreground: var(--color-light-100);
   }
 }
+
+@keyframes linear-progress {
+  0% {
+    transform: translateX(-100%) scaleX(0.3);
+  }
+  50% {
+    transform: translateX(25%) scaleX(0.6);
+  }
+  100% {
+    transform: translateX(100%) scaleX(0.3);
+  }
+}
+
+@theme inline {
+  --animate-linear-progress: linear-progress 1.4s ease infinite;
+}
 html {
   scrollbar-gutter: stable both-edges;
 }
