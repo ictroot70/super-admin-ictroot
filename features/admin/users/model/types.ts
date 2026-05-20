@@ -26,3 +26,11 @@ export interface UsersDataResponse {
   totalPages: number
   hasActiveFilters: boolean
 }
+
+export const FILTER_ITEMS = [
+  { value: 'ALL', label: 'All' },
+  { value: 'BLOCKED', label: 'Blocked' },
+  { value: 'UNBLOCKED', label: 'Unblocked' },
+]
+
+export const USERS_PAGE_SIZE_OPTIONS = [8, 16, 32, 64]

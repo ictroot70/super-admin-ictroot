@@ -1,3 +1,5 @@
+'use client'
+
 import { BlockFull } from '@/shared'
 import {
   SortableHeaderCell,
@@ -32,7 +34,7 @@ type Props = {
   items: UsersViewModel[]
   onSort: (key: UsersSortBy) => void
   onUserActionComplete?: () => void
-  isFetching?: boolean // ✅ Новый проп
+  isFetching?: boolean
 }
 
 export function UsersTable({ items, sort, onSort, onUserActionComplete, isFetching }: Props) {
@@ -93,7 +95,7 @@ export function UsersTable({ items, sort, onSort, onUserActionComplete, isFetchi
               <TableCell>{item.dateAdded}</TableCell>
               <TableCell>
                 <UserActionMenu
-                  userId={String(item.userId)}
+                  userId={item.userId}
                   userName={item.username}
                   isBanned={item.isBlocked}
                   onActionComplete={handleActionComplete}

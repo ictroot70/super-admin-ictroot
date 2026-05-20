@@ -6,12 +6,16 @@ import { AdminPost } from '@/entities/admin/post/ui/AdminPost'
 import { BanUserModal } from '@/features/admin/ban-user'
 import { useInfiniteScroll } from '@/features/admin/fetch-posts/model/useInfiniteScroll'
 import { usePostsList } from '@/features/admin/fetch-posts/model/userPostsList'
-import { Loading } from '@/shared/composites'
+import { UnbanUserModal } from '@/features/admin/unban-user'
+import { LinearProgress, Loading } from '@/shared/composites'
 import { Input, Typography } from '@/shared/ui'
 
-type BanTarget = {
-  userId: string
+type ModerationAction = 'ban' | 'unban'
+
+type ModerationTarget = {
+  userId: number
   userName: string
+  action: ModerationAction
 }
 
 export const PostsPageClient = () => {
@@ -20,16 +24,17 @@ export const PostsPageClient = () => {
     error,
     hasMore,
     inputValue,
+    isTyping,
     isSearching,
-    isFirstLoadDone,
     isSwappingPosts,
     onSearchChange,
     loadMore,
     isInitialLoading,
     isFetchingMore,
+    updateUserBanState,
   } = usePostsList()
 
-  const [banTarget, setBanTarget] = useState<BanTarget | null>(null)
+  const [moderationTarget, setModerationTarget] = useState<ModerationTarget | null>(null)
 
   const { observerRef: infiniteScrollRef } = useInfiniteScroll({
     hasNextPage: hasMore,
@@ -37,20 +42,29 @@ export const PostsPageClient = () => {
     disabled: isInitialLoading || isFetchingMore || isSearching,
   })
 
-  const handleBanOwner = useCallback((userId: string, userName: string) => {
-    setBanTarget({ userId, userName })
-  }, [])
+  const handleModerationAction = useCallback(
+    (userId: number, userName: string, action: ModerationAction) => {
+      setModerationTarget({ userId, userName, action })
+    },
+    []
+  )
 
-  const handleBanConfirm = useCallback(() => {
-    setBanTarget(null)
-  }, [])
+  const handleModerationConfirm = useCallback(() => {
+    if (!moderationTarget) return
 
-  const handleBanCancel = useCallback(() => {
-    setBanTarget(null)
+    updateUserBanState(moderationTarget.userId, moderationTarget.action === 'ban')
+
+    setModerationTarget(null)
+  }, [moderationTarget, updateUserBanState])
+  const handleModerationCancel = useCallback(() => {
+    setModerationTarget(null)
   }, [])
 
   return (
     <div className={'flex flex-col gap-9'}>
+      <div className={'fixed top-0 right-0 left-0 z-100 w-full'}>
+        <LinearProgress active={isInitialLoading || isTyping || isSearching} />
+      </div>
       <div className={'bg-background sticky top-0 z-50 pt-9'}>
         <Input
           inputType={'search'}
@@ -59,14 +73,6 @@ export const PostsPageClient = () => {
           onChange={e => onSearchChange(e.target.value)}
           className={'relative z-10'}
         />
-        <div className={'h-7 pt-2'}>
-          <Typography
-            variant={'regular_14'}
-            className={isSearching && isFirstLoadDone ? 'text-light-900' : 'text-transparent'}
-          >
-            Searching...
-          </Typography>
-        </div>
         <div
           className={
             'from-background pointer-events-none absolute right-0 left-0 h-8 bg-linear-to-b from-10% to-transparent'
@@ -88,11 +94,16 @@ export const PostsPageClient = () => {
 
       <div
         className={`grid grid-cols-1 gap-4 transition-opacity duration-200 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 ${
-          isSearching || isSwappingPosts ? 'opacity-60' : 'opacity-100'
+          isTyping || isSearching || isSwappingPosts ? 'opacity-60' : 'opacity-100'
         }`}
       >
-        {posts.map(post => (
-          <AdminPost key={post.id} post={post} onBanOwnerAction={handleBanOwner} />
+        {posts.map((post, index) => (
+          <AdminPost
+            key={post.id}
+            post={post}
+            isPriorityPost={index < 4}
+            onModerationAction={handleModerationAction}
+          />
         ))}
       </div>
 
@@ -104,13 +115,23 @@ export const PostsPageClient = () => {
         </div>
       )}
 
-      {banTarget && (
+      {moderationTarget?.action === 'ban' && (
         <BanUserModal
-          open={Boolean(banTarget)}
-          userId={banTarget.userId}
-          userName={banTarget.userName}
-          onConfirm={handleBanConfirm}
-          onClose={handleBanCancel}
+          open
+          userId={moderationTarget.userId}
+          userName={moderationTarget.userName}
+          onConfirm={handleModerationConfirm}
+          onClose={handleModerationCancel}
+        />
+      )}
+
+      {moderationTarget?.action === 'unban' && (
+        <UnbanUserModal
+          open
+          userId={moderationTarget.userId}
+          userName={moderationTarget.userName}
+          onConfirm={handleModerationConfirm}
+          onClose={handleModerationCancel}
         />
       )}
     </div>

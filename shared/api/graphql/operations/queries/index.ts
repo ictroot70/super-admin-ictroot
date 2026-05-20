@@ -1,3 +1,3 @@
-export { GetUsersDocument } from '@/shared/api/graphql/gql/graphql'
+export { GetPostsDocument } from '@/shared/api/graphql/gql/graphql'
 
-export type { GetUsersQuery, GetUsersQueryVariables } from '@/shared/api/graphql/gql/graphql'
+export type { GetPostsQuery } from '@/shared/api/graphql/gql/graphql'

@@ -29,7 +29,7 @@ export function useUsersList() {
   const [sortValue, setSortValue] = useState<SortValue>('createdAt_desc')
   const [statusFilter, setStatusFilter] = useState<FilterValue>('ALL')
 
-  const debouncedSearch = useDebounce(searchTerm, 300)
+  const debouncedSearch = useDebounce(searchTerm, 500)
 
   const prevFiltersRef = useRef({ debouncedSearch, sortValue, statusFilter, pageSize })
 
@@ -98,8 +98,8 @@ export function useUsersList() {
       userId: user.id ?? 0,
       username: user.userName ?? 'Unknown',
       email: user.email ?? '',
-      profileLink: `/users/${user.id}`, // Изменено на users/{id}
-      dateAdded: formatDate(user.createdAt), // Используем formatDate для единообразия
+      profileLink: `/users/${user.id}`,
+      dateAdded: formatDate(user.createdAt),
       isBlocked: Boolean(user.userBan),
     }))
   }, [usersData])
@@ -139,6 +139,7 @@ export function useUsersList() {
 
   const handlePageChange = useCallback((newPage: number) => {
     setPageNumber(newPage)
+    window.scrollTo({ top: 0, behavior: 'smooth' })
   }, [])
 
   const handleItemsPerPageChange = useCallback((newPageSize: number) => {

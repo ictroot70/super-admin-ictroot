@@ -4,6 +4,7 @@ import { useCallback, useEffect, useRef, useState, useTransition } from 'react'
 
 import { PostVM } from '@/entities/admin/post'
 import { normalizePost } from '@/entities/admin/post/model/normalizePost'
+import { usePostAdded } from '@/features/admin/subscribe-posts/model/use-post-added'
 import { useGqlLazyQuery } from '@/shared/api/graphql'
 import { GetPostsDocument, type GetPostsQuery } from '@/shared/api/graphql/gql/graphql'
 
@@ -14,6 +15,7 @@ export type PostsListState = {
   posts: PostVM[]
   error: unknown
   isInitialLoading: boolean
+  isTyping: boolean
   isSearching: boolean
   isFirstLoadDone: boolean
   isFetchingMore: boolean
@@ -24,6 +26,7 @@ export type PostsListState = {
   inputValue: string
   searchTerm: string
   onSearchChange: (value: string) => void
+  updateUserBanState: (userId: number, isBanned: boolean) => void
 }
 
 export const usePostsList = (): PostsListState => {
@@ -32,6 +35,7 @@ export const usePostsList = (): PostsListState => {
 
   const [endCursorPostId, setEndCursorPostId] = useState<number | null>(null)
 
+  const [isTyping, setIsTyping] = useState(false)
   const [isSearching, setIsSearching] = useState(false)
   const [inputValue, setInputValue] = useState('')
   const [searchTerm, setSearchTerm] = useState('')
@@ -56,8 +60,30 @@ export const usePostsList = (): PostsListState => {
     })
   }, [])
 
-  //Todo: ⚠️ A6.2 PREPARE (Евгений, добавишь сюда свою функцию)
-  // const mergePrepend = () => {}
+  const mergePrepend = useCallback((item: PostVM) => {
+    setPosts(prev => {
+      const alreadyExists = prev.some(post => post.id === item.id)
+
+      if (alreadyExists) {
+        return prev
+      }
+
+      setTotalCount(count => count + 1)
+
+      return [item, ...prev]
+    })
+  }, [])
+
+  const handlePostAdded = useCallback(
+    (post: Parameters<typeof normalizePost>[0]) => {
+      const normalizedPost = normalizePost(post)
+
+      mergePrepend(normalizedPost)
+    },
+    [mergePrepend]
+  )
+
+  usePostAdded({ onPostAdded: handlePostAdded })
 
   const applyResponse = useCallback(
     (data: GetPostsQuery, mode: 'replace' | 'append') => {
@@ -157,12 +183,14 @@ export const usePostsList = (): PostsListState => {
   const onSearchChange = useCallback(
     (value: string) => {
       setInputValue(value)
+      setIsTyping(true)
 
       if (debounceTimer.current) {
         clearTimeout(debounceTimer.current)
       }
 
       debounceTimer.current = setTimeout(() => {
+        setIsTyping(false)
         setSearchTerm(value)
         lastRequestedCursorRef.current = null
 
@@ -185,15 +213,33 @@ export const usePostsList = (): PostsListState => {
 
   const hasMore = endCursorPostId !== null && posts.length < totalCount
 
+  const updateUserBanState = useCallback((userId: number, isBanned: boolean) => {
+    setPosts(prev =>
+      prev.map<PostVM>(post => {
+        if (post.postOwner.id !== userId) {
+          return post
+        }
+
+        return {
+          ...post,
+          userBan: isBanned ? { createdAt: '', reason: '' } : null,
+        }
+      })
+    )
+  }, [])
+
   return {
     posts,
     error,
 
     isInitialLoading,
+    isTyping,
     isSearching,
     isFirstLoadDone,
     isFetchingMore,
     isSwappingPosts,
+
+    updateUserBanState,
 
     hasMore,
     endCursorPostId,
@@ -202,8 +248,5 @@ export const usePostsList = (): PostsListState => {
     inputValue,
     searchTerm,
     onSearchChange,
-
-    // ⚠️ A6.2 extension point
-    // mergePrepend можно использовать для realtime
   }
 }
