@@ -22,3 +22,17 @@ export type UserRelationshipsConnection = {
   totalCount: number
   items: UserRelationshipItem[]
 }
+
+export type RawUserRelationshipsConnection = {
+  page: number
+  pageSize: number
+  totalCount: number
+  items: Array<{
+    id: number
+    userId: number
+    userName?: string | null
+    firstName?: string | null
+    lastName?: string | null
+    createdAt: string
+  }>
+}

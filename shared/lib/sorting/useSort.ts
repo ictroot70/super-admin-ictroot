@@ -2,11 +2,11 @@
 
 import { useState, useCallback } from 'react'
 
-export type SortDirection = 'asc' | 'desc' | null
+import { SortDirection } from '@/shared/api/graphql/gql/graphql'
 
 export type SortState<T> = {
   key: T | null
-  direction: SortDirection
+  direction: SortDirection | null
 }
 
 export const useSort = <T>() => {
@@ -18,11 +18,11 @@ export const useSort = <T>() => {
   const onSort = useCallback((key: T) => {
     setSort(prev => {
       if (prev.key !== key) {
-        return { key, direction: 'asc' }
+        return { key, direction: SortDirection.Asc }
       }
 
-      if (prev.direction === 'asc') {
-        return { key, direction: 'desc' }
+      if (prev.direction === SortDirection.Asc) {
+        return { key, direction: SortDirection.Desc }
       }
 
       return { key: null, direction: null }

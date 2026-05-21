@@ -12,7 +12,7 @@ import { usePagination } from '@/shared/lib/pagination'
 import { parseUserIdParam } from '@/shared/lib/route-params'
 import { useSort } from '@/shared/lib/sorting/useSort'
 
-import { type UserRelationshipsConnection, type UserRelationshipsSortBy } from '../types'
+import { type RawUserRelationshipsConnection, type UserRelationshipsSortBy } from '../types'
 
 type UserRelationshipsQueryVariables = {
   userId: number
@@ -24,7 +24,7 @@ type UserRelationshipsQueryVariables = {
 
 type UseUserRelationshipsTabOptions<TQuery, TVariables extends UserRelationshipsQueryVariables> = {
   document: DocumentNode<TQuery, TVariables>
-  selectConnection: (data: TQuery) => UserRelationshipsConnection | undefined
+  selectConnection: (data: TQuery) => RawUserRelationshipsConnection | undefined
 }
 
 export const useUserRelationshipsTab = <
@@ -70,12 +70,20 @@ export const useUserRelationshipsTab = <
   const relationships =
     (data && selectConnection(data)) || (previousData && selectConnection(previousData))
 
+  const normalizedItems =
+    relationships?.items.map(item => ({
+      ...item,
+      userName: item.userName ?? null,
+      firstName: item.firstName ?? null,
+      lastName: item.lastName ?? null,
+    })) ?? []
+
   const isLoading = loading && !data && !previousData
   const isRefreshing =
     networkStatus === NetworkStatus.setVariables || networkStatus === NetworkStatus.refetch
 
   return {
-    items: relationships?.items ?? [],
+    items: normalizedItems,
     sort,
     error,
     isLoading,

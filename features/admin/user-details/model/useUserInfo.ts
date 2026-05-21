@@ -32,8 +32,8 @@ export const useUserInfo = ({ userId }: Props) => {
           id: user.id,
           name: user.userName,
           avatar: user.profile.avatars?.[0]?.url ?? DEFAULT_AVATAR,
-          firstName: user.profile.firstName,
-          lastName: user.profile.lastName,
+          firstName: user.profile.firstName ?? null,
+          lastName: user.profile.lastName ?? null,
           createdAt: formatDate(user.profile.createdAt),
         }
       : null,
