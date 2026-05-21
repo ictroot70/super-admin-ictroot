@@ -1,4 +1,5 @@
 export * from './UI-KIT'
+export * from './table'
 export * from './ConfirmModal'
 export * from './tabs'
 export * from './table'

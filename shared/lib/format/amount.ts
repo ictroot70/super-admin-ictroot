@@ -1,3 +1,11 @@
+export const formatAmount = (amount: number | null) => {
+  if (amount === null) {
+    return '—'
+  }
+
+  return `${amount}$`
+}
+
 // # единый формат суммы + currency (синхронизация A4/A5)
 export const formatPrice = (value: number) => {
   const hasCents = Math.round(value * 100) % 100 !== 0
