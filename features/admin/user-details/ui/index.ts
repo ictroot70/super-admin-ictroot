@@ -1,0 +1,5 @@
+export * from './user-info'
+export * from './followers-tab'
+export * from './following-tab'
+export * from './payments-tab'
+export * from './uploaded-photos-tab'

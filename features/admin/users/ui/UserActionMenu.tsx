@@ -57,6 +57,7 @@ export const UserActionMenu = (props: UserActionMenuProps) => {
         userId={userId}
         userName={userName}
         onConfirm={() => {
+          setUnbanOpen(false)
           onActionComplete()
         }}
         onClose={() => setUnbanOpen(false)}
@@ -67,6 +68,7 @@ export const UserActionMenu = (props: UserActionMenuProps) => {
         userId={userId}
         userName={userName}
         onConfirm={() => {
+          setDeleteOpen(false)
           onActionComplete()
         }}
         onClose={() => setDeleteOpen(false)}

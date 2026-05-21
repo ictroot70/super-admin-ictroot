@@ -1,0 +1,11 @@
+query GetUploadedPhotosByUser($userId: Int!, $endCursorId: Int) {
+  getPostsByUser(userId: $userId, endCursorId: $endCursorId) {
+    pagesCount
+    pageSize
+    totalCount
+    items {
+      id
+      url
+    }
+  }
+}
