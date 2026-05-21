@@ -30,7 +30,6 @@ export const APP_ROUTES = {
     FOLLOWERS: (id: number) => `/users/${id}/followers`,
     FOLLOWING: (id: number) => `/users/${id}/following`,
   },
-
   PROFILE: {
     ID: (id: number) => `/profile/${id}`,
     WITH_POST: (id: number, postId: number, from?: PostOpenSource) => {
