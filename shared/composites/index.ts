@@ -1,6 +1,3 @@
-export * from './Select'
+export * from '../ui/Select'
 export * from './Loading'
 export * from './LinearProgress'
-export * from './Carousel'
-export * from './Avatar'
-export * from './SafeImage'

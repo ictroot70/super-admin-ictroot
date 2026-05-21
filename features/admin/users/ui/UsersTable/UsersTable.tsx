@@ -9,7 +9,7 @@ import {
   TableHead,
   TableHeaderCell,
   TableRow,
-} from '@/shared/composites/Table'
+} from '@/shared/ui'
 import { LoadingBar } from '@/shared/ui/loading-bar'
 
 import { UsersSortBy, UsersSortState, UsersViewModel } from '../../model'
