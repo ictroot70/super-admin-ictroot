@@ -133,7 +133,7 @@ const AdminPostComponent = ({ post, onModerationAction, isPriorityPost = false }
             className={'flex h-auto w-auto cursor-pointer rounded-full p-0.75'}
             onClick={() => onModerationAction(postOwner.id, postOwner.userName, 'unban')}
           >
-            <BlockFull className={'bg-danger-500'} />
+            <Block />
           </button>
         ) : (
           <button
@@ -141,7 +141,7 @@ const AdminPostComponent = ({ post, onModerationAction, isPriorityPost = false }
             onClick={() => onModerationAction(postOwner.id, postOwner.userName, 'ban')}
             className={'flex h-auto w-auto cursor-pointer rounded-full p-0.75'}
           >
-            <Block />
+            <BlockFull className={'bg-danger-500'} />
           </button>
         )}
       </div>
