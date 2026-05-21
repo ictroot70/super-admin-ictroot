@@ -1,3 +1,4 @@
+import { normalizePost } from '@/entities/admin/post/model/normalizePost'
 import { Avatar, UserBan } from '@/entities/admin/user'
 
 export type ImagePost = {
@@ -17,6 +18,7 @@ export type PostOwnerModel = {
   avatars: Avatar[]
 }
 
+export type PostVM = ReturnType<typeof normalizePost>
 export type Post = {
   id: number // NON_NULL
   ownerId: number // NON_NULL

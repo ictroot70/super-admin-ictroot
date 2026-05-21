@@ -4,6 +4,7 @@ query GetUsers(
   $searchTerm: String
   $sortBy: String
   $sortDirection: SortDirection
+  $statusFilter: UserBlockStatus
 ) {
   getUsers(
     pageNumber: $pageNumber
@@ -11,6 +12,7 @@ query GetUsers(
     searchTerm: $searchTerm
     sortBy: $sortBy
     sortDirection: $sortDirection
+    statusFilter: $statusFilter
   ) {
     users {
       id
@@ -20,6 +22,12 @@ query GetUsers(
       profile {
         firstName
         lastName
+        avatars {
+          url
+          width
+          height
+          __typename
+        }
         __typename
       }
       userBan {
