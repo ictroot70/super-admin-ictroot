@@ -7,16 +7,17 @@ import { type PostVM } from '@/entities/admin/post'
 import { useTimeAgo } from '@/entities/admin/post/hooks/useTimeAgo'
 import {
   Carousel,
-  Avatar,
   Typography,
   ScrollAreaRadix,
   APP_ROUTES,
   IMAGE_SIZES,
   IMAGE_LOADING_STRATEGY,
-  SafeImage,
   Block,
   BlockFull,
 } from '@/shared'
+
+import { Avatar } from './Avatar'
+import { SafeImage } from './SafeImage'
 
 const DEFAULT_IMAGE = '/default-image.svg'
 const MAX_CHAR_COUNT = 67

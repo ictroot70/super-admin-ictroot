@@ -4,8 +4,6 @@ import type { ReactNode } from 'react'
 import { ApolloAppProvider } from '@/app/providers/apollo'
 import { AppHeader } from '@/widgets/Header'
 
-import '@fontsource-variable/inter'
-import '@fontsource-variable/roboto'
 import './globals.css'
 
 export const metadata: Metadata = {
@@ -13,10 +11,7 @@ export const metadata: Metadata = {
   description: 'Super admin dashboard for ICTRoot',
   authors: [{ name: 'Ictroot Team', url: 'https://ictroot.uk' }],
   metadataBase: new URL('https://ictroot.uk'),
-  robots: {
-    index: true,
-    follow: true,
-  },
+  robots: { index: true, follow: true },
   icons: {
     icon: '/favicon.ico',
     shortcut: '/favicon.ico',
@@ -26,8 +21,8 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: Readonly<{ children: ReactNode }>) {
   return (
-    <html lang={'en'} className={'h-full antialiased'}>
-      <body className={'min-h-full'}>
+    <html lang={'ru'} className={'h-full antialiased'}>
+      <body className={'flex min-h-full flex-col'}>
         <ApolloAppProvider>
           <AppHeader />
           {children}

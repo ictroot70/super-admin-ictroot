@@ -1,0 +1,14 @@
+query GetUser($userId: Int!) {
+  getUser(userId: $userId) {
+    id
+    userName
+    profile {
+      firstName
+      lastName
+      avatars {
+        url
+      }
+      createdAt
+    }
+  }
+}

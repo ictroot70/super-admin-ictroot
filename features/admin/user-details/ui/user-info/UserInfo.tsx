@@ -1,0 +1,58 @@
+import Image from 'next/image'
+import Link from 'next/link'
+
+import { APP_ROUTES } from '@/shared/constant'
+import { Typography } from '@/shared/ui'
+
+type Props = {
+  profile: {
+    id: number
+    name: string
+    avatar: string
+    firstName: string | null
+    lastName: string | null
+    createdAt: string
+  }
+}
+
+export function UserInfo({ profile }: Props) {
+  const { id, avatar, name, createdAt, firstName, lastName } = profile
+  const profileLink = APP_ROUTES.USERS.ID(id)
+  const fullName = [firstName, lastName].filter(Boolean).join(' ') || '-'
+
+  return (
+    <div className={'mb-8'}>
+      <div className={'flex items-center gap-6'}>
+        <Image
+          alt={'Avatar'}
+          src={avatar}
+          width={60}
+          height={60}
+          className={'h-15 w-15 shrink-0 rounded-full object-cover'}
+        />
+        <div>
+          <Typography variant={'h1'}>{fullName}</Typography>
+          <Typography variant={'regular_14'} className={'underline'}>
+            <Link href={profileLink} className={'pointer underline'}>
+              {name ?? profileLink}
+            </Link>
+          </Typography>
+        </div>
+      </div>
+      <div className={'mt-5 flex flex-wrap gap-18'}>
+        <div>
+          <Typography variant={'regular_14'} className={'text-light-900'}>
+            {'UserID'}
+          </Typography>
+          <Typography variant={'regular_16'}>{id}</Typography>
+        </div>
+        <div>
+          <Typography variant={'regular_14'} className={'text-light-900'}>
+            {'Profile Creation Date'}
+          </Typography>
+          <Typography variant={'regular_16'}>{createdAt}</Typography>
+        </div>
+      </div>
+    </div>
+  )
+}
