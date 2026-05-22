@@ -166,7 +166,6 @@ const eslintConfig = defineConfig([
     'next-env.d.ts',
     // Project-specific:
     'coverage/**',
-    'shared/api/graphql/generated/**',
   ]),
 ])
 
