@@ -27,3 +27,8 @@ export enum PaymentType {
   PAYPAL = 'PAYPAL',
   CREDIT_CARD = 'CREDIT_CARD',
 }
+
+export enum SortDirection {
+  ASC = 'ASC',
+  DESC = 'DESC',
+}

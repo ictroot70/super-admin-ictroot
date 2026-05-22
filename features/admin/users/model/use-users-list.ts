@@ -5,15 +5,18 @@ import { useState, useMemo, useCallback, useRef, useEffect } from 'react'
 import { useGqlQuery } from '@/shared/api/graphql'
 import {
   GetUsersDocument,
-  GetUsersQuery,
-  GetUsersQueryVariables,
-  SortDirection,
-  UserBlockStatus,
+  type GetUsersQuery,
+  type GetUsersQueryVariables,
+  type SortDirection,
+  type UserBlockStatus,
 } from '@/shared/api/graphql/gql/graphql'
 import { formatDate } from '@/shared/lib/formatters'
 
 import { FilterValue, SortValue, UsersSortBy, UsersSortState, UsersViewModel } from '.'
 import { useDebounce } from '../utils/useDebounce'
+
+const SORT_ASC: SortDirection = 'asc'
+const SORT_DESC: SortDirection = 'desc'
 
 function normalizeSort(sortValue: SortValue): { sortBy: string; sortDirection: SortDirection } {
   const [field, direction] = sortValue.split('_') as [UsersSortBy, SortDirection]
@@ -127,9 +130,7 @@ export function useUsersList() {
         const [currentField] = prev.split('_')
         const isSameField = currentField === key
         const newDirection: SortDirection =
-          isSameField && sortDirection === SortDirection.Asc
-            ? SortDirection.Desc
-            : SortDirection.Asc
+          isSameField && sortDirection === SORT_ASC ? SORT_DESC : SORT_ASC
 
         return `${key}_${newDirection}` as SortValue
       })
