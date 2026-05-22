@@ -2,9 +2,8 @@ import type { EmblaOptionsType } from './EmblaCarousel'
 
 import { lazy, Suspense, type FC } from 'react'
 
-import { IMAGE_LOADING_STRATEGY, IMAGE_SIZES } from '@/shared'
-
-import { SafeImage } from '../SafeImage'
+import { IMAGE_LOADING_STRATEGY, IMAGE_SIZES } from '@/shared/constant'
+import { SafeImage } from '@/shared/ui'
 
 import s from './Carousel.module.scss'
 type UserImage = {

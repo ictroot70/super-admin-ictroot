@@ -1,1 +1,1 @@
-export * from './LoadingBar'
+export { LoadingBar } from './LoadingBar'

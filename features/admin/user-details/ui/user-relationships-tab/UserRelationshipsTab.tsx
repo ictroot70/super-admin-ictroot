@@ -2,8 +2,7 @@
 
 import Link from 'next/link'
 
-import { Loading } from '@/shared/composites'
-import { APP_ROUTES } from '@/shared/constant/app-routes'
+import { APP_ROUTES } from '@/shared/constant'
 import { formatDate } from '@/shared/lib/format'
 import {
   LoadingBar,
@@ -17,6 +16,7 @@ import {
   TableHeaderCell,
   TableRow,
   Typography,
+  Loading,
 } from '@/shared/ui'
 
 import {

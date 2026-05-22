@@ -9,7 +9,7 @@ import {
   PaymentsTab,
   UploadedPhotosTab,
 } from '@/features/admin/user-details/ui'
-import { parseUserIdParam } from '@/shared/lib/route-params'
+import { parseUserIdParam } from '@/shared/lib/route-params/parseUserIdParam'
 
 const TAB_TO_COMPONENT_MAP: Record<UserTab, ComponentType> = {
   'uploaded-photos': UploadedPhotosTab,

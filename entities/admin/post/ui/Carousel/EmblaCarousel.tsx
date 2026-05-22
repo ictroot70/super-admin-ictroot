@@ -1,9 +1,8 @@
 import useEmblaCarousel from 'embla-carousel-react'
 import { useCallback, useEffect, useState } from 'react'
 
-import { ArrowBackSimple, ArrowForwardSimple, IMAGE_LOADING_STRATEGY } from '@/shared'
-
-import { SafeImage } from '../SafeImage'
+import { IMAGE_LOADING_STRATEGY } from '@/shared/constant'
+import { ArrowBackSimple, ArrowForwardSimple, SafeImage } from '@/shared/ui'
 
 import s from './Carousel.module.scss'
 

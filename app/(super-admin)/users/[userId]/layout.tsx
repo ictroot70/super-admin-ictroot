@@ -13,7 +13,7 @@ import {
 } from '@/features/admin/user-details/model'
 import { UserInfo } from '@/features/admin/user-details/ui/user-info/UserInfo'
 import { APP_ROUTES } from '@/shared/constant'
-import { parseUserIdParam } from '@/shared/lib/route-params'
+import { parseUserIdParam } from '@/shared/lib/route-params/parseUserIdParam'
 import { ArrowBack, LoadingBar, Typography } from '@/shared/ui'
 import { Tabs } from '@/shared/ui/tabs'
 

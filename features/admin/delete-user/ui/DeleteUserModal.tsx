@@ -1,6 +1,6 @@
 import { useState } from 'react'
 
-import { ConfirmModal, ErrorMessage, Loading, Typography } from '@/shared'
+import { ConfirmModal, ErrorMessage, Loading, Typography } from '@/shared/ui'
 
 import { useDeleteUser } from '../model/useDeleteUser'
 

@@ -7,8 +7,7 @@ import { BanUserModal } from '@/features/admin/ban-user'
 import { useInfiniteScroll } from '@/features/admin/fetch-posts/model/useInfiniteScroll'
 import { usePostsList } from '@/features/admin/fetch-posts/model/userPostsList'
 import { UnbanUserModal } from '@/features/admin/unban-user'
-import { LinearProgress, Loading } from '@/shared/composites'
-import { Input, Typography } from '@/shared/ui'
+import { LinearProgress, Loading, Input, Typography } from '@/shared/ui'
 
 type ModerationAction = 'ban' | 'unban'
 

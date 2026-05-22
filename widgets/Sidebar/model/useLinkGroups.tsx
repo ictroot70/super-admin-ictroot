@@ -1,6 +1,6 @@
 import { ReactElement } from 'react'
 
-import { CreditCardOutline, ImageOutline, Person, TrendingUp } from '@/shared/ui/SVGComponents'
+import { CreditCardOutline, ImageOutline, Person, TrendingUp } from '@/shared/ui/svg-components'
 
 export type SidebarLinkItem = {
   href: string

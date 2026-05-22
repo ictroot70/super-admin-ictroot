@@ -1,6 +1,6 @@
 import { useState } from 'react'
 
-import { ConfirmModal, Typography, ErrorMessage, Loading } from '@/shared'
+import { ConfirmModal, Typography, ErrorMessage, Loading } from '@/shared/ui'
 
 import { useUnbanUser } from '../model/useUnbanUser'
 

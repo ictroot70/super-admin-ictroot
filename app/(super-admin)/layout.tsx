@@ -5,7 +5,7 @@ import { type ReactNode, useEffect } from 'react'
 
 import { SuperAdminLayoutShell } from '@/app/super-admin-layout-shell'
 import { useAdminSessionStore } from '@/features/admin/auth/model/admin-session.store'
-import { Loading } from '@/shared/composites'
+import { Loading } from '@/shared/ui'
 
 type Props = Readonly<{ children: ReactNode }>
 

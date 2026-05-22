@@ -2,8 +2,7 @@
 
 import { useState, useSyncExternalStore } from 'react'
 
-import { Select } from '@/shared/composites'
-import { RussiaFlag, UkFlag } from '@/shared/ui/SVGComponents'
+import { RussiaFlag, UkFlag, Select } from '@/shared/ui'
 
 type Language = 'en' | 'rus'
 
