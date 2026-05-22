@@ -2,16 +2,10 @@
 
 import { useCallback } from 'react'
 
-import { LinearProgress, Loading, Select } from '@/shared/composites'
-import { Input, Pagination, Typography } from '@/shared/ui'
+import { PAGE_SIZE_OPTIONS } from '@/shared/constant'
+import { Input, Pagination, Typography, Select, LinearProgress, Loading } from '@/shared/ui'
 
-import {
-  useUsersList,
-  USERS_PAGE_SIZE_OPTIONS,
-  FilterValue,
-  UsersSortBy,
-  FILTER_ITEMS,
-} from '../model'
+import { useUsersList, FilterValue, UsersSortBy, FILTER_ITEMS } from '../model'
 import { EmptyState } from './EmptyState/EmptyState'
 import { ErrorState } from './ErrorState/ErrorState'
 import { UsersTable } from './UsersTable/UsersTable'
@@ -94,20 +88,20 @@ export function Users() {
       </div>
 
       <div className={'bg-background sticky top-0 z-50 pt-9'}>
-        <div className={'mb-[24px] flex w-full items-center justify-between gap-[46px]'}>
-          <div className={'relative z-10 w-[644px] flex-shrink-0'}>
+        <div className={'mb-6 flex w-full items-center justify-between gap-11.5'}>
+          <div className={'relative z-10 w-161 shrink-0'}>
             <Input
               inputType={'search'}
               placeholder={'Search by name or email...'}
               value={searchTerm}
               onChange={e => handleSearchChange(e.target.value)}
-              className={'h-[36px] w-full'}
+              className={'h-9 w-full'}
               aria-label={'Search users'}
               reserveErrorSpace={false}
             />
           </div>
 
-          <div className={'w-[234px] flex-shrink-0'}>
+          <div className={'w-58.5 shrink-0'}>
             <Select
               items={FILTER_ITEMS}
               value={filterStatus}
@@ -175,7 +169,7 @@ export function Users() {
             itemsPerPage={users.data.pageSize}
             onPageChange={handlePageChangeWithCallback}
             onItemsPerPageChange={handleItemsPerPageChangeWithCallback}
-            pageSizeOptions={USERS_PAGE_SIZE_OPTIONS}
+            pageSizeOptions={PAGE_SIZE_OPTIONS}
           />
         </>
       )}

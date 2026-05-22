@@ -6,17 +6,23 @@ import { useState } from 'react'
 import { BanUserModal } from '@/features/admin/ban-user'
 import { DeleteUserModal } from '@/features/admin/delete-user'
 import { UnbanUserModal } from '@/features/admin/unban-user'
-import { DropdownMenu, DropdownItem } from '@/shared/ui'
-import { MoreHorizontal, Block, BlockFull, PersonRemoveOutline } from '@/shared/ui/SVGComponents'
+import {
+  DropdownMenu,
+  DropdownItem,
+  MoreHorizontal,
+  Block,
+  BlockFull,
+  PersonRemoveOutline,
+} from '@/shared/ui'
 
-interface UserActionMenuProps {
+type Props = {
   userId: number
   userName: string
   isBanned: boolean
   onActionComplete: () => void
 }
 
-export const UserActionMenu = (props: UserActionMenuProps) => {
+export const UserActionMenu = (props: Props) => {
   const { userId, userName, onActionComplete, isBanned } = props
 
   const [isBanOpen, setBanOpen] = useState(false)

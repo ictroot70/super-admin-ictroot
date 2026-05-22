@@ -10,7 +10,8 @@ import {
   type SortDirection,
   type UserBlockStatus,
 } from '@/shared/api/graphql/gql/graphql'
-import { formatDate } from '@/shared/lib/formatters'
+import { DEFAULT_PAGE_NUMBER, DEFAULT_PAGE_SIZE } from '@/shared/constant'
+import { formatDate } from '@/shared/lib'
 
 import { FilterValue, SortValue, UsersSortBy, UsersSortState, UsersViewModel } from '.'
 import { useDebounce } from '../utils/useDebounce'
@@ -26,8 +27,8 @@ function normalizeSort(sortValue: SortValue): { sortBy: string; sortDirection: S
 }
 
 export function useUsersList() {
-  const [pageNumber, setPageNumber] = useState(1)
-  const [pageSize, setPageSize] = useState(8)
+  const [pageNumber, setPageNumber] = useState(DEFAULT_PAGE_NUMBER)
+  const [pageSize, setPageSize] = useState(DEFAULT_PAGE_SIZE)
   const [searchTerm, setSearchTerm] = useState('')
   const [sortValue, setSortValue] = useState<SortValue>('createdAt_desc')
   const [statusFilter, setStatusFilter] = useState<FilterValue>('ALL')

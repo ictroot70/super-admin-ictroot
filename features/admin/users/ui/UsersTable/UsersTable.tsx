@@ -1,6 +1,5 @@
 'use client'
 
-import { BlockFull } from '@/shared'
 import {
   SortableHeaderCell,
   Table,
@@ -9,8 +8,9 @@ import {
   TableHead,
   TableHeaderCell,
   TableRow,
+  BlockFull,
+  LoadingBar,
 } from '@/shared/ui'
-import { LoadingBar } from '@/shared/ui/loading-bar'
 
 import { UsersSortBy, UsersSortState, UsersViewModel } from '../../model'
 import { UserActionMenu } from '../UserActionMenu'
@@ -43,7 +43,7 @@ export function UsersTable({ items, sort, onSort, onUserActionComplete, isFetchi
   }
 
   return (
-    <div className={'relative mb-[36px] overflow-x-auto'}>
+    <div className={'relative mb-9 overflow-x-auto'}>
       {isFetching && <LoadingBar />}
 
       <Table>
@@ -73,10 +73,7 @@ export function UsersTable({ items, sort, onSort, onUserActionComplete, isFetchi
               <TableCell>
                 <div className={'flex items-center gap-2'}>
                   {item.isBlocked && (
-                    <BlockFull
-                      className={'h-4 w-4 flex-shrink-0 text-red-500'}
-                      aria-label={'User is blocked'}
-                    />
+                    <BlockFull className={'h-4 w-4 shrink-0'} aria-label={'User is blocked'} />
                   )}
                   <span>{item.userId}</span>
                 </div>

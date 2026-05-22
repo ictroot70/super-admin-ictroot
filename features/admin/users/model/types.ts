@@ -32,5 +32,3 @@ export const FILTER_ITEMS = [
   { value: 'BLOCKED', label: 'Blocked' },
   { value: 'UNBLOCKED', label: 'Unblocked' },
 ]
-
-export const USERS_PAGE_SIZE_OPTIONS = [8, 16, 32, 64]

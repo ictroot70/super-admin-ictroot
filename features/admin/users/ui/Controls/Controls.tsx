@@ -2,8 +2,7 @@
 
 import { ChangeEvent, useEffect, useRef } from 'react'
 
-import { Select } from '@/shared'
-import { Input } from '@/shared/ui'
+import { Input, Select } from '@/shared/ui'
 
 import { FilterValue, FILTER_ITEMS } from '../../model'
 
@@ -63,7 +62,7 @@ export const Controls = ({
   }
 
   return (
-    <div className={'mb-[24px] flex w-full items-center justify-between gap-[46px]'}>
+    <div className={'mb-6 flex w-full items-center justify-between gap-11.5'}>
       <div className={'relative z-10 w-[644px] flex-shrink-0'}>
         <Input
           ref={inputRef}
