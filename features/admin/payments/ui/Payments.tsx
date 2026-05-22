@@ -1,13 +1,14 @@
 'use client'
 
-import { CheckboxRadix, Input, Pagination } from '@ictroot/ui-kit'
 import { useState } from 'react'
 
-import { usePaymentsList } from '@/features/admin/payments/model/use-payments-list'
-import { LinearProgress } from '@/shared/composites'
-import { formatAmount } from '@/shared/lib/format/amount'
-import { formatDate } from '@/shared/lib/format/date'
+import { PAGE_SIZE_OPTIONS } from '@/shared/constant'
+import { formatAmount, formatDate } from '@/shared/lib'
 import {
+  CheckboxRadix,
+  Input,
+  LinearProgress,
+  Pagination,
   SortableHeaderCell,
   Table,
   TableBody,
@@ -16,6 +17,8 @@ import {
   TableHeaderCell,
   TableRow,
 } from '@/shared/ui'
+
+import { usePaymentsList } from '../model'
 
 type PaymentsSortBy = 'createdAt' | 'amount' | 'paymentMethod' | 'userName'
 
@@ -179,7 +182,7 @@ export function Payments() {
             totalItems={payments.totalCount}
             itemsPerPage={payments.pageSize}
             onPageChange={handlePageChange}
-            pageSizeOptions={[6, 10, 20, 50, 100]}
+            pageSizeOptions={PAGE_SIZE_OPTIONS}
             onItemsPerPageChange={handlePageSizeChange}
           />
         </div>

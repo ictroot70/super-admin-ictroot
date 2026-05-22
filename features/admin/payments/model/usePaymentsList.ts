@@ -9,13 +9,14 @@ import {
   type GetPaymentsQueryVariables,
   SortDirection,
 } from '@/shared/api/graphql/gql/graphql'
-import { PaymentsSortDirection } from '@/shared/types/payments/models'
+import { DEFAULT_PAGE_SIZE } from '@/shared/constant'
+import { PaymentsSortDirection } from '@/shared/types/payments'
 
 type PaymentsSortBy = 'createdAt' | 'amount' | 'paymentMethod' | 'userName'
 
 export function usePaymentsList() {
   const [page, setPage] = useState(1)
-  const [pageSize, setPageSize] = useState(6)
+  const [pageSize, setPageSize] = useState(DEFAULT_PAGE_SIZE)
   const [rawSearchTerm, setRawSearchTerm] = useState('')
   const [debouncedSearchTerm, setDebouncedSearchTerm] = useState('')
   const [sortBy, setSortBy] = useState<PaymentsSortBy>('createdAt')
