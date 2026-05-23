@@ -13,7 +13,7 @@ export function SuperAdminLayoutShell({ children }: SuperAdminLayoutShellProps) 
       <ScrollAreaRadix className={'h-full w-full'} viewportClassName={'w-full h-full'}>
         <div
           className={
-            'mx-auto h-full min-h-full w-full max-w-(--layout-max-width) self-stretch px-8'
+            'mx-auto h-full min-h-full w-full max-w-(--layout-max-width) self-stretch px-15'
           }
         >
           <Sidebar />

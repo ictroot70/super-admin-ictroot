@@ -33,6 +33,8 @@ const AdminPostComponent = ({ post, onModerationAction, isPriorityPost = false }
 
   const slides = images?.flatMap(img => (img.url ? [img.url] : [])) ?? []
   const safeSlides = slides.length > 0 ? slides : [DEFAULT_IMAGE]
+  const moderationAction: ModerationAction = userBan ? 'unban' : 'ban'
+  const moderationIcon = userBan ? <Block /> : <BlockFull />
 
   const collapseDescription = () => {
     setIsExpanded(false)
@@ -99,23 +101,13 @@ const AdminPostComponent = ({ post, onModerationAction, isPriorityPost = false }
           <Typography variant={'h3'}>{postOwner.userName}</Typography>
         </Link>
 
-        {userBan ? (
-          <button
-            type={'button'}
-            className={'flex h-auto w-auto cursor-pointer rounded-full p-0.75'}
-            onClick={() => onModerationAction(postOwner.id, postOwner.userName, 'unban')}
-          >
-            <Block />
-          </button>
-        ) : (
-          <button
-            type={'button'}
-            onClick={() => onModerationAction(postOwner.id, postOwner.userName, 'ban')}
-            className={'flex h-auto w-auto cursor-pointer rounded-full p-0.75'}
-          >
-            <BlockFull className={'bg-danger-500'} />
-          </button>
-        )}
+        <button
+          type={'button'}
+          className={'border-2'}
+          onClick={() => onModerationAction(postOwner.id, postOwner.userName, moderationAction)}
+        >
+          {moderationIcon}
+        </button>
       </div>
 
       <div className={'{overflow-hidden flex flex-col'}>

@@ -95,7 +95,7 @@ export const PostsPageClient = () => {
       )}
 
       <div
-        className={`grid grid-cols-1 gap-4 transition-opacity duration-200 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 ${
+        className={`gap-y- grid grid-cols-1 gap-x-3 transition-opacity duration-200 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 ${
           isTyping || isSearching || isSwappingPosts ? 'opacity-60' : 'opacity-100'
         }`}
       >
