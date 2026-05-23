@@ -4,9 +4,9 @@ import { useCallback, useState } from 'react'
 
 import { AdminPost } from '@/entities/admin/post/ui/AdminPost'
 import { BanUserModal } from '@/features/admin/ban-user'
-import { useInfiniteScroll } from '@/features/admin/fetch-posts/model/useInfiniteScroll'
 import { usePostsList } from '@/features/admin/fetch-posts/model/userPostsList'
 import { UnbanUserModal } from '@/features/admin/unban-user'
+import { useInfiniteScroll } from '@/shared/hooks'
 import { LinearProgress, Loading, Input, Typography } from '@/shared/ui'
 
 type ModerationAction = 'ban' | 'unban'
@@ -35,10 +35,13 @@ export const PostsPageClient = () => {
 
   const [moderationTarget, setModerationTarget] = useState<ModerationTarget | null>(null)
 
-  const { observerRef: infiniteScrollRef } = useInfiniteScroll({
-    hasNextPage: hasMore,
+  const { ref: infiniteScrollRef } = useInfiniteScroll({
+    hasMore,
+    isLoading: isFetchingMore,
+    disabled: isInitialLoading || isSearching,
     onLoadMore: loadMore,
-    disabled: isInitialLoading || isFetchingMore || isSearching,
+    rootMargin: '120px',
+    threshold: 0.1,
   })
 
   const handleModerationAction = useCallback(

@@ -2,11 +2,13 @@
 
 import { useEffect, useRef } from 'react'
 
-type UseInfiniteScrollParams = {
+type Props = {
   hasMore: boolean
-  isLoading: boolean
-  onLoadMore: () => Promise<unknown> | void
+  disabled?: boolean
+  isLoading?: boolean
   rootMargin?: string
+  threshold?: number
+  onLoadMore: () => Promise<unknown> | void
 }
 
 export const useInfiniteScroll = ({
@@ -14,7 +16,7 @@ export const useInfiniteScroll = ({
   isLoading,
   onLoadMore,
   rootMargin = '200px 0px',
-}: UseInfiniteScrollParams) => {
+}: Props) => {
   const ref = useRef<HTMLDivElement | null>(null)
   const isFetchingRef = useRef(false)
 
