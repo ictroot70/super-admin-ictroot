@@ -5,16 +5,8 @@ import { memo, useEffect, useRef, useState } from 'react'
 
 import { type PostVM } from '@/entities/admin/post'
 import { useTimeAgo } from '@/entities/admin/post/hooks/useTimeAgo'
-import { APP_ROUTES, IMAGE_SIZES, IMAGE_LOADING_STRATEGY } from '@/shared/constant'
-import {
-  Avatar,
-  SafeImage,
-  Carousel,
-  Typography,
-  ScrollAreaRadix,
-  Block,
-  BlockFull,
-} from '@/shared/ui'
+import { APP_ROUTES, IMAGE_SIZES } from '@/shared/constant'
+import { Avatar, Block, BlockFull, Carousel, ScrollAreaRadix, Typography } from '@/shared/ui'
 
 const DEFAULT_IMAGE = '/default-image.svg'
 const MAX_CHAR_COUNT = 67
@@ -41,10 +33,6 @@ const AdminPostComponent = ({ post, onModerationAction, isPriorityPost = false }
 
   const slides = images?.flatMap(img => (img.url ? [img.url] : [])) ?? []
   const safeSlides = slides.length > 0 ? slides : [DEFAULT_IMAGE]
-
-  const imageLoadingStrategy = isPriorityPost
-    ? IMAGE_LOADING_STRATEGY.lcp
-    : IMAGE_LOADING_STRATEGY.default
 
   const collapseDescription = () => {
     setIsExpanded(false)
@@ -98,24 +86,11 @@ const AdminPostComponent = ({ post, onModerationAction, isPriorityPost = false }
           '{aspect-square h-max-[240px] h-min-[120px] relative h-60 w-full overflow-hidden'
         }
       >
-        {safeSlides.length > 1 ? (
-          <Carousel
-            slides={safeSlides}
-            imageSizes={IMAGE_SIZES.PUBLIC_POST}
-            priorityFirstImage={isPriorityPost}
-          />
-        ) : (
-          <SafeImage
-            {...imageLoadingStrategy}
-            src={safeSlides[0]}
-            fallbackSrc={DEFAULT_IMAGE}
-            alt={'Post image'}
-            fill
-            sizes={IMAGE_SIZES.PUBLIC_POST}
-            telemetryLabel={'AdminPost'}
-            className={'w-full object-cover object-center'}
-          />
-        )}
+        <Carousel
+          slides={safeSlides}
+          imageSizes={IMAGE_SIZES.PUBLIC_POST}
+          priorityFirstImage={isPriorityPost}
+        />
       </div>
 
       <div className={'flex items-center gap-3'}>
