@@ -45,7 +45,7 @@ export const LoginForm = () => {
   }
 
   return (
-    <div className={'flex min-h-screen items-center justify-center bg-black px-4'}>
+    <div className={'flex min-h-screen items-center justify-center px-4'}>
       <Card className={'w-94.5 px-6 py-6'}>
         <form onSubmit={handleSubmit(onSubmit)} className={'flex flex-col gap-4'}>
           <Typography className={'mb-4 text-center'} variant={'h1'}>
