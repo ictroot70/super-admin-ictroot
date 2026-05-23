@@ -11,6 +11,14 @@ import { GetPostsDocument, type GetPostsQuery } from '@/shared/api/graphql/gql/g
 const PAGE_SIZE = 10
 const SEARCH_DEBOUNCE_MS = 300
 
+const isAbortError = (error: unknown): boolean => {
+  if (typeof DOMException !== 'undefined' && error instanceof DOMException) {
+    return error.name === 'AbortError'
+  }
+
+  return error instanceof Error && error.name === 'AbortError'
+}
+
 export type PostsListState = {
   posts: PostVM[]
   error: unknown
@@ -138,6 +146,8 @@ export const usePostsList = (): PostsListState => {
         if (result.data) {
           applyResponse(result.data, 'replace')
         }
+      } catch (error) {
+        if (isAbortError(error)) return
       } finally {
         if (requestId === requestIdRef.current) {
           setIsSearching(false)
@@ -175,6 +185,8 @@ export const usePostsList = (): PostsListState => {
       if (result.data) {
         applyResponse(result.data, 'append')
       }
+    } catch (error) {
+      if (isAbortError(error)) return
     } finally {
       setIsFetchingMore(false)
     }
