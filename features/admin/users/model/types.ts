@@ -12,8 +12,8 @@ export interface UsersSortState {
 export interface UsersViewModel {
   userId: number
   username: string
-  email: string
   profileLink: string
+  profileUrl: string
   dateAdded: string
   isBlocked: boolean
 }

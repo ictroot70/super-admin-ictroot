@@ -10,7 +10,7 @@ import {
   type SortDirection,
   type UserBlockStatus,
 } from '@/shared/api/graphql/gql/graphql'
-import { DEFAULT_PAGE_NUMBER, DEFAULT_PAGE_SIZE } from '@/shared/constant'
+import { APP_ROUTES, DEFAULT_PAGE_NUMBER, DEFAULT_PAGE_SIZE } from '@/shared/constant'
 import { formatDate } from '@/shared/lib'
 
 import { FilterValue, SortValue, UsersSortBy, UsersSortState, UsersViewModel } from '.'
@@ -98,14 +98,19 @@ export function useUsersList() {
   const items: UsersViewModel[] = useMemo(() => {
     if (!usersData?.users) return []
 
-    return usersData.users.map(user => ({
-      userId: user.id ?? 0,
-      username: user.userName ?? 'Unknown',
-      email: user.email ?? '',
-      profileLink: `/users/${user.id}`,
-      dateAdded: formatDate(user.createdAt),
-      isBlocked: Boolean(user.userBan),
-    }))
+    return usersData.users.map(user => {
+      const userId = user.id ?? 0
+      const fullName = [user.profile?.firstName, user.profile?.lastName].filter(Boolean).join(' ')
+
+      return {
+        userId,
+        username: fullName || 'Unknown',
+        profileLink: user.userName ?? 'Unknown',
+        profileUrl: APP_ROUTES.USERS.ID(userId),
+        dateAdded: formatDate(user.createdAt),
+        isBlocked: Boolean(user.userBan),
+      }
+    })
   }, [usersData])
 
   const totalCount = usersData?.pagination?.totalCount ?? 0

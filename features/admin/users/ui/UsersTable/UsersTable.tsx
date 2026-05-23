@@ -1,5 +1,7 @@
 'use client'
 
+import Link from 'next/link'
+
 import {
   SortableHeaderCell,
   Table,
@@ -23,7 +25,7 @@ type Column = {
 
 const columns: Column[] = [
   { id: 'userId', title: 'User ID' },
-  { id: 'email', title: 'Profile link', sortKey: UsersSortBy.EMAIL },
+  { id: 'profileLink', title: 'Profile link', sortKey: UsersSortBy.USER_NAME },
   { id: 'username', title: 'Username' },
   { id: 'dateAdded', title: 'Date Added', sortKey: UsersSortBy.CREATED_AT },
   { id: 'actions', title: '' },
@@ -82,17 +84,15 @@ export function UsersTable({ items, sort, onSort, onUserActionComplete, isFetchi
                   <span>{item.userId}</span>
                 </div>
               </TableCell>
-              <TableCell>{item.email}</TableCell>
               <TableCell>
-                <a
-                  href={item.profileLink}
+                <Link
+                  href={item.profileUrl}
                   className={'text-[var(--color-primary)] no-underline hover:underline'}
-                  target={'_blank'}
-                  rel={'noopener noreferrer'}
                 >
-                  {item.username}
-                </a>
+                  {item.profileLink}
+                </Link>
               </TableCell>
+              <TableCell>{item.username}</TableCell>
               <TableCell>{item.dateAdded}</TableCell>
               <TableCell>
                 <UserActionMenu
