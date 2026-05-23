@@ -42,7 +42,7 @@ export const SafeImage = ({
     if (failedOptimizationRequest && !telemetryLoggedRef.current) {
       telemetryLoggedRef.current = true
 
-      logger.error('[SafeImage] Optimized image request failed', {
+      logger.warn('[SafeImage] Optimized image request failed; fallback image will be used', {
         component: telemetryLabel,
         failedRuntimeSrc,
         requestedSrc: normalizeSrc(sourceSrc),
