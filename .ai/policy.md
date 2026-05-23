@@ -97,3 +97,7 @@ Last updated: 2026-04-22
 - Правила процесса не прячутся в личных договоренностях команды.
 - Источник правил должен оставаться в `.ai/*` и быть актуальным после merge.
 - Если правило устарело, оно обновляется в этом репозитории, а не в устной форме.
+
+## Naming Invariant
+
+File and folder names must follow `.ai/naming-conventions.md`. Check this before commits and PRs, especially after adding, moving, or renaming files.

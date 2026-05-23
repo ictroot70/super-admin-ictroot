@@ -80,3 +80,8 @@
 - ручная проверка критических сценариев выполнена;
 - нет незакрытых high-risk замечаний в review;
 - lock-контракт не нарушен или обновлен осознанно.
+
+## Naming Gate
+
+- Added, moved, and renamed files/folders must match `.ai/naming-conventions.md`.
+- PR evidence must mention naming exceptions when framework or generated-file conventions require them.
