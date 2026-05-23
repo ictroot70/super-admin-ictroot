@@ -60,7 +60,11 @@ export function UsersTable({ items, sort, onSort, onUserActionComplete, isFetchi
                   onSort={onSort}
                 />
               ) : (
-                <TableHeaderCell key={column.id} scope={'col'}>
+                <TableHeaderCell
+                  key={column.id}
+                  scope={'col'}
+                  className={column.id === 'userId' ? 'w-1 whitespace-nowrap' : undefined}
+                >
                   {column.title}
                 </TableHeaderCell>
               )
@@ -70,8 +74,8 @@ export function UsersTable({ items, sort, onSort, onUserActionComplete, isFetchi
         <TableBody>
           {items.map(item => (
             <TableRow key={item.userId}>
-              <TableCell>
-                <div className={'flex items-center gap-2'}>
+              <TableCell className={'w-1 whitespace-nowrap'}>
+                <div className={'flex items-center justify-end gap-3'}>
                   {item.isBlocked && (
                     <BlockFull className={'h-4 w-4 shrink-0'} aria-label={'User is blocked'} />
                   )}
