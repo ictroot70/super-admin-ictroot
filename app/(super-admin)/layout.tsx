@@ -3,8 +3,8 @@
 import { usePathname, useRouter } from 'next/navigation'
 import { type ReactNode, useEffect } from 'react'
 
-import { SuperAdminLayoutShell } from '@/app/super-admin-layout-shell'
-import { useAdminSessionStore } from '@/features/admin/auth/model/admin-session.store'
+import { SuperAdminLayoutShell } from '@/app/SuperAdminLayoutShell'
+import { useAdminSessionStore } from '@/features/admin/auth/model/adminSessionStore'
 import { Loading } from '@/shared/ui'
 
 type Props = Readonly<{ children: ReactNode }>

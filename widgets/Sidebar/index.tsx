@@ -65,4 +65,4 @@ export const Sidebar = () => {
   )
 }
 
-export { SidebarSkeleton } from './components/SidebarSkeleton'
+export { SidebarSkeleton } from './components/sidebar-skeleton'

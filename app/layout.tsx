@@ -2,7 +2,7 @@ import type { Metadata } from 'next'
 import type { ReactNode } from 'react'
 
 import { ApolloAppProvider } from '@/app/providers/apollo'
-import { AppHeader } from '@/widgets/Header'
+import { AppHeader } from '@/widgets/header'
 
 import '@fontsource-variable/inter/index.css'
 import '@fontsource-variable/roboto/index.css'

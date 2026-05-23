@@ -7,9 +7,9 @@ import { Input, Pagination, Typography, Select, LinearProgress, Loading } from '
 
 import { useUsersList, FilterValue, UsersSortBy } from '../model'
 import { FILTER_ITEMS } from '../model/constants'
-import { EmptyState } from './EmptyState/EmptyState'
-import { ErrorState } from './ErrorState/ErrorState'
-import { UsersTable } from './UsersTable/UsersTable'
+import { EmptyState } from './empty-state/EmptyState'
+import { ErrorState } from './error-state/ErrorState'
+import { UsersTable } from './users-table/UsersTable'
 
 export function Users() {
   const {

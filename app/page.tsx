@@ -3,7 +3,7 @@
 import { useRouter } from 'next/navigation'
 import { useEffect } from 'react'
 
-import { useAdminSessionStore } from '@/features/admin/auth/model/admin-session.store'
+import { useAdminSessionStore } from '@/features/admin/auth/model/adminSessionStore'
 
 export default function Home() {
   const router = useRouter()

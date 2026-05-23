@@ -3,7 +3,7 @@
 import type { ReactNode } from 'react'
 
 import { ScrollAreaRadix } from '@/shared/ui'
-import { Sidebar } from '@/widgets/Sidebar'
+import { Sidebar } from '@/widgets/sidebar'
 
 type SuperAdminLayoutShellProps = Readonly<{ children: ReactNode }>
 

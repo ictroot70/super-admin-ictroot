@@ -1,5 +1,5 @@
 export * from './enums'
 export * from './types'
-export * from './user-helpers'
+export * from './userHelpers'
 
-export { useUsersList } from './use-users-list'
+export { useUsersList } from './useUsersList'

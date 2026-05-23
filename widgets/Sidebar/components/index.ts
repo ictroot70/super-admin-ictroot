@@ -1,3 +1,3 @@
-export * from './SidebarGroup'
-export * from './SidebarLink'
-export * from './SidebarSkeleton'
+export * from './sidebar-group'
+export * from './sidebar-link'
+export * from './sidebar-skeleton'

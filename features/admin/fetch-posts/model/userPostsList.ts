@@ -4,7 +4,7 @@ import { useCallback, useEffect, useRef, useState, useTransition } from 'react'
 
 import { PostVM } from '@/entities/admin/post'
 import { normalizePost } from '@/entities/admin/post/model/normalizePost'
-import { usePostAdded } from '@/features/admin/subscribe-posts/model/use-post-added'
+import { usePostAdded } from '@/features/admin/subscribe-posts/model/usePostAdded'
 import { useGqlLazyQuery } from '@/shared/api/graphql'
 import { GetPostsDocument, type GetPostsQuery } from '@/shared/api/graphql/gql/graphql'
 

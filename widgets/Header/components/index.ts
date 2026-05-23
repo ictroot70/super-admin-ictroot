@@ -1,1 +1,1 @@
-export * from './LanguageSelect'
+export * from './language-select'

@@ -3,7 +3,7 @@ import { Typography } from '@ictroot/ui-kit'
 import { ReactElement } from 'react'
 
 import { Header } from '@/shared/ui'
-import { LanguageSelect } from '@/widgets/Header/components'
+import { LanguageSelect } from '@/widgets/header/components'
 
 export const AppHeader = (): ReactElement => {
   return (

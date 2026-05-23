@@ -3,7 +3,7 @@
 import { useGqlMutation } from '@/shared/api/graphql'
 import { LoginAdminDocument } from '@/shared/api/graphql/gql/graphql'
 
-import { useAdminSessionStore } from './admin-session.store'
+import { useAdminSessionStore } from './adminSessionStore'
 
 export const useAdminLogin = () => {
   const setSession = useAdminSessionStore(state => state.setSession)
