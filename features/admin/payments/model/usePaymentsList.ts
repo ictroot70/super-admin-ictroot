@@ -10,7 +10,11 @@ import {
   SortDirection,
 } from '@/shared/api/graphql/gql/graphql'
 import { DEFAULT_PAGE_SIZE } from '@/shared/constant'
-import { PaymentsSortDirection } from '@/shared/types/payments'
+
+const SORT_DIRECTION = {
+  ASC: 'asc',
+  DESC: 'desc',
+} as const satisfies Record<string, SortDirection>
 
 type PaymentsSortBy = 'createdAt' | 'amount' | 'paymentMethod' | 'userName'
 
@@ -20,7 +24,7 @@ export function usePaymentsList() {
   const [rawSearchTerm, setRawSearchTerm] = useState('')
   const [debouncedSearchTerm, setDebouncedSearchTerm] = useState('')
   const [sortBy, setSortBy] = useState<PaymentsSortBy>('createdAt')
-  const [sortDirection, setSortDirection] = useState<SortDirection>(PaymentsSortDirection.DESC)
+  const [sortDirection, setSortDirection] = useState<SortDirection>(SORT_DIRECTION.DESC)
 
   useEffect(() => {
     const timeoutId = window.setTimeout(() => {
@@ -71,16 +75,14 @@ export function usePaymentsList() {
 
     if (field === sortBy) {
       setSortDirection(
-        sortDirection === PaymentsSortDirection.ASC
-          ? PaymentsSortDirection.DESC
-          : PaymentsSortDirection.ASC
+        sortDirection === SORT_DIRECTION.ASC ? SORT_DIRECTION.DESC : SORT_DIRECTION.ASC
       )
 
       return
     }
 
     setSortBy(field)
-    setSortDirection(PaymentsSortDirection.ASC)
+    setSortDirection(SORT_DIRECTION.ASC)
   }
 
   const handlePageChange = (newPage: number) => {
