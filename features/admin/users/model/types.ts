@@ -26,9 +26,3 @@ export interface UsersDataResponse {
   totalPages: number
   hasActiveFilters: boolean
 }
-
-export const FILTER_ITEMS = [
-  { value: 'ALL', label: 'All' },
-  { value: 'BLOCKED', label: 'Blocked' },
-  { value: 'UNBLOCKED', label: 'Unblocked' },
-]
