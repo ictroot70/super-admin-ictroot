@@ -6,13 +6,15 @@
   --foreground: var(--color-dark-700);
   --layout-max-width: 1280px;
   --layout-gutter: 20px;
+  --font-family: 'Inter', sans-serif;
+  --second-family: 'Roboto', sans-serif;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --font-sans: var(--font-family);
+  --font-roboto: var(--second-family);
 
   /* ui-kit design tokens -> Tailwind utilities (kebab-case) */
   --color-light-100: var(--color-light-100);
@@ -83,7 +85,7 @@ html:has(body[data-scroll-locked]) {
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-family);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   pointer-events: auto !important; /* TODO: Убрать !important, когда в ui-kit для Dropdown добавим modal={false} (снимает конфликт Radix с вложенной модалкой) */

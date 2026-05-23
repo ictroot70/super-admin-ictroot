@@ -4,6 +4,8 @@ import type { ReactNode } from 'react'
 import { ApolloAppProvider } from '@/app/providers/apollo'
 import { AppHeader } from '@/widgets/Header'
 
+import '@fontsource-variable/inter/index.css'
+import '@fontsource-variable/roboto/index.css'
 import './globals.css'
 
 export const metadata: Metadata = {
