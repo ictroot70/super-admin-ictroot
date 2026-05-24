@@ -27,7 +27,6 @@ export const BanUserModal = ({ open, userId, userName, onConfirm, onClose }: Ban
       setErrorMessage('')
       await banUser({ userId, banReason: reason })
       onConfirm()
-      // onClose()
     } catch (error) {
       setErrorMessage(error instanceof Error ? error.message : 'Request error')
     }

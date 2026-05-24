@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useEffect, useState } from 'react'
 
 function getTimeAgo(date: string): string {
   const now = new Date()

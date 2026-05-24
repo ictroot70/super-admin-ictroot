@@ -4,8 +4,8 @@ import Link from 'next/link'
 import { memo, useEffect, useRef, useState } from 'react'
 
 import { type PostVM } from '@/entities/admin/post'
-import { useTimeAgo } from '@/entities/admin/post/hooks/useTimeAgo'
 import { APP_ROUTES, IMAGE_SIZES } from '@/shared/constant'
+import { useTimeAgo } from '@/shared/hooks'
 import { Avatar, Block, BlockFull, Carousel, ScrollAreaRadix, Typography } from '@/shared/ui'
 
 const DEFAULT_IMAGE = '/default-image.svg'
