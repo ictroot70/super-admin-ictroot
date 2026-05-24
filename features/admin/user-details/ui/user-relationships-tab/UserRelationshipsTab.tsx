@@ -101,7 +101,8 @@ export function UserRelationshipsTab({
             <TableBody>
               {items.map(item => {
                 const profileLink = APP_ROUTES.USERS.ID(item.userId)
-                const fullName = [item.firstName, item.lastName].filter(Boolean).join(' ') || '-'
+                const fullName =
+                  [item.firstName, item.lastName].filter(Boolean).join(' ') || 'Unknown'
 
                 return (
                   <TableRow key={item.id}>
