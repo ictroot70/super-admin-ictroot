@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 
 import { useGqlQuery } from '@/shared/api/graphql'
 import {
@@ -9,7 +9,7 @@ import {
   type GetPaymentsQueryVariables,
   SortDirection,
 } from '@/shared/api/graphql/gql/graphql'
-import { usePagination, useSort } from '@/shared/hooks'
+import { useDebounce, usePagination, useSort } from '@/shared/hooks'
 
 const SORT_DIRECTION = {
   ASC: 'asc',
@@ -25,15 +25,7 @@ export function usePaymentsList() {
     initialDirection: SORT_DIRECTION.DESC,
   })
   const [rawSearchTerm, setRawSearchTerm] = useState('')
-  const [debouncedSearchTerm, setDebouncedSearchTerm] = useState('')
-
-  useEffect(() => {
-    const timeoutId = window.setTimeout(() => {
-      setDebouncedSearchTerm(rawSearchTerm)
-    }, 400)
-
-    return () => window.clearTimeout(timeoutId)
-  }, [rawSearchTerm])
+  const debouncedSearchTerm = useDebounce(rawSearchTerm, 400)
 
   const { data, previousData, loading, error, refetch } = useGqlQuery<
     GetPaymentsQuery,

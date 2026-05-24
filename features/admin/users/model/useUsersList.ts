@@ -11,11 +11,10 @@ import {
   type UserBlockStatus,
 } from '@/shared/api/graphql/gql/graphql'
 import { APP_ROUTES } from '@/shared/constant'
-import { usePagination, useSort } from '@/shared/hooks'
+import { useDebounce, usePagination, useSort } from '@/shared/hooks'
 import { formatDate } from '@/shared/lib'
 
 import { FilterValue, UsersSortBy, UsersViewModel } from '.'
-import { useDebounce } from '../utils/useDebounce'
 
 const SORT_DESC: SortDirection = 'desc'
 
