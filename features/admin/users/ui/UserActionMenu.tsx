@@ -79,6 +79,7 @@ export const UserActionMenu = (props: Props) => {
         userId={userId}
         userName={userName}
         onConfirm={() => {
+          setBanOpen(false)
           onActionComplete()
         }}
         onClose={() => setBanOpen(false)}
