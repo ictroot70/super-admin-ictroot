@@ -1,5 +1,5 @@
 'use client'
-import { Pagination, LoadingBar, Typography, Loading } from '@/shared/ui'
+import { LinearProgress, Loading, Pagination, Typography } from '@/shared/ui'
 
 import { usePaymentsTab } from '../../model'
 import { PaymentsTableTab } from './PaymentsTableTab'
@@ -19,10 +19,11 @@ export function PaymentsTab() {
 
   return (
     <div className={'flex h-full min-h-0 flex-col gap-6'}>
-      <div className={'relative'}>
-        {isRefreshing && <LoadingBar />}
-        <PaymentsTableTab items={items} sort={sort} onSort={onSort} />
+      <div className={'fixed top-0 right-0 left-0 z-100 w-full'}>
+        <LinearProgress active={isRefreshing} />
       </div>
+
+      <PaymentsTableTab items={items} sort={sort} onSort={onSort} />
 
       <Pagination {...paginationProps} />
     </div>

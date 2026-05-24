@@ -5,7 +5,8 @@ import Link from 'next/link'
 import { APP_ROUTES } from '@/shared/constant'
 import { formatDate } from '@/shared/lib/format'
 import {
-  LoadingBar,
+  LinearProgress,
+  Loading,
   Pagination,
   type PaginationProps,
   SortableHeaderCell,
@@ -16,7 +17,6 @@ import {
   TableHeaderCell,
   TableRow,
   Typography,
-  Loading,
 } from '@/shared/ui'
 
 import {
@@ -72,54 +72,54 @@ export function UserRelationshipsTab({
 
   return (
     <div className={'flex h-full min-h-0 flex-col gap-6'}>
-      <div className={'relative'}>
-        {isRefreshing && <LoadingBar />}
+      <div className={'fixed top-0 right-0 left-0 z-100 w-full'}>
+        <LinearProgress active={isRefreshing} />
+      </div>
 
-        <div className={'min-h-0 overflow-auto'}>
-          <Table>
-            <TableHead className={'sticky top-0 z-2'}>
-              <TableRow>
-                {columns.map(column =>
-                  column.sortKey ? (
-                    <SortableHeaderCell
-                      key={column.id}
-                      columnKey={column.sortKey}
-                      title={column.title}
-                      activeKey={sort.key ?? undefined}
-                      direction={sort.direction}
-                      onSort={onSort}
-                    />
-                  ) : (
-                    <TableHeaderCell key={column.id} scope={'col'}>
-                      {column.title}
-                    </TableHeaderCell>
-                  )
-                )}
-              </TableRow>
-            </TableHead>
-
-            <TableBody>
-              {items.map(item => {
-                const profileLink = APP_ROUTES.USERS.ID(item.userId)
-                const fullName =
-                  [item.firstName, item.lastName].filter(Boolean).join(' ') || 'Unknown'
-
-                return (
-                  <TableRow key={item.id}>
-                    <TableCell>{item.userId}</TableCell>
-                    <TableCell>
-                      <Link href={profileLink} className={'pointer underline'}>
-                        {item.userName ?? profileLink}
-                      </Link>
-                    </TableCell>
-                    <TableCell>{fullName}</TableCell>
-                    <TableCell>{formatDate(item.createdAt)}</TableCell>
-                  </TableRow>
+      <div className={'min-h-0 overflow-auto'}>
+        <Table>
+          <TableHead className={'sticky top-0 z-2'}>
+            <TableRow>
+              {columns.map(column =>
+                column.sortKey ? (
+                  <SortableHeaderCell
+                    key={column.id}
+                    columnKey={column.sortKey}
+                    title={column.title}
+                    activeKey={sort.key ?? undefined}
+                    direction={sort.direction}
+                    onSort={onSort}
+                  />
+                ) : (
+                  <TableHeaderCell key={column.id} scope={'col'}>
+                    {column.title}
+                  </TableHeaderCell>
                 )
-              })}
-            </TableBody>
-          </Table>
-        </div>
+              )}
+            </TableRow>
+          </TableHead>
+
+          <TableBody>
+            {items.map(item => {
+              const profileLink = APP_ROUTES.USERS.ID(item.userId)
+              const fullName =
+                [item.firstName, item.lastName].filter(Boolean).join(' ') || 'Unknown'
+
+              return (
+                <TableRow key={item.id}>
+                  <TableCell>{item.userId}</TableCell>
+                  <TableCell>
+                    <Link href={profileLink} className={'pointer underline'}>
+                      {item.userName ?? profileLink}
+                    </Link>
+                  </TableCell>
+                  <TableCell>{fullName}</TableCell>
+                  <TableCell>{formatDate(item.createdAt)}</TableCell>
+                </TableRow>
+              )
+            })}
+          </TableBody>
+        </Table>
       </div>
 
       <Pagination {...paginationProps} />
