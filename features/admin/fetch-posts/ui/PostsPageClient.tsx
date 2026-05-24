@@ -33,12 +33,14 @@ export const PostsPageClient = () => {
     updateUserBanState,
   } = usePostsList()
 
+  const isPostsPending = isInitialLoading || isSearching || isSwappingPosts
+
   const [moderationTarget, setModerationTarget] = useState<ModerationTarget | null>(null)
 
   const { ref: infiniteScrollRef } = useInfiniteScroll({
     hasMore,
     isLoading: isFetchingMore,
-    disabled: isInitialLoading || isSearching,
+    disabled: isPostsPending,
     onLoadMore: loadMore,
     rootMargin: '120px',
     threshold: 0.1,
@@ -65,7 +67,7 @@ export const PostsPageClient = () => {
   return (
     <div className={'flex flex-col gap-9'}>
       <div className={'fixed top-0 right-0 left-0 z-100 w-full'}>
-        <LinearProgress active={isInitialLoading || isTyping || isSearching || isFetchingMore} />
+        <LinearProgress active={isPostsPending || isTyping || isFetchingMore} />
       </div>
       <div className={'bg-background sticky top-0 z-50 pt-9'}>
         <Input
@@ -88,7 +90,7 @@ export const PostsPageClient = () => {
         </Typography>
       )}
 
-      {!isInitialLoading && !isSearching && posts.length === 0 && !Boolean(error) && (
+      {!isPostsPending && posts.length === 0 && !Boolean(error) && (
         <Typography variant={'regular_14'} className={'text-light-900'}>
           No posts found
         </Typography>

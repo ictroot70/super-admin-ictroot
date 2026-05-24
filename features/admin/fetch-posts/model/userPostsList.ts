@@ -48,7 +48,7 @@ export const usePostsList = (): PostsListState => {
   const [inputValue, setInputValue] = useState('')
   const [searchTerm, setSearchTerm] = useState('')
 
-  const [isInitialLoading, setIsInitialLoading] = useState(false)
+  const [isInitialLoading, setIsInitialLoading] = useState(true)
   const [isFetchingMore, setIsFetchingMore] = useState(false)
   const [isFirstLoadDone, setIsFirstLoadDone] = useState(false)
   const [isSwappingPosts, startPostsSwapTransition] = useTransition()
