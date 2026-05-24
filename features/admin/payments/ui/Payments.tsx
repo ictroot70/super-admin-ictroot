@@ -121,7 +121,7 @@ export function Payments() {
                       key={column.title}
                       columnKey={column.key}
                       title={column.title}
-                      activeKey={sortBy}
+                      activeKey={sortBy ?? undefined}
                       direction={sortDirection}
                       onSort={handleSort}
                     />

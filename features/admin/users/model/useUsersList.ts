@@ -11,55 +11,50 @@ import {
   type UserBlockStatus,
 } from '@/shared/api/graphql/gql/graphql'
 import { APP_ROUTES } from '@/shared/constant'
-import { usePagination } from '@/shared/hooks'
+import { usePagination, useSort } from '@/shared/hooks'
 import { formatDate } from '@/shared/lib'
 
-import { FilterValue, SortValue, UsersSortBy, UsersSortState, UsersViewModel } from '.'
+import { FilterValue, UsersSortBy, UsersViewModel } from '.'
 import { useDebounce } from '../utils/useDebounce'
 
-const SORT_ASC: SortDirection = 'asc'
 const SORT_DESC: SortDirection = 'desc'
-
-function normalizeSort(sortValue: SortValue): { sortBy: string; sortDirection: SortDirection } {
-  const [field, direction] = sortValue.split('_') as [UsersSortBy, SortDirection]
-  const sortBy = field === UsersSortBy.USER_NAME ? 'userName' : field
-
-  return { sortBy, sortDirection: direction }
-}
 
 export function useUsersList() {
   const { page: pageNumber, pageSize, onPageChange, onPageSizeChange, resetPage } = usePagination()
+  const { sort, onSort } = useSort<UsersSortBy>({
+    initialKey: UsersSortBy.CREATED_AT,
+    initialDirection: SORT_DESC,
+  })
   const [searchTerm, setSearchTerm] = useState('')
-  const [sortValue, setSortValue] = useState<SortValue>('createdAt_desc')
   const [statusFilter, setStatusFilter] = useState<FilterValue>('ALL')
 
   const debouncedSearch = useDebounce(searchTerm, 500)
 
-  const prevFiltersRef = useRef({ debouncedSearch, sortValue, statusFilter, pageSize })
+  const prevFiltersRef = useRef({ debouncedSearch, statusFilter, pageSize })
 
   useEffect(() => {
     const prev = prevFiltersRef.current
     const hasChanges =
       prev.debouncedSearch !== debouncedSearch ||
-      prev.sortValue !== sortValue ||
       prev.statusFilter !== statusFilter ||
       prev.pageSize !== pageSize
 
     if (hasChanges) {
       resetPage()
     }
-    prevFiltersRef.current = { debouncedSearch, sortValue, statusFilter, pageSize }
-  }, [debouncedSearch, sortValue, statusFilter, pageSize, resetPage])
-
-  const { sortBy, sortDirection } = useMemo(() => normalizeSort(sortValue), [sortValue])
+    prevFiltersRef.current = { debouncedSearch, statusFilter, pageSize }
+  }, [debouncedSearch, statusFilter, pageSize, resetPage])
 
   const variables: GetUsersQueryVariables = useMemo(() => {
     const vars: GetUsersQueryVariables = {
       pageNumber: pageNumber,
       pageSize: pageSize,
-      sortBy: sortBy,
-      sortDirection: sortDirection,
       statusFilter: statusFilter as UserBlockStatus,
+    }
+
+    if (sort.key && sort.direction) {
+      vars.sortBy = sort.key
+      vars.sortDirection = sort.direction
     }
 
     const trimmedSearch = debouncedSearch.trim()
@@ -69,7 +64,7 @@ export function useUsersList() {
     }
 
     return vars
-  }, [pageNumber, pageSize, debouncedSearch, sortBy, sortDirection, statusFilter])
+  }, [pageNumber, pageSize, debouncedSearch, sort.key, sort.direction, statusFilter])
 
   const { data, loading, error, refetch } = useGqlQuery<GetUsersQuery, GetUsersQueryVariables>(
     GetUsersDocument,
@@ -122,26 +117,12 @@ export function useUsersList() {
     return debouncedSearch.trim().length > 0 || statusFilter !== 'ALL'
   }, [debouncedSearch, statusFilter])
 
-  const sort: UsersSortState = useMemo(
-    () => ({
-      key: sortBy as UsersSortBy,
-      direction: sortDirection,
-    }),
-    [sortBy, sortDirection]
-  )
-
   const handleSort = useCallback(
     (key: UsersSortBy) => {
-      setSortValue(prev => {
-        const [currentField] = prev.split('_')
-        const isSameField = currentField === key
-        const newDirection: SortDirection =
-          isSameField && sortDirection === SORT_ASC ? SORT_DESC : SORT_ASC
-
-        return `${key}_${newDirection}` as SortValue
-      })
+      resetPage()
+      onSort(key)
     },
-    [sortDirection]
+    [onSort, resetPage]
   )
 
   const handlePageChange = useCallback(

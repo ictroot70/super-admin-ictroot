@@ -9,7 +9,7 @@ import {
   type GetPaymentsQueryVariables,
   SortDirection,
 } from '@/shared/api/graphql/gql/graphql'
-import { usePagination } from '@/shared/hooks'
+import { usePagination, useSort } from '@/shared/hooks'
 
 const SORT_DIRECTION = {
   ASC: 'asc',
@@ -20,10 +20,12 @@ type PaymentsSortBy = 'createdAt' | 'amount' | 'paymentMethod' | 'userName'
 
 export function usePaymentsList() {
   const { page, pageSize, onPageChange, onPageSizeChange, resetPage } = usePagination()
+  const { sort, onSort } = useSort<PaymentsSortBy>({
+    initialKey: 'createdAt',
+    initialDirection: SORT_DIRECTION.DESC,
+  })
   const [rawSearchTerm, setRawSearchTerm] = useState('')
   const [debouncedSearchTerm, setDebouncedSearchTerm] = useState('')
-  const [sortBy, setSortBy] = useState<PaymentsSortBy>('createdAt')
-  const [sortDirection, setSortDirection] = useState<SortDirection>(SORT_DIRECTION.DESC)
 
   useEffect(() => {
     const timeoutId = window.setTimeout(() => {
@@ -41,8 +43,8 @@ export function usePaymentsList() {
       pageNumber: page,
       pageSize,
       searchTerm: debouncedSearchTerm.trim() || undefined,
-      sortBy,
-      sortDirection,
+      sortBy: sort.key ?? undefined,
+      sortDirection: sort.direction ?? undefined,
     },
     fetchPolicy: 'cache-and-network',
     notifyOnNetworkStatusChange: true,
@@ -71,17 +73,7 @@ export function usePaymentsList() {
 
   const handleSort = (field: PaymentsSortBy) => {
     resetPage()
-
-    if (field === sortBy) {
-      setSortDirection(
-        sortDirection === SORT_DIRECTION.ASC ? SORT_DIRECTION.DESC : SORT_DIRECTION.ASC
-      )
-
-      return
-    }
-
-    setSortBy(field)
-    setSortDirection(SORT_DIRECTION.ASC)
+    onSort(field)
   }
 
   const handlePageChange = (newPage: number) => {
@@ -103,8 +95,8 @@ export function usePaymentsList() {
       isError: Boolean(error),
     },
     searchTerm: rawSearchTerm,
-    sortBy,
-    sortDirection,
+    sortBy: sort.key,
+    sortDirection: sort.direction,
     setSearchTerm,
     handleSort,
     handlePageChange,

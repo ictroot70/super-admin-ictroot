@@ -6,7 +6,7 @@ export type SortValue = `${UsersSortBy}_${UsersSortDirection}`
 
 export interface UsersSortState {
   key: UsersSortBy | null
-  direction: UsersSortDirection
+  direction: UsersSortDirection | null
 }
 
 export interface UsersViewModel {
