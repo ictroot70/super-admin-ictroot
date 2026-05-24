@@ -1,6 +1,6 @@
 import { useState } from 'react'
 
-import { ConfirmModal, Typography, ErrorMessage, Loading } from '@/shared/ui'
+import { ConfirmModal, Typography, ErrorMessage, LinearProgress } from '@/shared/ui'
 
 import { useBanUser } from '../model/useBanUser'
 
@@ -51,7 +51,9 @@ export const BanUserModal = ({ open, userId, userName, onConfirm, onClose }: Ban
         }
         withBanReason
       />
-      {loading ? <Loading /> : null}
+      <div className={'fixed top-0 right-0 left-0 z-100 w-full'}>
+        <LinearProgress active={loading} />
+      </div>
       {errorMessage ? <ErrorMessage message={errorMessage} variant={'danger_small'} /> : null}
     </>
   )
