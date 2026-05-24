@@ -1,11 +1,8 @@
 'use client'
 
-import { useState } from 'react'
-
 import { PAGE_SIZE_OPTIONS } from '@/shared/constant'
 import { formatAmount, formatDate } from '@/shared/lib'
 import {
-  CheckboxRadix,
   Input,
   LinearProgress,
   Loading,
@@ -93,8 +90,6 @@ export function Payments() {
     handlePageChange,
     handlePageSizeChange,
   } = usePaymentsList()
-
-  const [isAutoUpdateEnabled, setIsAutoUpdateEnabled] = useState(true)
 
   const hasItems = payments.items.length > 0
   const isInitialLoading = payments.isLoading && !hasItems
@@ -203,16 +198,6 @@ export function Payments() {
       </div>
 
       <div className={'bg-background sticky top-0 z-50 pt-5'}>
-        <div className={'mb-5 flex justify-end'}>
-          <label className={'text-light-100 flex items-center gap-3 whitespace-nowrap'}>
-            <CheckboxRadix
-              checked={isAutoUpdateEnabled}
-              onCheckedChange={checked => setIsAutoUpdateEnabled(Boolean(checked))}
-            />
-            <span>{'Autoupdate'}</span>
-          </label>
-        </div>
-
         <div className={'relative mb-8 w-full'}>
           <Input
             inputType={'search'}
