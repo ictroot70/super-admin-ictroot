@@ -32,12 +32,7 @@ export const Sidebar = () => {
         return normalizedPathname === '/'
       }
 
-      return (
-        normalizedPathname === normalizedHref ||
-        normalizedPathname.startsWith(`${normalizedHref}/`) ||
-        normalizedPathname.endsWith(normalizedHref) ||
-        normalizedPathname.includes(`${normalizedHref}/`)
-      )
+      return normalizedPathname === normalizedHref
     },
     [pathname]
   )
@@ -73,7 +68,7 @@ export const Sidebar = () => {
         ))}
         <Button
           className={
-            'group mt-auto! flex! h-auto! min-h-0! min-w-0! cursor-pointer! items-center! justify-start! gap-3! border-none! bg-transparent! py-0! pr-[7px]! pl-0! text-sm! leading-6! font-(--font-weight-bold)! text-inherit! no-underline! shadow-none! transition-colors! duration-200! hover:text-(--color-primary-100)! focus-visible:rounded-[2px]! focus-visible:text-inherit! focus-visible:outline-2! focus-visible:outline-(--color-primary-700)! active:text-(--color-primary-500)!'
+            'group hover:text-primary-100! focus-visible:outline-primary-700! active:text-primary-500! mt-auto! flex! h-auto! min-h-0! min-w-0! cursor-pointer! items-center! justify-start! gap-3! border-none! bg-transparent! py-0! pr-1.75! pl-0! text-sm! leading-6! font-bold! text-inherit! no-underline! shadow-none! transition-colors! duration-200! focus-visible:rounded-xs! focus-visible:text-inherit! focus-visible:outline-2!'
           }
           as={'button'}
           variant={'text'}
