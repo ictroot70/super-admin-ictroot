@@ -1,5 +1,7 @@
+'use client'
+
 import { NetworkStatus } from '@apollo/client'
-import { useMemo, useCallback } from 'react'
+import { useCallback, useMemo, useState } from 'react'
 
 import { useGqlQuery } from '@/shared/api/graphql'
 import {
@@ -49,6 +51,8 @@ const mergeUploadedPhotoPages = (
 }
 
 export const useUploadedPhotosTab = (userId: number | null) => {
+  const [exhaustedUserId, setExhaustedUserId] = useState<number | null>(null)
+
   const variables = useMemo<GetUploadedPhotosByUserQueryVariables>(
     () => ({
       userId: userId!,
@@ -67,14 +71,18 @@ export const useUploadedPhotosTab = (userId: number | null) => {
   })
 
   const uploadedPhotos = data?.getPostsByUser ?? previousData?.getPostsByUser
-  const rawItems = uploadedPhotos?.items ?? []
+  const rawItems = useMemo(() => uploadedPhotos?.items ?? [], [uploadedPhotos?.items])
 
   const photos: UploadedPhoto[] = rawItems.filter(
     (item): item is UploadedPhoto => item?.id != null && item.url != null
   )
+  const loadedIds = useMemo(
+    () => new Set(rawItems.map(item => item?.id).filter((id): id is number => id != null)),
+    [rawItems]
+  )
 
   const totalCount = uploadedPhotos?.totalCount ?? 0
-  const hasMore = rawItems.length < totalCount
+  const hasMore = exhaustedUserId !== userId && rawItems.length < totalCount
   const endCursorId = getLastCursorId(rawItems)
 
   const isInitialLoading = loading && !data && !previousData
@@ -95,8 +103,17 @@ export const useUploadedPhotosTab = (userId: number | null) => {
 
         return mergeUploadedPhotoPages(prev, fetchMoreResult)
       },
+    }).then(result => {
+      const nextItems = result.data?.getPostsByUser.items ?? []
+      const hasNewItems = nextItems.some(item => item?.id != null && !loadedIds.has(item.id))
+
+      if (!hasNewItems) {
+        setExhaustedUserId(userId)
+      }
+
+      return result
     })
-  }, [endCursorId, fetchMore, hasMore, isFetchingMore, userId])
+  }, [endCursorId, fetchMore, hasMore, isFetchingMore, loadedIds, userId])
 
   return {
     photos,

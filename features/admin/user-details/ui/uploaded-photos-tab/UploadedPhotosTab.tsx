@@ -6,7 +6,7 @@ import { useState } from 'react'
 
 import { useInfiniteScroll } from '@/shared/hooks'
 import { parseUserIdParam } from '@/shared/lib'
-import { LoadingBar, Typography, Loading } from '@/shared/ui'
+import { LinearProgress, Loading, Typography } from '@/shared/ui'
 
 import { useUploadedPhotosTab } from '../../model'
 import { PhotoCarousel } from './PhotosCarousel'
@@ -47,6 +47,10 @@ export function UploadedPhotosTab() {
   return (
     <>
       <div className={'flex flex-col gap-4'}>
+        <div className={'fixed top-0 right-0 left-0 z-100 w-full'}>
+          <LinearProgress active={isFetchingMore} />
+        </div>
+
         <div className={'grid grid-cols-[repeat(auto-fill,minmax(min(100%,234px),1fr))] gap-3'}>
           {photos.map((photo, index) => {
             return (
@@ -63,12 +67,6 @@ export function UploadedPhotosTab() {
             )
           })}
         </div>
-
-        {isFetchingMore && (
-          <div className={'relative'}>
-            <LoadingBar />
-          </div>
-        )}
 
         {hasMore && <div ref={sentinelRef} className={'h-1 w-full'} />}
       </div>
