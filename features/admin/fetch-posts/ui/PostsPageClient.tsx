@@ -7,7 +7,7 @@ import { BanUserModal } from '@/features/admin/ban-user'
 import { usePostsList } from '@/features/admin/fetch-posts/model/userPostsList'
 import { UnbanUserModal } from '@/features/admin/unban-user'
 import { useInfiniteScroll } from '@/shared/hooks'
-import { LinearProgress, Loading, Input, Typography } from '@/shared/ui'
+import { Input, LinearProgress, Typography } from '@/shared/ui'
 
 type ModerationAction = 'ban' | 'unban'
 
@@ -65,7 +65,7 @@ export const PostsPageClient = () => {
   return (
     <div className={'flex flex-col gap-9'}>
       <div className={'fixed top-0 right-0 left-0 z-100 w-full'}>
-        <LinearProgress active={isInitialLoading || isTyping || isSearching} />
+        <LinearProgress active={isInitialLoading || isTyping || isSearching || isFetchingMore} />
       </div>
       <div className={'bg-background sticky top-0 z-50 pt-9'}>
         <Input
@@ -110,12 +110,6 @@ export const PostsPageClient = () => {
       </div>
 
       {hasMore && <div ref={infiniteScrollRef} className={'h-4'} />}
-
-      {isInitialLoading && (
-        <div className={'flex justify-center py-4'}>
-          <Loading />
-        </div>
-      )}
 
       {moderationTarget?.action === 'ban' && (
         <BanUserModal
