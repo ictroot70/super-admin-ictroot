@@ -1,6 +1,5 @@
-import { useState } from 'react'
-
-import { ConfirmModal, ErrorMessage, Loading, Typography } from '@/shared/ui'
+import { showErrorToast } from '@/shared/lib/toast'
+import { ConfirmModal, LinearProgress, Typography } from '@/shared/ui'
 
 import { useDeleteUser } from '../model/useDeleteUser'
 
@@ -20,15 +19,14 @@ export const DeleteUserModal = ({
   onClose,
 }: DeleteUserModalProps) => {
   const { deleteUser, loading } = useDeleteUser()
-  const [errorMessage, setErrorMessage] = useState('')
 
   const handleConfirm = async () => {
     try {
-      setErrorMessage('')
       await deleteUser({ userId })
       onConfirm()
     } catch (error) {
-      setErrorMessage(error instanceof Error ? error.message : 'Request error')
+      showErrorToast(error instanceof Error ? error.message : 'Request error')
+      onClose()
     }
   }
 
@@ -49,8 +47,9 @@ export const DeleteUserModal = ({
           </Typography>
         }
       />
-      {loading ? <Loading /> : null}
-      {errorMessage ? <ErrorMessage message={errorMessage} variant={'danger_small'} /> : null}
+      <div className={'fixed top-0 right-0 left-0 z-100 w-full'}>
+        <LinearProgress active={loading} />
+      </div>
     </>
   )
 }
