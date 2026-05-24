@@ -3,7 +3,7 @@ import { usePathname, useRouter } from 'next/navigation'
 import { useCallback } from 'react'
 
 import { useAdminSessionStore } from '@/features/admin/auth/model/adminSessionStore'
-import { ADMIN_ROUTES } from '@/shared/constant/adminRoutes'
+import { APP_ROUTES } from '@/shared/constant/appRoutes'
 import { Button } from '@/shared/ui/button'
 import { LogOut } from '@/shared/ui/svg-components'
 
@@ -18,7 +18,7 @@ export const Sidebar = () => {
 
   const handleLogout = useCallback(() => {
     clearSession()
-    router.replace(ADMIN_ROUTES.LOGIN)
+    router.replace(APP_ROUTES.AUTH.LOGIN)
   }, [clearSession, router])
 
   const isLinkActive = useCallback(

@@ -1,4 +1,3 @@
-export * from './adminRoutes'
 export * from './appRoutes'
 export * from './auth'
 export * from './imageSizes'

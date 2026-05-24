@@ -4,8 +4,8 @@ export const APP_ROUTES = {
   ROOT: '/',
 
   AUTH: {
-    LOGIN: '/auth/login',
-    LOGIN_CONFIRMED: '/auth/login?confirmed=1',
+    LOGIN: '/login',
+    LOGIN_CONFIRMED: '/login?confirmed=1',
     REGISTRATION: '/auth/registration',
     REGISTRATION_CONFIRM: '/auth/registration-confirmation',
     LOGOUT: '/auth/logout',
