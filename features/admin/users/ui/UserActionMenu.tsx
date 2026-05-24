@@ -19,16 +19,39 @@ type Props = {
   userId: number
   userName: string
   isBanned: boolean
+  isAnotherMenuOpen?: boolean
+  onMenuTriggerPointerDown?: () => void
   onActionComplete: () => void
 }
 
 export const UserActionMenu = (props: Props) => {
-  const { userId, userName, onActionComplete, isBanned } = props
+  const {
+    userId,
+    userName,
+    onActionComplete,
+    isBanned,
+    isAnotherMenuOpen,
+    onMenuTriggerPointerDown,
+  } = props
 
   const [isBanOpen, setBanOpen] = useState(false)
   const [isUnbanOpen, setUnbanOpen] = useState(false)
   const [isDeleteOpen, setDeleteOpen] = useState(false)
   const router = useRouter()
+
+  const handleTriggerPointerDown = () => {
+    if (isAnotherMenuOpen) {
+      document.dispatchEvent(
+        new KeyboardEvent('keydown', {
+          key: 'Escape',
+          code: 'Escape',
+          bubbles: true,
+        })
+      )
+    }
+
+    onMenuTriggerPointerDown?.()
+  }
 
   const banItem: DropdownItem = isBanned
     ? { label: 'Un-ban User', icon: <Block />, onClick: () => setUnbanOpen(true) }
@@ -45,7 +68,10 @@ export const UserActionMenu = (props: Props) => {
   ]
 
   return (
-    <div className={'dropdown-menu relative inline-block w-full'}>
+    <div
+      className={'dropdown-menu relative inline-block w-full'}
+      onPointerDownCapture={handleTriggerPointerDown}
+    >
       <DropdownMenu items={items} align={'end'} side={'bottom'} />
 
       <BanUserModal

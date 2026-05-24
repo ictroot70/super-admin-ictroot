@@ -1,6 +1,7 @@
 'use client'
 
 import Link from 'next/link'
+import { useState } from 'react'
 
 import {
   SortableHeaderCell,
@@ -40,6 +41,8 @@ type Props = {
 }
 
 export function UsersTable({ items, sort, onSort, onUserActionComplete, isFetching }: Props) {
+  const [activeActionMenuUserId, setActiveActionMenuUserId] = useState<number | null>(null)
+
   const handleActionComplete = () => {
     onUserActionComplete?.()
   }
@@ -99,6 +102,10 @@ export function UsersTable({ items, sort, onSort, onUserActionComplete, isFetchi
                   userId={item.userId}
                   userName={item.username}
                   isBanned={item.isBlocked}
+                  isAnotherMenuOpen={
+                    activeActionMenuUserId !== null && activeActionMenuUserId !== item.userId
+                  }
+                  onMenuTriggerPointerDown={() => setActiveActionMenuUserId(item.userId)}
                   onActionComplete={handleActionComplete}
                 />
               </TableCell>
