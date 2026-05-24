@@ -9,7 +9,7 @@ import {
   type GetPaymentsQueryVariables,
   SortDirection,
 } from '@/shared/api/graphql/gql/graphql'
-import { DEFAULT_PAGE_SIZE } from '@/shared/constant'
+import { usePagination } from '@/shared/hooks'
 
 const SORT_DIRECTION = {
   ASC: 'asc',
@@ -19,8 +19,7 @@ const SORT_DIRECTION = {
 type PaymentsSortBy = 'createdAt' | 'amount' | 'paymentMethod' | 'userName'
 
 export function usePaymentsList() {
-  const [page, setPage] = useState(1)
-  const [pageSize, setPageSize] = useState(DEFAULT_PAGE_SIZE)
+  const { page, pageSize, onPageChange, onPageSizeChange, resetPage } = usePagination()
   const [rawSearchTerm, setRawSearchTerm] = useState('')
   const [debouncedSearchTerm, setDebouncedSearchTerm] = useState('')
   const [sortBy, setSortBy] = useState<PaymentsSortBy>('createdAt')
@@ -67,11 +66,11 @@ export function usePaymentsList() {
 
   const setSearchTerm = (value: string) => {
     setRawSearchTerm(value)
-    setPage(1)
+    resetPage()
   }
 
   const handleSort = (field: PaymentsSortBy) => {
-    setPage(1)
+    resetPage()
 
     if (field === sortBy) {
       setSortDirection(
@@ -86,12 +85,11 @@ export function usePaymentsList() {
   }
 
   const handlePageChange = (newPage: number) => {
-    setPage(newPage)
+    onPageChange(newPage)
   }
 
   const handlePageSizeChange = (newPageSize: number) => {
-    setPageSize(newPageSize)
-    setPage(1)
+    onPageSizeChange(newPageSize)
   }
 
   return {

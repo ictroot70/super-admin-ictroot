@@ -10,7 +10,8 @@ import {
   type SortDirection,
   type UserBlockStatus,
 } from '@/shared/api/graphql/gql/graphql'
-import { APP_ROUTES, DEFAULT_PAGE_NUMBER, DEFAULT_PAGE_SIZE } from '@/shared/constant'
+import { APP_ROUTES } from '@/shared/constant'
+import { usePagination } from '@/shared/hooks'
 import { formatDate } from '@/shared/lib'
 
 import { FilterValue, SortValue, UsersSortBy, UsersSortState, UsersViewModel } from '.'
@@ -27,8 +28,7 @@ function normalizeSort(sortValue: SortValue): { sortBy: string; sortDirection: S
 }
 
 export function useUsersList() {
-  const [pageNumber, setPageNumber] = useState(DEFAULT_PAGE_NUMBER)
-  const [pageSize, setPageSize] = useState(DEFAULT_PAGE_SIZE)
+  const { page: pageNumber, pageSize, onPageChange, onPageSizeChange, resetPage } = usePagination()
   const [searchTerm, setSearchTerm] = useState('')
   const [sortValue, setSortValue] = useState<SortValue>('createdAt_desc')
   const [statusFilter, setStatusFilter] = useState<FilterValue>('ALL')
@@ -46,10 +46,10 @@ export function useUsersList() {
       prev.pageSize !== pageSize
 
     if (hasChanges) {
-      setPageNumber(1)
+      resetPage()
     }
     prevFiltersRef.current = { debouncedSearch, sortValue, statusFilter, pageSize }
-  }, [debouncedSearch, sortValue, statusFilter, pageSize])
+  }, [debouncedSearch, sortValue, statusFilter, pageSize, resetPage])
 
   const { sortBy, sortDirection } = useMemo(() => normalizeSort(sortValue), [sortValue])
 
@@ -144,14 +144,20 @@ export function useUsersList() {
     [sortDirection]
   )
 
-  const handlePageChange = useCallback((newPage: number) => {
-    setPageNumber(newPage)
-    window.scrollTo({ top: 0, behavior: 'smooth' })
-  }, [])
+  const handlePageChange = useCallback(
+    (newPage: number) => {
+      onPageChange(newPage)
+      window.scrollTo({ top: 0, behavior: 'smooth' })
+    },
+    [onPageChange]
+  )
 
-  const handleItemsPerPageChange = useCallback((newPageSize: number) => {
-    setPageSize(newPageSize)
-  }, [])
+  const handleItemsPerPageChange = useCallback(
+    (newPageSize: number) => {
+      onPageSizeChange(newPageSize)
+    },
+    [onPageSizeChange]
+  )
 
   const handleClearFilters = useCallback(() => {
     setSearchTerm('')
