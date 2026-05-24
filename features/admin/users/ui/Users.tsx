@@ -150,19 +150,12 @@ export function Users() {
 
       {!showLoading && !showEmptyFilters && users.data && users.data.items.length > 0 && (
         <>
-          <div
-            className={`transition-opacity duration-200 ${
-              users.isFetching ? 'opacity-60' : 'opacity-100'
-            }`}
-          >
-            <UsersTable
-              items={users.data.items}
-              sort={sort}
-              onSort={handleSortWithCallback}
-              onUserActionComplete={handleRefetch}
-              isFetching={users.isFetching}
-            />
-          </div>
+          <UsersTable
+            items={users.data.items}
+            sort={sort}
+            onSort={handleSortWithCallback}
+            onUserActionComplete={handleRefetch}
+          />
 
           <Pagination
             currentPage={users.data.page}

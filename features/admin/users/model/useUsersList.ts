@@ -65,29 +65,20 @@ export function useUsersList() {
     return vars
   }, [pageNumber, pageSize, debouncedSearch, sort.key, sort.direction, statusFilter])
 
-  const { data, loading, error, refetch } = useGqlQuery<GetUsersQuery, GetUsersQueryVariables>(
-    GetUsersDocument,
-    {
-      variables,
-      fetchPolicy: 'cache-and-network',
-      notifyOnNetworkStatusChange: true,
-    }
-  )
+  const { data, previousData, loading, error, refetch } = useGqlQuery<
+    GetUsersQuery,
+    GetUsersQueryVariables
+  >(GetUsersDocument, {
+    variables,
+    fetchPolicy: 'cache-and-network',
+    notifyOnNetworkStatusChange: true,
+  })
 
-  const [hasEverReceivedData, setHasEverReceivedData] = useState(false)
-  const hasSetDataRef = useRef(false)
+  const resolvedData = data ?? previousData
+  const isInitialLoading = loading && !resolvedData
+  const isFetching = loading && Boolean(resolvedData)
 
-  useEffect(() => {
-    if (data?.getUsers?.users?.length && !hasSetDataRef.current) {
-      hasSetDataRef.current = true
-      setHasEverReceivedData(true)
-    }
-  }, [data])
-
-  const isInitialLoading = loading && !hasEverReceivedData
-  const isFetching = loading && hasEverReceivedData
-
-  const usersData = data?.getUsers
+  const usersData = resolvedData?.getUsers
 
   const items: UsersViewModel[] = useMemo(() => {
     if (!usersData?.users) return []

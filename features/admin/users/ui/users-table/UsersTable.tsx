@@ -4,6 +4,7 @@ import Link from 'next/link'
 import { useState } from 'react'
 
 import {
+  BlockFull,
   SortableHeaderCell,
   Table,
   TableBody,
@@ -11,8 +12,6 @@ import {
   TableHead,
   TableHeaderCell,
   TableRow,
-  BlockFull,
-  LoadingBar,
 } from '@/shared/ui'
 
 import { UsersSortBy, UsersSortState, UsersViewModel } from '../../model'
@@ -37,10 +36,9 @@ type Props = {
   items: UsersViewModel[]
   onSort: (key: UsersSortBy) => void
   onUserActionComplete?: () => void
-  isFetching?: boolean
 }
 
-export function UsersTable({ items, sort, onSort, onUserActionComplete, isFetching }: Props) {
+export function UsersTable({ items, sort, onSort, onUserActionComplete }: Props) {
   const [activeActionMenuUserId, setActiveActionMenuUserId] = useState<number | null>(null)
 
   const handleActionComplete = () => {
@@ -49,8 +47,6 @@ export function UsersTable({ items, sort, onSort, onUserActionComplete, isFetchi
 
   return (
     <div className={'relative mb-9 overflow-x-auto'}>
-      {isFetching && <LoadingBar />}
-
       <Table>
         <TableHead>
           <TableRow>
@@ -90,7 +86,7 @@ export function UsersTable({ items, sort, onSort, onUserActionComplete, isFetchi
               <TableCell>
                 <Link
                   href={item.profileUrl}
-                  className={'text-[var(--color-primary)] no-underline hover:underline'}
+                  className={'text-(--color-primary) no-underline hover:underline'}
                 >
                   {item.profileLink}
                 </Link>
