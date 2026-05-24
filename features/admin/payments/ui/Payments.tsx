@@ -8,6 +8,8 @@ import {
   CheckboxRadix,
   Input,
   LinearProgress,
+  Loading,
+  Typography,
   Pagination,
   SortableHeaderCell,
   Table,
@@ -105,9 +107,13 @@ export function Payments() {
   let content = null
 
   if (isInitialLoading) {
-    content = <div>{'Loading...'}</div>
+    content = <Loading />
   } else if (!hasItems) {
-    content = <div>{'No payments found'}</div>
+    content = (
+      <Typography variant={'h2'} className={'text-center'}>
+        {'No payments found'}
+      </Typography>
+    )
   } else {
     content = (
       <>
@@ -176,7 +182,7 @@ export function Payments() {
           </Table>
         </div>
 
-        <div className={'mt-6'}>
+        <div className={'mt-10'}>
           <Pagination
             currentPage={payments.page}
             totalItems={payments.totalCount}
@@ -191,29 +197,36 @@ export function Payments() {
   }
 
   return (
-    <div className={'mx-auto w-full max-w-[1200px] px-6 py-8'}>
+    <div className={'mx-auto w-full px-6'}>
       <div className={'fixed top-0 right-0 left-0 z-100 w-full'}>
         <LinearProgress active={isInitialLoading || isBackgroundLoading} />
       </div>
 
-      <div className={'mb-6 flex justify-end'}>
-        <label className={'text-light-100 flex items-center gap-3 whitespace-nowrap'}>
-          <CheckboxRadix
-            checked={isAutoUpdateEnabled}
-            onCheckedChange={checked => setIsAutoUpdateEnabled(Boolean(checked))}
-          />
-          <span>{'Autoupdate'}</span>
-        </label>
-      </div>
+      <div className={'bg-background sticky top-0 z-50 pt-5'}>
+        <div className={'mb-5 flex justify-end'}>
+          <label className={'text-light-100 flex items-center gap-3 whitespace-nowrap'}>
+            <CheckboxRadix
+              checked={isAutoUpdateEnabled}
+              onCheckedChange={checked => setIsAutoUpdateEnabled(Boolean(checked))}
+            />
+            <span>{'Autoupdate'}</span>
+          </label>
+        </div>
 
-      <div className={'mb-6 w-full'}>
-        <Input
-          inputType={'search'}
-          value={searchTerm}
-          onChange={e => setSearchTerm(e.target.value)}
-          placeholder={'Search'}
-          reserveErrorSpace={false}
-        />
+        <div className={'relative mb-8 w-full'}>
+          <Input
+            inputType={'search'}
+            value={searchTerm}
+            onChange={e => setSearchTerm(e.target.value)}
+            placeholder={'Search'}
+            reserveErrorSpace={false}
+          />
+          <div
+            className={
+              'from-background pointer-events-none absolute right-0 left-0 h-8 bg-linear-to-b from-10% to-transparent'
+            }
+          />
+        </div>
       </div>
 
       {content}
