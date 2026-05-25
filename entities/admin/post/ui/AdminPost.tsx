@@ -97,7 +97,7 @@ const AdminPostComponent = ({ post, onModerationAction, isPriorityPost = false }
 
       <div className={'flex items-center gap-3'}>
         <Avatar image={avatarUrl} size={36} />
-        <Link href={APP_ROUTES.PROFILE.ID(postOwner.id)}>
+        <Link href={APP_ROUTES.USERS.ID(postOwner.id)}>
           <Typography variant={'h3'}>{postOwner.userName}</Typography>
         </Link>
 
