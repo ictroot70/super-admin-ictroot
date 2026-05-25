@@ -1,7 +1,12 @@
 import type { GetPaymentsByUserQuery } from '@/shared/api/graphql/gql/graphql'
 
 import { PaymentsSortBy, PaymentsSortState } from '@/features/admin/user-details/types'
-import { formatDate, formatPrice } from '@/shared/lib/format'
+import {
+  formatDate,
+  formatPaymentMethod,
+  formatPrice,
+  formatSubscriptionType,
+} from '@/shared/lib/format'
 import {
   SortableHeaderCell,
   Table,
@@ -11,8 +16,6 @@ import {
   TableHeaderCell,
   TableRow,
 } from '@/shared/ui'
-
-import { mapPaymentTypeToLabel, mapSubscriptionTypeToLabel } from '../../lib'
 
 type Column = {
   id: string
@@ -65,9 +68,9 @@ export function PaymentsTableTab({ items, sort, onSort }: Props) {
               <TableCell>{item.dateOfPayment ? formatDate(item.dateOfPayment) : '-'}</TableCell>
               <TableCell>{item.endDate ? formatDate(item.endDate) : '-'}</TableCell>
               <TableCell>{formatPrice(item.price)}</TableCell>
-              <TableCell>{mapSubscriptionTypeToLabel(item.type)}</TableCell>
+              <TableCell>{formatSubscriptionType(item.type)}</TableCell>
               <TableCell>
-                {item.paymentType ? mapPaymentTypeToLabel(item.paymentType) : '-'}
+                {item.paymentType ? formatPaymentMethod(item.paymentType) : '-'}
               </TableCell>
             </TableRow>
           ))}

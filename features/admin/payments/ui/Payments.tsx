@@ -1,7 +1,9 @@
 'use client'
 
-import { PAGE_SIZE_OPTIONS } from '@/shared/constant'
-import { formatAmount, formatDate } from '@/shared/lib'
+import Image from 'next/image'
+
+import { DEFAULT_AVATAR, PAGE_SIZE_OPTIONS } from '@/shared/constant'
+import { formatAmount, formatDate, formatPaymentMethod, formatSubscriptionType } from '@/shared/lib'
 import {
   Input,
   LinearProgress,
@@ -33,32 +35,6 @@ const columns: Column[] = [
   { title: 'Subscription' },
   { key: 'paymentMethod', title: 'Payment Method' },
 ]
-
-const formatSubscription = (value: string) => {
-  switch (value) {
-    case 'DAY':
-      return '1 day'
-    case 'WEEKLY':
-      return '7 days'
-    case 'MONTHLY':
-      return '1 month'
-    default:
-      return value
-  }
-}
-
-const formatPaymentMethod = (value: string) => {
-  switch (value) {
-    case 'CREDIT_CARD':
-      return 'Credit Card'
-    case 'PAYPAL':
-      return 'PayPal'
-    case 'STRIPE':
-      return 'Stripe'
-    default:
-      return value
-  }
-}
 
 const getAvatarUrl = (
   avatars:
@@ -102,7 +78,11 @@ export function Payments() {
   let content = null
 
   if (isInitialLoading) {
-    content = <Loading />
+    content = (
+      <div className={'position flex h-100 items-center justify-center'}>
+        <Loading />
+      </div>
+    )
   } else if (!hasItems) {
     content = (
       <Typography variant={'h2'} className={'text-center'}>
@@ -112,7 +92,7 @@ export function Payments() {
   } else {
     content = (
       <>
-        <div className={'overflow-x-auto rounded-[2px]'}>
+        <div className={'overflow-x-auto rounded-xs'}>
           <Table>
             <TableHead>
               <TableRow>
@@ -143,21 +123,13 @@ export function Payments() {
                   <TableRow key={item.id ?? `${item.userId}-${item.createdAt}`}>
                     <TableCell>
                       <div className={'flex items-center gap-3'}>
-                        {avatarUrl ? (
-                          <div
-                            aria-label={item.userName}
-                            className={'h-9 w-9 rounded-full bg-cover bg-center bg-no-repeat'}
-                            style={{ backgroundImage: `url("${avatarUrl}")` }}
-                          />
-                        ) : (
-                          <div
-                            className={
-                              'text-light-100 flex h-9 w-9 items-center justify-center rounded-full border border-(--color-dark-500) text-xs'
-                            }
-                          >
-                            {item.userName.slice(0, 1).toUpperCase()}
-                          </div>
-                        )}
+                        <Image
+                          alt={item.userName}
+                          src={avatarUrl ?? DEFAULT_AVATAR}
+                          width={36}
+                          height={36}
+                          className={'h-9 w-9 shrink-0 rounded-full object-cover'}
+                        />
 
                         <span className={'text-light-100'}>{item.userName}</span>
                       </div>
@@ -167,7 +139,7 @@ export function Payments() {
 
                     <TableCell>{formatAmount(item.amount ?? null)}</TableCell>
 
-                    <TableCell>{formatSubscription(item.type)}</TableCell>
+                    <TableCell>{formatSubscriptionType(item.type)}</TableCell>
 
                     <TableCell>{formatPaymentMethod(item.paymentMethod)}</TableCell>
                   </TableRow>
@@ -194,7 +166,7 @@ export function Payments() {
   return (
     <div className={'mx-auto w-full px-6'}>
       <div className={'fixed top-0 right-0 left-0 z-100 w-full'}>
-        <LinearProgress active={isInitialLoading || isBackgroundLoading} />
+        <LinearProgress active={isBackgroundLoading} />
       </div>
 
       <div className={'bg-background sticky top-0 z-50 pt-5'}>
