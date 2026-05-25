@@ -7,7 +7,7 @@ import {
   GetUserQueryVariables,
 } from '@/shared/api/graphql/gql/graphql'
 import { DEFAULT_AVATAR } from '@/shared/constant'
-import { formatDate } from '@/shared/lib/format'
+import { formatDate } from '@/shared/lib'
 
 type Props = {
   userId: number

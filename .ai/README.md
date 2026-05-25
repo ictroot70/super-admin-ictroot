@@ -29,3 +29,7 @@
 ## Priority
 
 Если есть конфликт формулировок между документами, приоритет у `policy.md`.
+
+## Naming Conventions
+
+`./naming-conventions.md` is a canonical document. Check it for every added, moved, or renamed file/folder before commits and PRs.

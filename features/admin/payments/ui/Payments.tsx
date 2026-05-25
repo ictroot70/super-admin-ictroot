@@ -1,13 +1,15 @@
 'use client'
 
-import { CheckboxRadix, Input, Pagination } from '@ictroot/ui-kit'
-import { useState } from 'react'
+import Image from 'next/image'
 
-import { usePaymentsList } from '@/features/admin/payments/model/use-payments-list'
-import { LinearProgress } from '@/shared/composites'
-import { formatAmount } from '@/shared/lib/format/amount'
-import { formatDate } from '@/shared/lib/format/date'
+import { DEFAULT_AVATAR, PAGE_SIZE_OPTIONS } from '@/shared/constant'
+import { formatAmount, formatDate, formatPaymentMethod, formatSubscriptionType } from '@/shared/lib'
 import {
+  Input,
+  LinearProgress,
+  Loading,
+  Typography,
+  Pagination,
   SortableHeaderCell,
   Table,
   TableBody,
@@ -16,6 +18,8 @@ import {
   TableHeaderCell,
   TableRow,
 } from '@/shared/ui'
+
+import { usePaymentsList } from '../model'
 
 type PaymentsSortBy = 'createdAt' | 'amount' | 'paymentMethod' | 'userName'
 
@@ -31,32 +35,6 @@ const columns: Column[] = [
   { title: 'Subscription' },
   { key: 'paymentMethod', title: 'Payment Method' },
 ]
-
-const formatSubscription = (value: string) => {
-  switch (value) {
-    case 'DAY':
-      return '1 day'
-    case 'WEEKLY':
-      return '7 days'
-    case 'MONTHLY':
-      return '1 month'
-    default:
-      return value
-  }
-}
-
-const formatPaymentMethod = (value: string) => {
-  switch (value) {
-    case 'CREDIT_CARD':
-      return 'Credit Card'
-    case 'PAYPAL':
-      return 'PayPal'
-    case 'STRIPE':
-      return 'Stripe'
-    default:
-      return value
-  }
-}
 
 const getAvatarUrl = (
   avatars:
@@ -89,8 +67,6 @@ export function Payments() {
     handlePageSizeChange,
   } = usePaymentsList()
 
-  const [isAutoUpdateEnabled, setIsAutoUpdateEnabled] = useState(true)
-
   const hasItems = payments.items.length > 0
   const isInitialLoading = payments.isLoading && !hasItems
   const isBackgroundLoading = payments.isLoading && hasItems
@@ -102,13 +78,21 @@ export function Payments() {
   let content = null
 
   if (isInitialLoading) {
-    content = <div>{'Loading...'}</div>
+    content = (
+      <div className={'position flex h-100 items-center justify-center'}>
+        <Loading />
+      </div>
+    )
   } else if (!hasItems) {
-    content = <div>{'No payments found'}</div>
+    content = (
+      <Typography variant={'h2'} className={'text-center'}>
+        {'No payments found'}
+      </Typography>
+    )
   } else {
     content = (
       <>
-        <div className={'overflow-x-auto rounded-[2px]'}>
+        <div className={'overflow-x-auto rounded-xs'}>
           <Table>
             <TableHead>
               <TableRow>
@@ -118,7 +102,7 @@ export function Payments() {
                       key={column.title}
                       columnKey={column.key}
                       title={column.title}
-                      activeKey={sortBy}
+                      activeKey={sortBy ?? undefined}
                       direction={sortDirection}
                       onSort={handleSort}
                     />
@@ -139,21 +123,13 @@ export function Payments() {
                   <TableRow key={item.id ?? `${item.userId}-${item.createdAt}`}>
                     <TableCell>
                       <div className={'flex items-center gap-3'}>
-                        {avatarUrl ? (
-                          <div
-                            aria-label={item.userName}
-                            className={'h-9 w-9 rounded-full bg-cover bg-center bg-no-repeat'}
-                            style={{ backgroundImage: `url("${avatarUrl}")` }}
-                          />
-                        ) : (
-                          <div
-                            className={
-                              'text-light-100 flex h-9 w-9 items-center justify-center rounded-full border border-(--color-dark-500) text-xs'
-                            }
-                          >
-                            {item.userName.slice(0, 1).toUpperCase()}
-                          </div>
-                        )}
+                        <Image
+                          alt={item.userName}
+                          src={avatarUrl ?? DEFAULT_AVATAR}
+                          width={36}
+                          height={36}
+                          className={'h-9 w-9 shrink-0 rounded-full object-cover'}
+                        />
 
                         <span className={'text-light-100'}>{item.userName}</span>
                       </div>
@@ -163,7 +139,7 @@ export function Payments() {
 
                     <TableCell>{formatAmount(item.amount ?? null)}</TableCell>
 
-                    <TableCell>{formatSubscription(item.type)}</TableCell>
+                    <TableCell>{formatSubscriptionType(item.type)}</TableCell>
 
                     <TableCell>{formatPaymentMethod(item.paymentMethod)}</TableCell>
                   </TableRow>
@@ -173,13 +149,13 @@ export function Payments() {
           </Table>
         </div>
 
-        <div className={'mt-6'}>
+        <div className={'mt-10'}>
           <Pagination
             currentPage={payments.page}
             totalItems={payments.totalCount}
             itemsPerPage={payments.pageSize}
             onPageChange={handlePageChange}
-            pageSizeOptions={[6, 10, 20, 50, 100]}
+            pageSizeOptions={PAGE_SIZE_OPTIONS}
             onItemsPerPageChange={handlePageSizeChange}
           />
         </div>
@@ -188,29 +164,26 @@ export function Payments() {
   }
 
   return (
-    <div className={'mx-auto w-full max-w-[1200px] px-6 py-8'}>
+    <div className={'mx-auto w-full px-6'}>
       <div className={'fixed top-0 right-0 left-0 z-100 w-full'}>
-        <LinearProgress active={isInitialLoading || isBackgroundLoading} />
+        <LinearProgress active={isBackgroundLoading} />
       </div>
 
-      <div className={'mb-6 flex justify-end'}>
-        <label className={'text-light-100 flex items-center gap-3 whitespace-nowrap'}>
-          <CheckboxRadix
-            checked={isAutoUpdateEnabled}
-            onCheckedChange={checked => setIsAutoUpdateEnabled(Boolean(checked))}
+      <div className={'bg-background sticky top-0 z-50 pt-5'}>
+        <div className={'relative mb-8 w-full'}>
+          <Input
+            inputType={'search'}
+            value={searchTerm}
+            onChange={e => setSearchTerm(e.target.value)}
+            placeholder={'Search'}
+            reserveErrorSpace={false}
           />
-          <span>{'Autoupdate'}</span>
-        </label>
-      </div>
-
-      <div className={'mb-6 w-full'}>
-        <Input
-          inputType={'search'}
-          value={searchTerm}
-          onChange={e => setSearchTerm(e.target.value)}
-          placeholder={'Search'}
-          reserveErrorSpace={false}
-        />
+          <div
+            className={
+              'from-background pointer-events-none absolute right-0 left-0 h-8 bg-linear-to-b from-10% to-transparent'
+            }
+          />
+        </div>
       </div>
 
       {content}

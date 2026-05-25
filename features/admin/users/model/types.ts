@@ -6,14 +6,14 @@ export type SortValue = `${UsersSortBy}_${UsersSortDirection}`
 
 export interface UsersSortState {
   key: UsersSortBy | null
-  direction: UsersSortDirection
+  direction: UsersSortDirection | null
 }
 
 export interface UsersViewModel {
   userId: number
   username: string
-  email: string
   profileLink: string
+  profileUrl: string
   dateAdded: string
   isBlocked: boolean
 }
@@ -26,11 +26,3 @@ export interface UsersDataResponse {
   totalPages: number
   hasActiveFilters: boolean
 }
-
-export const FILTER_ITEMS = [
-  { value: 'ALL', label: 'All' },
-  { value: 'BLOCKED', label: 'Blocked' },
-  { value: 'UNBLOCKED', label: 'Unblocked' },
-]
-
-export const USERS_PAGE_SIZE_OPTIONS = [8, 16, 32, 64]

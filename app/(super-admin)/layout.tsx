@@ -3,9 +3,10 @@
 import { usePathname, useRouter } from 'next/navigation'
 import { type ReactNode, useEffect } from 'react'
 
-import { SuperAdminLayoutShell } from '@/app/super-admin-layout-shell'
-import { useAdminSessionStore } from '@/features/admin/auth/model/admin-session.store'
-import { Loading } from '@/shared/composites'
+import { SuperAdminLayoutShell } from '@/app/SuperAdminLayoutShell'
+import { useAdminSessionStore } from '@/features/admin/auth/model/adminSessionStore'
+import { APP_ROUTES } from '@/shared/constant'
+import { Loading } from '@/shared/ui'
 
 type Props = Readonly<{ children: ReactNode }>
 
@@ -15,18 +16,18 @@ export default function Layout({ children }: Props) {
   const isLoggedIn = useAdminSessionStore(state => state.isLoggedIn)
   const hasHydrated = useAdminSessionStore(state => state.hasHydrated)
 
-  const shouldRedirectToUsers = hasHydrated && pathname === '/login' && isLoggedIn
-  const shouldRedirectToLogin = hasHydrated && pathname !== '/login' && !isLoggedIn
+  const shouldRedirectToUsers = hasHydrated && pathname === APP_ROUTES.AUTH.LOGIN && isLoggedIn
+  const shouldRedirectToLogin = hasHydrated && pathname !== APP_ROUTES.AUTH.LOGIN && !isLoggedIn
 
   useEffect(() => {
     if (shouldRedirectToUsers) {
-      router.replace('/users')
+      router.replace(APP_ROUTES.USERS.ROOT)
 
       return
     }
 
     if (shouldRedirectToLogin) {
-      router.replace('/login')
+      router.replace(APP_ROUTES.AUTH.LOGIN)
     }
   }, [router, shouldRedirectToLogin, shouldRedirectToUsers])
 

@@ -11,9 +11,8 @@ import {
   type GetPaymentsByUserQueryVariables,
 } from '@/shared/api/graphql/gql/graphql'
 import { PAGE_SIZE_OPTIONS } from '@/shared/constant'
-import { usePagination } from '@/shared/lib/pagination'
-import { parseUserIdParam } from '@/shared/lib/route-params'
-import { useSort } from '@/shared/lib/sorting/useSort'
+import { useSort, usePagination } from '@/shared/hooks'
+import { parseUserIdParam } from '@/shared/lib/route-params/parseUserIdParam'
 
 import { type PaymentsSortBy } from '../types/paymentsTab.type'
 

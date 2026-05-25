@@ -4,12 +4,20 @@ import { useCallback, useEffect, useRef, useState, useTransition } from 'react'
 
 import { PostVM } from '@/entities/admin/post'
 import { normalizePost } from '@/entities/admin/post/model/normalizePost'
-import { usePostAdded } from '@/features/admin/subscribe-posts/model/use-post-added'
+import { usePostAdded } from '@/features/admin/subscribe-posts/model/usePostAdded'
 import { useGqlLazyQuery } from '@/shared/api/graphql'
 import { GetPostsDocument, type GetPostsQuery } from '@/shared/api/graphql/gql/graphql'
 
 const PAGE_SIZE = 10
 const SEARCH_DEBOUNCE_MS = 300
+
+const isAbortError = (error: unknown): boolean => {
+  if (typeof DOMException !== 'undefined' && error instanceof DOMException) {
+    return error.name === 'AbortError'
+  }
+
+  return error instanceof Error && error.name === 'AbortError'
+}
 
 export type PostsListState = {
   posts: PostVM[]
@@ -40,7 +48,7 @@ export const usePostsList = (): PostsListState => {
   const [inputValue, setInputValue] = useState('')
   const [searchTerm, setSearchTerm] = useState('')
 
-  const [isInitialLoading, setIsInitialLoading] = useState(false)
+  const [isInitialLoading, setIsInitialLoading] = useState(true)
   const [isFetchingMore, setIsFetchingMore] = useState(false)
   const [isFirstLoadDone, setIsFirstLoadDone] = useState(false)
   const [isSwappingPosts, startPostsSwapTransition] = useTransition()
@@ -138,6 +146,8 @@ export const usePostsList = (): PostsListState => {
         if (result.data) {
           applyResponse(result.data, 'replace')
         }
+      } catch (error) {
+        if (isAbortError(error)) return
       } finally {
         if (requestId === requestIdRef.current) {
           setIsSearching(false)
@@ -175,6 +185,8 @@ export const usePostsList = (): PostsListState => {
       if (result.data) {
         applyResponse(result.data, 'append')
       }
+    } catch (error) {
+      if (isAbortError(error)) return
     } finally {
       setIsFetchingMore(false)
     }

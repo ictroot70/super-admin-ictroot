@@ -13,8 +13,8 @@ import {
 } from '@/features/admin/user-details/model'
 import { UserInfo } from '@/features/admin/user-details/ui/user-info/UserInfo'
 import { APP_ROUTES } from '@/shared/constant'
-import { parseUserIdParam } from '@/shared/lib/route-params'
-import { ArrowBack, LoadingBar, Typography } from '@/shared/ui'
+import { parseUserIdParam } from '@/shared/lib/route-params/parseUserIdParam'
+import { ArrowBack, Loading, Typography } from '@/shared/ui'
 import { Tabs } from '@/shared/ui/tabs'
 
 type Props = {
@@ -36,7 +36,11 @@ export default function UserDetailsLayout({ children }: Props) {
   const { profile, loading, error } = useUserInfo({ userId })
 
   if (loading) {
-    return <LoadingBar />
+    return (
+      <div className={'mx-auto flex min-h-screen w-243 items-center justify-center'}>
+        <Loading />
+      </div>
+    )
   }
 
   if (!profile || error) {

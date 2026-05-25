@@ -8,9 +8,8 @@ import { useMemo } from 'react'
 import { useGqlQuery } from '@/shared/api/graphql'
 import { type SortDirection } from '@/shared/api/graphql/gql/graphql'
 import { PAGE_SIZE_OPTIONS } from '@/shared/constant'
-import { usePagination } from '@/shared/lib/pagination'
-import { parseUserIdParam } from '@/shared/lib/route-params'
-import { useSort } from '@/shared/lib/sorting/useSort'
+import { usePagination, useSort } from '@/shared/hooks'
+import { parseUserIdParam } from '@/shared/lib/route-params/parseUserIdParam'
 
 import { type RawUserRelationshipsConnection, type UserRelationshipsSortBy } from '../types'
 

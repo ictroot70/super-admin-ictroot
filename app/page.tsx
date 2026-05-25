@@ -3,7 +3,8 @@
 import { useRouter } from 'next/navigation'
 import { useEffect } from 'react'
 
-import { useAdminSessionStore } from '@/features/admin/auth/model/admin-session.store'
+import { useAdminSessionStore } from '@/features/admin/auth/model/adminSessionStore'
+import { APP_ROUTES } from '@/shared/constant/appRoutes'
 
 export default function Home() {
   const router = useRouter()
@@ -21,7 +22,7 @@ export default function Home() {
       return
     }
 
-    router.replace('/login')
+    router.replace(APP_ROUTES.AUTH.LOGIN)
   }, [hasHydrated, isLoggedIn, router])
 
   return null

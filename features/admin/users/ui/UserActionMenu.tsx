@@ -6,27 +6,56 @@ import { useState } from 'react'
 import { BanUserModal } from '@/features/admin/ban-user'
 import { DeleteUserModal } from '@/features/admin/delete-user'
 import { UnbanUserModal } from '@/features/admin/unban-user'
-import { DropdownMenu, DropdownItem } from '@/shared/ui'
-import { MoreHorizontal, Block, BlockFull, PersonRemoveOutline } from '@/shared/ui/SVGComponents'
+import {
+  DropdownMenu,
+  DropdownItem,
+  MoreHorizontal,
+  Block,
+  BlockFull,
+  PersonRemoveOutline,
+} from '@/shared/ui'
 
-interface UserActionMenuProps {
+type Props = {
   userId: number
   userName: string
   isBanned: boolean
+  isAnotherMenuOpen?: boolean
+  onMenuTriggerPointerDown?: () => void
   onActionComplete: () => void
 }
 
-export const UserActionMenu = (props: UserActionMenuProps) => {
-  const { userId, userName, onActionComplete, isBanned } = props
+export const UserActionMenu = (props: Props) => {
+  const {
+    userId,
+    userName,
+    onActionComplete,
+    isBanned,
+    isAnotherMenuOpen,
+    onMenuTriggerPointerDown,
+  } = props
 
   const [isBanOpen, setBanOpen] = useState(false)
   const [isUnbanOpen, setUnbanOpen] = useState(false)
   const [isDeleteOpen, setDeleteOpen] = useState(false)
   const router = useRouter()
 
+  const handleTriggerPointerDown = () => {
+    if (isAnotherMenuOpen) {
+      document.dispatchEvent(
+        new KeyboardEvent('keydown', {
+          key: 'Escape',
+          code: 'Escape',
+          bubbles: true,
+        })
+      )
+    }
+
+    onMenuTriggerPointerDown?.()
+  }
+
   const banItem: DropdownItem = isBanned
     ? { label: 'Un-ban User', icon: <Block />, onClick: () => setUnbanOpen(true) }
-    : { label: 'Ban User', icon: <BlockFull />, onClick: () => setBanOpen(true) }
+    : { label: 'Ban in the system', icon: <BlockFull />, onClick: () => setBanOpen(true) }
 
   const items: DropdownItem[] = [
     { label: 'Delete User', icon: <PersonRemoveOutline />, onClick: () => setDeleteOpen(true) },
@@ -39,20 +68,18 @@ export const UserActionMenu = (props: UserActionMenuProps) => {
   ]
 
   return (
-    <div className={'dropdown-menu relative inline-block w-full'}>
-      <DropdownMenu
-        contentClassName={'w-[178px] h-[121px]'}
-        items={items}
-        align={'start'}
-        side={'bottom'}
-        showArrow
-      />
+    <div
+      className={'dropdown-menu relative inline-block w-full'}
+      onPointerDownCapture={handleTriggerPointerDown}
+    >
+      <DropdownMenu items={items} align={'end'} side={'bottom'} />
 
       <BanUserModal
         open={isBanOpen}
         userId={userId}
         userName={userName}
         onConfirm={() => {
+          setBanOpen(false)
           onActionComplete()
         }}
         onClose={() => setBanOpen(false)}

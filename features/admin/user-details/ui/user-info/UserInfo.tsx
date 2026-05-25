@@ -18,7 +18,7 @@ type Props = {
 export function UserInfo({ profile }: Props) {
   const { id, avatar, name, createdAt, firstName, lastName } = profile
   const profileLink = APP_ROUTES.USERS.ID(id)
-  const fullName = [firstName, lastName].filter(Boolean).join(' ') || '-'
+  const fullName = [firstName, lastName].filter(Boolean).join(' ') || 'Unknown'
 
   return (
     <div className={'mb-8'}>

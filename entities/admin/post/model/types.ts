@@ -1,5 +1,4 @@
 import { normalizePost } from '@/entities/admin/post/model/normalizePost'
-import { Avatar, UserBan } from '@/entities/admin/user'
 
 export type ImagePost = {
   id: number | null
@@ -37,4 +36,16 @@ export type PostsPaginationModel = {
   pageSize: number
   totalCount: number // нет page: number !
   items: Post[]
+}
+
+export type Avatar = {
+  url: string | null
+  width: number | null
+  height: number | null
+  fileSize: number | null
+}
+
+export type UserBan = {
+  reason: string // NON_NULL
+  createdAt: string // NON_NULL
 }

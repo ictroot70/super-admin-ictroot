@@ -2,8 +2,12 @@ import type { Metadata } from 'next'
 import type { ReactNode } from 'react'
 
 import { ApolloAppProvider } from '@/app/providers/apollo'
-import { AppHeader } from '@/widgets/Header'
+import { ToastProvider } from '@/app/providers/toast'
+import { AppHeader } from '@/widgets/header'
 
+import '@fontsource-variable/inter/index.css'
+import '@fontsource-variable/roboto/index.css'
+import 'react-toastify/dist/ReactToastify.css'
 import './globals.css'
 
 export const metadata: Metadata = {
@@ -26,6 +30,7 @@ export default function RootLayout({ children }: Readonly<{ children: ReactNode 
         <ApolloAppProvider>
           <AppHeader />
           {children}
+          <ToastProvider />
         </ApolloAppProvider>
       </body>
     </html>

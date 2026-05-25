@@ -4,20 +4,9 @@ import Link from 'next/link'
 import { memo, useEffect, useRef, useState } from 'react'
 
 import { type PostVM } from '@/entities/admin/post'
-import { useTimeAgo } from '@/entities/admin/post/hooks/useTimeAgo'
-import {
-  Carousel,
-  Typography,
-  ScrollAreaRadix,
-  APP_ROUTES,
-  IMAGE_SIZES,
-  IMAGE_LOADING_STRATEGY,
-  Block,
-  BlockFull,
-} from '@/shared'
-
-import { Avatar } from './Avatar'
-import { SafeImage } from './SafeImage'
+import { APP_ROUTES, IMAGE_SIZES } from '@/shared/constant'
+import { useTimeAgo } from '@/shared/hooks'
+import { Avatar, Block, BlockFull, Carousel, ScrollAreaRadix, Typography } from '@/shared/ui'
 
 const DEFAULT_IMAGE = '/default-image.svg'
 const MAX_CHAR_COUNT = 67
@@ -44,10 +33,8 @@ const AdminPostComponent = ({ post, onModerationAction, isPriorityPost = false }
 
   const slides = images?.flatMap(img => (img.url ? [img.url] : [])) ?? []
   const safeSlides = slides.length > 0 ? slides : [DEFAULT_IMAGE]
-
-  const imageLoadingStrategy = isPriorityPost
-    ? IMAGE_LOADING_STRATEGY.lcp
-    : IMAGE_LOADING_STRATEGY.default
+  const moderationAction: ModerationAction = userBan ? 'unban' : 'ban'
+  const moderationIcon = userBan ? <Block /> : <BlockFull />
 
   const collapseDescription = () => {
     setIsExpanded(false)
@@ -101,49 +88,26 @@ const AdminPostComponent = ({ post, onModerationAction, isPriorityPost = false }
           '{aspect-square h-max-[240px] h-min-[120px] relative h-60 w-full overflow-hidden'
         }
       >
-        {safeSlides.length > 1 ? (
-          <Carousel
-            slides={safeSlides}
-            imageSizes={IMAGE_SIZES.PUBLIC_POST}
-            priorityFirstImage={isPriorityPost}
-          />
-        ) : (
-          <SafeImage
-            {...imageLoadingStrategy}
-            src={safeSlides[0]}
-            fallbackSrc={DEFAULT_IMAGE}
-            alt={'Post image'}
-            fill
-            sizes={IMAGE_SIZES.PUBLIC_POST}
-            telemetryLabel={'AdminPost'}
-            className={'w-full object-cover object-center'}
-          />
-        )}
+        <Carousel
+          slides={safeSlides}
+          imageSizes={IMAGE_SIZES.PUBLIC_POST}
+          priorityFirstImage={isPriorityPost}
+        />
       </div>
 
       <div className={'flex items-center gap-3'}>
         <Avatar image={avatarUrl} size={36} />
-        <Link href={APP_ROUTES.PROFILE.ID(postOwner.id)}>
+        <Link href={APP_ROUTES.USERS.ID(postOwner.id)}>
           <Typography variant={'h3'}>{postOwner.userName}</Typography>
         </Link>
 
-        {userBan ? (
-          <button
-            type={'button'}
-            className={'flex h-auto w-auto cursor-pointer rounded-full p-0.75'}
-            onClick={() => onModerationAction(postOwner.id, postOwner.userName, 'unban')}
-          >
-            <BlockFull className={'bg-danger-500'} />
-          </button>
-        ) : (
-          <button
-            type={'button'}
-            onClick={() => onModerationAction(postOwner.id, postOwner.userName, 'ban')}
-            className={'flex h-auto w-auto cursor-pointer rounded-full p-0.75'}
-          >
-            <Block />
-          </button>
-        )}
+        <button
+          type={'button'}
+          className={'border-2'}
+          onClick={() => onModerationAction(postOwner.id, postOwner.userName, moderationAction)}
+        >
+          {moderationIcon}
+        </button>
       </div>
 
       <div className={'{overflow-hidden flex flex-col'}>
