@@ -1,6 +1,3 @@
-// # ApolloClient + split link (HTTP + graphql-ws)
-// # Заполняет Dev-1 в рамках A1
-
 'use client'
 
 import { ApolloClient, ApolloLink, HttpLink, InMemoryCache } from '@apollo/client'
@@ -15,7 +12,7 @@ import { buildBasicHeader } from '@/shared/api/graphql/auth'
 const graphqlHttpUrl =
   process.env.NEXT_PUBLIC_GRAPHQL_HTTP_URL || 'https://admin.ictroot.uk/api/v1/graphql'
 const graphqlWsUrl =
-  process.env.NEXT_PUBLIC_GRAPHQL_WS_URL || 'ws://admin.ictroot.uk/api/v1/graphql'
+  process.env.NEXT_PUBLIC_GRAPHQL_WS_URL || 'wss://admin.ictroot.uk/api/v1/graphql'
 
 const httpLink = new HttpLink({
   uri: graphqlHttpUrl,
