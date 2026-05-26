@@ -1,0 +1,163 @@
+{
+  "contractVersion": "2.0.0",
+  "updatedAt": "2026-04-22",
+  "purpose": "Protect core super-admin product behavior and keep project integrity during parallel delivery.",
+  "statusLegend": {
+    "locked": "Implemented and protected behavior",
+    "planned": "Known behavior expected in near roadmap",
+    "optional_or_blocked": "Optional by scope note or blocked externally"
+  },
+  "groups": [
+    {
+      "id": "auth-core",
+      "title": "Admin auth core",
+      "status": "locked",
+      "items": [
+        {
+          "id": "AUTH-LOGIN-FLOW",
+          "title": "Successful admin login redirects to Users list",
+          "status": "locked",
+          "sourceFiles": [
+            "features/admin/auth/ui/login-form.tsx",
+            "app/(super-admin)/login/page.tsx",
+            "app/(super-admin)/users/page.tsx"
+          ],
+          "contractTests": []
+        },
+        {
+          "id": "AUTH-BASIC-RULE",
+          "title": "loginAdmin without Basic header; other admin operations with Basic header",
+          "status": "locked",
+          "sourceFiles": [
+            "features/admin/auth/model/user-admin-login.ts",
+            "shared/api/graphql/auth.ts",
+            "shared/api/graphql/index.ts"
+          ],
+          "contractTests": []
+        }
+      ]
+    },
+    {
+      "id": "users-admin-core",
+      "title": "Users list and details core",
+      "status": "locked",
+      "items": [
+        {
+          "id": "USERS-LIST-PAGING-SEARCH-SORT",
+          "title": "Users list supports pagination/search/sort and expected table fields",
+          "status": "locked",
+          "sourceFiles": [
+            "features/admin/users/model/use-users-list.ts",
+            "entities/admin/user/ui/user-table.tsx",
+            "entities/admin/user/ui/user-row.tsx"
+          ],
+          "contractTests": []
+        },
+        {
+          "id": "USERS-DETAILS-TABS",
+          "title": "More information page provides profile + Payments/Followers/Following tabs",
+          "status": "locked",
+          "sourceFiles": [
+            "app/(super-admin)/users/[userId]/page.tsx",
+            "features/admin/user-details/model/use-user-profile.ts",
+            "features/admin/user-details/ui/payments-tab.tsx",
+            "features/admin/user-details/ui/followers-tab.tsx",
+            "features/admin/user-details/ui/following-tab.tsx"
+          ],
+          "contractTests": []
+        }
+      ]
+    },
+    {
+      "id": "moderation-core",
+      "title": "Delete/Ban/Unban core",
+      "status": "locked",
+      "items": [
+        {
+          "id": "MODERATION-CONFIRM-MATRIX",
+          "title": "Delete/Ban/Unban flows support confirm/cancel/close scenarios",
+          "status": "locked",
+          "sourceFiles": [
+            "features/admin/delete-user/ui/delete-user-modal.tsx",
+            "features/admin/ban-user/ui/ban-user-modal.tsx",
+            "features/admin/unban-user/ui/unban-user-modal.tsx",
+            "shared/ui/confirm-modal/confirm-modal.tsx"
+          ],
+          "contractTests": []
+        },
+        {
+          "id": "MODERATION-BAN-REASON",
+          "title": "Ban requires valid reason and supports Another reason flow",
+          "status": "locked",
+          "sourceFiles": [
+            "features/admin/ban-user/model/use-ban-user.ts",
+            "features/admin/ban-user/ui/ban-user-modal.tsx"
+          ],
+          "contractTests": []
+        }
+      ]
+    },
+    {
+      "id": "payments-admin-core",
+      "title": "Payments list core",
+      "status": "locked",
+      "items": [
+        {
+          "id": "PAYMENTS-LIST-SEARCH-SORT-PAGING",
+          "title": "Payments list supports expected columns with search/sort/pagination",
+          "status": "locked",
+          "sourceFiles": [
+            "features/admin/payments/model/use-payments-list.ts",
+            "entities/admin/payment/ui/payments-table.tsx",
+            "app/(super-admin)/payments/page.tsx"
+          ],
+          "contractTests": []
+        }
+      ]
+    },
+    {
+      "id": "posts-admin-core",
+      "title": "Posts list and realtime core",
+      "status": "locked",
+      "items": [
+        {
+          "id": "POSTS-INFINITE-REALTIME",
+          "title": "Posts list supports infinite loading and realtime updates without reload",
+          "status": "locked",
+          "sourceFiles": [
+            "features/admin/fetch-posts/model/user-posts-list.ts",
+            "features/admin/subscribe-posts/model/use-post-added.ts",
+            "app/(super-admin)/posts/page.tsx"
+          ],
+          "contractTests": []
+        },
+        {
+          "id": "POSTS-MODERATION-REUSE",
+          "title": "Moderation action from posts reuses shared ban flow",
+          "status": "locked",
+          "sourceFiles": [
+            "entities/admin/post/ui/post-card.tsx",
+            "features/admin/ban-user/index.ts"
+          ],
+          "contractTests": []
+        }
+      ]
+    },
+    {
+      "id": "future-automation",
+      "title": "Automation and deeper regression protection",
+      "status": "planned",
+      "items": [
+        {
+          "id": "CONTRACT-TEST-AUTOMATION",
+          "title": "Introduce dedicated automated contract tests for locked behavior",
+          "status": "planned",
+          "sourceFiles": [
+            "sprint-8-admin-plan-and-workflow.ru.md"
+          ],
+          "contractTests": []
+        }
+      ]
+    }
+  ]
+}

@@ -1,3 +1,5 @@
-export default function Page() {
-  return null;
+import { PostsPageClient } from '@/features'
+
+export default function PostsPage() {
+  return <PostsPageClient />
 }
