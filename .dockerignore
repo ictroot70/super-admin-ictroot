@@ -1,0 +1,38 @@
+.git
+.github
+.ai
+.idea
+.husky
+.next
+.pnpm-store
+node_modules
+docs
+scripts
+coverage
+
+# env
+.env
+.env*.local
+.env.production
+
+# dev configs
+codegen.ts
+*.tsbuildinfo
+next-env.d.ts
+.editorconfig
+.prettierrc.json
+.prettierignore
+.stylelintignore
+stylelint.config.mjs
+eslint.config.mjs
+postcss.config.mjs
+.lintstagedrc.mjs
+
+# markdown docs
+*.md
+
+# CI/CD
+Jenkinsfile
+deployment.yaml
+preparingDeploy.sh
+nginx.conf
