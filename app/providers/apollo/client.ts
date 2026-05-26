@@ -12,8 +12,10 @@ import { createClient } from 'graphql-ws'
 import { useAdminSessionStore } from '@/features/admin/auth/model/adminSessionStore'
 import { buildBasicHeader } from '@/shared/api/graphql/auth'
 
-const graphqlHttpUrl = process.env.NEXT_PUBLIC_GRAPHQL_HTTP_URL as string
-const graphqlWsUrl = process.env.NEXT_PUBLIC_GRAPHQL_WS_URL as string
+const graphqlHttpUrl =
+  process.env.NEXT_PUBLIC_GRAPHQL_HTTP_URL || 'https://admin.ictroot.uk/api/v1/graphql'
+const graphqlWsUrl =
+  process.env.NEXT_PUBLIC_GRAPHQL_WS_URL || 'ws://admin.ictroot.uk/api/v1/graphql'
 
 const httpLink = new HttpLink({
   uri: graphqlHttpUrl,
