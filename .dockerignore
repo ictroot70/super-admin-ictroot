@@ -25,7 +25,6 @@ next-env.d.ts
 .stylelintignore
 stylelint.config.mjs
 eslint.config.mjs
-postcss.config.mjs
 .lintstagedrc.mjs
 
 # markdown docs
