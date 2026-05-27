@@ -78,8 +78,13 @@
 html {
   scrollbar-gutter: stable both-edges;
 }
+
 html:has(body[data-scroll-locked]) {
   overflow: hidden;
+}
+
+html body[data-scroll-locked] {
+  margin-right: 0 !important;
 }
 
 body {

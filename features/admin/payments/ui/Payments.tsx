@@ -164,7 +164,7 @@ export function Payments() {
   }
 
   return (
-    <div className={'mx-auto w-full px-6'}>
+    <div className={'w-full min-w-0'}>
       <div className={'fixed top-0 right-0 left-0 z-100 w-full'}>
         <LinearProgress active={isBackgroundLoading} />
       </div>

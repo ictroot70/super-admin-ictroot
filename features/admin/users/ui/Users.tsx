@@ -89,14 +89,15 @@ export function Users() {
       </div>
 
       <div className={'bg-background sticky top-0 z-50 pt-9'}>
-        <div className={'mb-6 flex w-full items-center justify-between gap-11.5'}>
-          <div className={'relative z-10 w-161 shrink-0'}>
+        <div
+          className={'mb-6 flex w-full flex-wrap items-center justify-between gap-x-11.5 gap-y-3'}
+        >
+          <div className={'relative z-10 grow'}>
             <Input
               inputType={'search'}
               placeholder={'Search by name or email...'}
               value={searchTerm}
               onChange={e => handleSearchChange(e.target.value)}
-              className={'h-9 w-full'}
               aria-label={'Search users'}
               reserveErrorSpace={false}
             />
