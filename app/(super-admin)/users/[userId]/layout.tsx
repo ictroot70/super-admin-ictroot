@@ -35,34 +35,32 @@ export default function UserDetailsLayout({ children }: Props) {
 
   const { profile, loading, error } = useUserInfo({ userId })
 
-  if (loading) {
-    return (
-      <div className={'mx-auto flex min-h-screen w-243 items-center justify-center'}>
-        <Loading />
-      </div>
-    )
-  }
-
-  if (!profile || error) {
+  if (!loading && (!profile || error)) {
     notFound()
   }
 
   return (
-    <section className={'mx-auto flex min-h-screen flex-col gap-1.25'}>
+    <section className={'relative mx-auto flex min-h-screen flex-col gap-1.25'}>
       <Link href={APP_ROUTES.USERS.ROOT} className={'mb-6 flex items-center gap-3'}>
         <ArrowBack /> <Typography variant={'regular_14'}>{'Back to Users List'}</Typography>
       </Link>
 
-      <UserInfo profile={profile} />
+      {profile && <UserInfo profile={profile} />}
 
-      <Tabs
-        value={activeTab}
-        triggers={USER_TAB_TRIGGERS}
-        onValueChange={next => router.push(`${APP_ROUTES.USERS.ID(userId)}/${next}`)}
-        fullWidth
-      />
+      {loading ? (
+        <Loading />
+      ) : (
+        <>
+          <Tabs
+            value={activeTab}
+            triggers={USER_TAB_TRIGGERS}
+            onValueChange={next => router.push(`${APP_ROUTES.USERS.ID(userId)}/${next}`)}
+            fullWidth
+          />
 
-      <div className={'h-full grow pt-6 pb-6'}>{children}</div>
+          <div className={'h-full grow pt-6 pb-6'}>{children}</div>
+        </>
+      )}
     </section>
   )
 }
