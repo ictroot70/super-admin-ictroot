@@ -96,11 +96,7 @@ export const PostsPageClient = () => {
         </Typography>
       )}
 
-      <div
-        className={`gap-y- grid grid-cols-1 gap-x-3 gap-y-7 transition-opacity duration-200 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 ${
-          isTyping || isSearching || isSwappingPosts ? 'opacity-60' : 'opacity-100'
-        }`}
-      >
+      <div className={`grid grid-cols-[repeat(auto-fit,minmax(234px,1fr))] gap-x-3 gap-y-4`}>
         {posts.map((post, index) => (
           <AdminPost
             key={post.id}
