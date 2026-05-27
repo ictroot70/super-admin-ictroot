@@ -11,7 +11,9 @@ export function SuperAdminLayoutShell({ children }: SuperAdminLayoutShellProps) 
     <main className={'w-full overflow-x-hidden pt-15'}>
       <div className={'mx-auto min-h-[calc(100vh-60px)] w-full max-w-(--layout-max-width) px-15'}>
         <Sidebar />
-        <div className={'ml-40 min-w-0 py-9 pl-6'}>{children}</div>
+        <div className={'relative ml-40 min-h-[calc(100vh-60px)] min-w-0 py-9 pl-6'}>
+          {children}
+        </div>
       </div>
     </main>
   )
