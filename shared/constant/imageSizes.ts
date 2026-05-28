@@ -3,10 +3,8 @@ import type { ImageProps } from 'next/image'
 type ImageLoadingStrategy = Pick<ImageProps, 'fetchPriority' | 'loading' | 'priority' | 'quality'>
 
 export const IMAGE_SIZES = {
-  PUBLIC_POST:
-    '(min-width: 1280px) calc(25vw - 12px), (min-width: 1024px) calc(33vw - 12px), (min-width: 640px) calc(50vw - 12px), 100vw',
-  POST_CARD:
-    '(min-width: 1280px) calc(25vw - 12px), (min-width: 1024px) calc(33vw - 12px), (min-width: 640px) calc(50vw - 12px), 100vw',
+  PUBLIC_POST: '234px',
+  POST_CARD: '234px',
   POST_MODAL: '(max-width: 968px) 95vw, 490px',
 } as const
 
