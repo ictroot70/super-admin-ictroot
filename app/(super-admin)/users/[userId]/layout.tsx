@@ -40,7 +40,7 @@ export default function UserDetailsLayout({ children }: Props) {
   }
 
   return (
-    <section className={'relative mx-auto flex min-h-screen flex-col gap-1.25'}>
+    <section className={'relative mx-auto flex min-h-0 flex-col gap-1.25'}>
       <Link href={APP_ROUTES.USERS.ROOT} className={'mb-6 flex items-center gap-3'}>
         <ArrowBack /> <Typography variant={'regular_14'}>{'Back to Users List'}</Typography>
       </Link>
@@ -48,7 +48,9 @@ export default function UserDetailsLayout({ children }: Props) {
       {profile && <UserInfo profile={profile} />}
 
       {loading ? (
-        <Loading />
+        <div className={'relative min-h-100'}>
+          <Loading />
+        </div>
       ) : (
         <>
           <Tabs

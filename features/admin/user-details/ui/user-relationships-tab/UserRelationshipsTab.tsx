@@ -59,7 +59,12 @@ export function UserRelationshipsTab({
   onSort,
   errorMessage,
 }: Props) {
-  if (isLoading) return <Loading />
+  if (isLoading)
+    return (
+      <div className={'relative min-h-80'}>
+        <Loading />
+      </div>
+    )
   if (error) return <div>{errorMessage}</div>
 
   if (!items.length) {

@@ -33,7 +33,12 @@ export function UploadedPhotosTab() {
 
   const slides = photos.map(photo => photo.url)
 
-  if (isInitialLoading) return <Loading />
+  if (isInitialLoading)
+    return (
+      <div className={'relative min-h-80'}>
+        <Loading />
+      </div>
+    )
   if (error && !photos.length) return <div>Failed to load uploaded photos.</div>
 
   if (!photos.length) {
