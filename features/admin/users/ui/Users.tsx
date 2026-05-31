@@ -83,12 +83,12 @@ export function Users() {
   const showEmptyFilters = isEmpty && !users.isFetching && hasActiveFilters
 
   return (
-    <div className={'flex flex-col gap-9'}>
+    <div className={'flex flex-col gap-6'}>
       <div className={'fixed top-0 right-0 left-0 z-100 w-full'}>
         <LinearProgress active={users.isInitialLoading || users.isFetching} />
       </div>
 
-      <div className={'bg-background sticky top-0 z-50 pt-9'}>
+      <div className={'bg-background sticky top-15 z-50 pt-9'}>
         <div
           className={'mb-6 flex w-full flex-wrap items-center justify-between gap-x-11.5 gap-y-3'}
         >

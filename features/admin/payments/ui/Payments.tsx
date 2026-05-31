@@ -169,7 +169,7 @@ export function Payments() {
         <LinearProgress active={isBackgroundLoading} />
       </div>
 
-      <div className={'bg-background sticky top-0 z-50 pt-5'}>
+      <div className={'bg-background sticky top-15 z-50 pt-5'}>
         <div className={'relative mb-8 w-full'}>
           <Input
             inputType={'search'}

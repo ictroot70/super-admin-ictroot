@@ -69,7 +69,7 @@ export const PostsPageClient = () => {
       <div className={'fixed top-0 right-0 left-0 z-100 w-full'}>
         <LinearProgress active={isPostsPending || isTyping || isFetchingMore} />
       </div>
-      <div className={'bg-background sticky top-0 z-50 pt-9'}>
+      <div className={'bg-background sticky top-15 z-50 pt-9'}>
         <Input
           inputType={'search'}
           placeholder={'Search'}
