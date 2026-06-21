@@ -10,7 +10,11 @@ type SuperAdminLayoutShellProps = Readonly<{ children: ReactNode }>
 export function SuperAdminLayoutShell({ children }: SuperAdminLayoutShellProps) {
   return (
     <main className={'m-0 box-border block h-screen min-h-0 w-full max-w-none pt-15'}>
-      <ScrollAreaRadix className={'h-full w-full'} viewportClassName={'w-full h-full'}>
+      <ScrollAreaRadix
+        className={'h-full w-full'}
+        viewportClassName={'w-full h-full'}
+        orientation={'vertical'}
+      >
         <div
           className={
             'mx-auto h-full min-h-full w-full max-w-(--layout-max-width) self-stretch px-15'
