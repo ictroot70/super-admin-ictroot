@@ -82,7 +82,7 @@ const AdminPostComponent = ({ post, onModerationAction, isPriorityPost = false }
   }, [description, isExpanded])
 
   return (
-    <div className={'flex h-97.75 flex-col gap-3 overflow-hidden'}>
+    <div className={'flex h-97.75 w-58.5 flex-col gap-3 overflow-hidden'}>
       <div
         className={
           '{aspect-square h-max-[240px] h-min-[120px] relative h-60 w-full overflow-hidden'

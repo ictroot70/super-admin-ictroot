@@ -164,12 +164,12 @@ export function Payments() {
   }
 
   return (
-    <div className={'w-full min-w-0'}>
+    <div className={'mx-auto w-full px-6'}>
       <div className={'fixed top-0 right-0 left-0 z-100 w-full'}>
         <LinearProgress active={isBackgroundLoading} />
       </div>
 
-      <div className={'bg-background sticky top-15 z-50 pt-9'}>
+      <div className={'bg-background sticky top-0 z-50 pt-5'}>
         <div className={'relative mb-8 w-full'}>
           <Input
             inputType={'search'}

@@ -7,12 +7,7 @@ import { PaymentsTableTab } from './PaymentsTableTab'
 export function PaymentsTab() {
   const { items, sort, error, isLoading, isRefreshing, paginationProps, onSort } = usePaymentsTab()
 
-  if (isLoading)
-    return (
-      <div className={'relative min-h-80'}>
-        <Loading />
-      </div>
-    )
+  if (isLoading) return <Loading />
   if (error) return <div>Failed to load payments.</div>
 
   if (!items.length)

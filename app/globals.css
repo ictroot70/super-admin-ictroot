@@ -78,16 +78,8 @@
 html {
   scrollbar-gutter: stable both-edges;
 }
-
 html:has(body[data-scroll-locked]) {
-  overflow: clip;
-}
-
-html body[data-scroll-locked] {
-  overflow: clip !important;
-  padding-top: 0 !important;
-  margin-right: 0 !important;
-  margin-top: 0 !important;
+  overflow: hidden;
 }
 
 body {

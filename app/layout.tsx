@@ -25,8 +25,8 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: Readonly<{ children: ReactNode }>) {
   return (
-    <html lang={'ru'} className={'h-full overflow-x-clip antialiased'}>
-      <body className={'flex min-h-full flex-col overflow-x-clip'}>
+    <html lang={'ru'} className={'h-full antialiased'}>
+      <body className={'flex min-h-full flex-col'}>
         <ApolloAppProvider>
           <AppHeader />
           {children}

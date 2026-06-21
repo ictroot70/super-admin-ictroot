@@ -69,7 +69,7 @@ export const PostsPageClient = () => {
       <div className={'fixed top-0 right-0 left-0 z-100 w-full'}>
         <LinearProgress active={isPostsPending || isTyping || isFetchingMore} />
       </div>
-      <div className={'bg-background sticky top-15 z-50 pt-9'}>
+      <div className={'bg-background sticky top-0 z-50 pt-9'}>
         <Input
           inputType={'search'}
           placeholder={'Search'}
@@ -96,7 +96,11 @@ export const PostsPageClient = () => {
         </Typography>
       )}
 
-      <div className={`grid grid-cols-[repeat(auto-fit,minmax(234px,1fr))] gap-x-3 gap-y-4`}>
+      <div
+        className={`gap-y- grid grid-cols-1 gap-x-3 gap-y-7 transition-opacity duration-200 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 ${
+          isTyping || isSearching || isSwappingPosts ? 'opacity-60' : 'opacity-100'
+        }`}
+      >
         {posts.map((post, index) => (
           <AdminPost
             key={post.id}

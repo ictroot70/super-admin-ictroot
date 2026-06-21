@@ -46,7 +46,7 @@ export const Sidebar = () => {
   return (
     <nav
       className={
-        'sidebar border-r-dark-300 bg-dark-700 fixed top-15 left-[max(3.75rem,calc((100vw-var(--layout-max-width))/2+3.75rem))] h-[calc(100vh-60px)] w-40 border-r pr-1.5'
+        'sidebar border-r-dark-300 bg-dark-700 fixed top-15 h-[calc(100vh-60px)] w-40 border-r pr-1.5'
       }
     >
       <div className={'flex h-full flex-col justify-between pt-18 pb-9'}>
